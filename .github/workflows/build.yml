@@ -1,0 +1,26 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'src/**' ]
+  pull:
+    branches: [ main ]
+    paths: [ 'src/**' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: wpilib/roborio-cross-ubuntu:2023-22.04
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Add repository to git safe directories
+      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      
+    - name: Grant execution permission for gradlew
+      run: chmod +X ./gradlew
+      
+    - name: Compile and run tests on robot code
+      run: ./gradlew build
