@@ -20,7 +20,7 @@ jobs:
       run: git config --global --add safe.directory $GITHUB_WORKSPACE
       
     - name: Grant execution permission for gradlew
-      run: chmod +X ./gradlew
+      run: chmod +x ./gradlew
       
     - name: Compile and run tests on robot code
       run: ./gradlew build
