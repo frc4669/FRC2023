@@ -13,10 +13,12 @@
 #include <frc/kinematics/DifferentialDriveOdometry.h>
 #include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc/smartdashboard/Field2d.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 class Drivetrain : public frc2::SubsystemBase {
  public:
-  Drivetrain();
+  Drivetrain(frc::Field2d* field);
 
   void ResetEncoders();
 
@@ -26,7 +28,20 @@ class Drivetrain : public frc2::SubsystemBase {
 
   frc2::CommandPtr DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation);
 
+  frc2::CommandPtr BoostCommand(double boost);
+
+  frc::Pose2d OdometryPose();
+
   void ResetOdometry(frc::Pose2d pose, frc::Rotation2d rotation);
+
+  units::degree_t GetYaw();
+
+  units::meter_t GetLeftDistance();
+  units::meter_t GetRightDistance();
+
+  frc::DifferentialDriveWheelSpeeds GetWheelSpeeds();
+
+  void TankDriveVolts(units::volt_t left, units::volt_t right);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -46,5 +61,14 @@ class Drivetrain : public frc2::SubsystemBase {
 
   frc::DifferentialDrive m_drive{ m_leftMotors, m_rightMotors };
 
+  double m_boost = 0.3;
+
+  units::degree_t m_yawOffset = 0_deg;
+
   AHRS m_IMU{ frc::SPI::Port::kMXP };
+
+  frc::Field2d* m_field;
+
+  frc::DifferentialDriveOdometry m_odometry { frc::Rotation2d(), 0_m, 0_m, frc::Pose2d() };
+  int m_odometryReset { 0 };
 };

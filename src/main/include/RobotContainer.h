@@ -6,10 +6,16 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <frc/smartdashboard/Field2d.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
-#include "subsystems/Drivetrain.h"
 #include "Constants.h"
-#include "subsystems/ExampleSubsystem.h"
+#include "subsystems/Drivetrain.h"
+#include "subsystems/Vision.h"
+#include "subsystems/Claw.h"
+#include "subsystems/Elevator.h"
+
+#include "commands/Autos.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -22,16 +28,26 @@ class RobotContainer {
  public:
   RobotContainer();
 
-  frc2::CommandPtr GetAutonomousCommand();
+  frc2::Command* GetAutonomousCommand();
 
  private:
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{ 0 };
   frc2::CommandXboxController m_operatorController{ 1 };
 
+  frc::Field2d m_field;
+
   // The robot's subsystems are defined here...
-  ExampleSubsystem m_subsystem;
+
   Drivetrain m_drivetrain;
+  Vision m_vision;
+  Claw m_claw;
+  Elevator m_elevator;
+
+  frc2::CommandPtr m_defaultAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
+
+  frc::SendableChooser<frc2::Command*> m_autoChooser;
 
   void ConfigureBindings();
+  void ConfigureAutonomous();
 };

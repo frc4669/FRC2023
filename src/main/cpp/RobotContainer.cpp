@@ -6,33 +6,46 @@
 
 #include <frc2/command/button/Trigger.h>
 #include <frc2/command/RunCommand.h>
-#include "commands/Autos.h"
-#include "commands/ExampleCommand.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/DriverStation.h>
 
-RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
+RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
+  frc::DriverStation::SilenceJoystickConnectionWarning(true);
+
+  // m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d());
+  
   m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
-    [this] { return m_driverController.GetLeftY(); },
-    [this] { return m_driverController.GetRightX(); }
+    [this] { return -m_driverController.GetLeftY(); },
+    [this] { return -m_driverController.GetRightX() * OperatorConstants::kTurningSpeedMutiplier; }
   ));
-  // Configure the button bindings
+
   ConfigureBindings();
+  ConfigureAutonomous();
+
+  frc::SmartDashboard::PutData("Field", &m_field);
+}
+
+void RobotContainer::ConfigureAutonomous() {
+  m_autoChooser.SetDefaultOption("Default Auto", m_defaultAutoCommand.get());
 }
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
 
-  // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  frc2::Trigger([this] {
-    return m_subsystem.ExampleCondition();
-  }).OnTrue(ExampleCommand(&m_subsystem).ToPtr());
+  m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
+  m_operatorController.X().OnTrue(m_claw.SelectPressure());
 
-  // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
-  // pressed, cancelling on release.
-  m_driverController.B().WhileTrue(m_subsystem.ExampleMethodCommand());
+  m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
+  m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
+
+  // Please disable below line if not debugging
+  m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
+
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 0; }).OnTrue(m_elevator.SetDistanceCommand(60_in));
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
 }
 
-frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+frc2::Command* RobotContainer::GetAutonomousCommand() {
+  return m_autoChooser.GetSelected();
 }
