@@ -68,7 +68,7 @@ void Drivetrain::ConfigureMotor(WPI_TalonFX &motor, bool isInverted) {
 }
 
 void Drivetrain::CurvatureDrive(double speed, double rotation) {
-  m_drive.CurvatureDrive(speed, rotation, !OperatorConstants::kCanTurnInPlace); 
+  m_drive.CurvatureDrive(speed, rotation, false); 
 }
 
 units::degree_t Drivetrain::GetYaw() {

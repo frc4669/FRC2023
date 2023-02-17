@@ -14,6 +14,7 @@
 #include "subsystems/Vision.h"
 #include "subsystems/Claw.h"
 #include "subsystems/Elevator.h"
+#include "subsystems/Turret.h"
 
 #include "commands/Autos.h"
 
@@ -43,6 +44,7 @@ class RobotContainer {
   Vision m_vision;
   Claw m_claw;
   Elevator m_elevator;
+  Turret m_turret;
 
   frc2::CommandPtr m_defaultAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
 

@@ -24,7 +24,7 @@ class Elevator : public frc2::SubsystemBase {
   void Periodic() override;
 
  private:
-  WPI_TalonFX m_mainMotor{0};
+  WPI_TalonFX m_mainMotor { ManipulatorConstants::kElevatorID };
 
   frc::PIDController m_heightController { ManipulatorConstants::kElevatorP, ManipulatorConstants::kElevatorI, ManipulatorConstants::kElevatorD };
 };

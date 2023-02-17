@@ -11,12 +11,14 @@
 
 RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
-
-  // m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d());
   
   m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
     [this] { return -m_driverController.GetLeftY(); },
     [this] { return -m_driverController.GetRightX() * OperatorConstants::kTurningSpeedMutiplier; }
+  ));
+
+  m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
+    [this] { return -m_operatorController.GetRightX() * 1; }
   ));
 
   ConfigureBindings();
@@ -44,6 +46,8 @@ void RobotContainer::ConfigureBindings() {
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 0; }).OnTrue(m_elevator.SetDistanceCommand(60_in));
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
+
+  m_operatorController.RightBumper().OnTrue(m_turret.HomeCommand());
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

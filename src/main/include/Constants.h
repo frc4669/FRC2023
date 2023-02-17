@@ -4,8 +4,6 @@
 
 #pragma once
 
-#define TRAJECTORY_NAME "Circle"
-
 #include <units/velocity.h>
 #include <units/acceleration.h>
 #include <units/time.h>
@@ -15,8 +13,6 @@
 #include <units/math.h>
 
 namespace OperatorConstants {
-  constexpr bool kCanTurnInPlace = true; // curvature drive turning in place
-
   constexpr double kTurningSpeedMutiplier = 1.0; // slows down turning movement as joystick is too sensentive. 
 } 
 
@@ -46,6 +42,8 @@ namespace DriveConstants {
 }
 
 namespace ManipulatorConstants {
+  constexpr int kElevatorID = 111;
+
   constexpr double kElevatorGearRatio = 50;
   constexpr double kElevatorTeeth = 15;
   constexpr double kElevatorInchesPerTick = (kElevatorTeeth * 0.25) / (kElevatorGearRatio * 2048);
@@ -55,4 +53,11 @@ namespace ManipulatorConstants {
   constexpr double kElevatorD = 0;
 
   constexpr auto kElevatorSetpointThreshold = 3_in;
+}
+
+namespace TurretConstants {
+  constexpr int kTurretID = 50;
+
+  constexpr double kTurretGearRatio = 4.5;
+  constexpr double kTurretDegreesPerTick = 360 / (kTurretGearRatio * 4096);
 }
