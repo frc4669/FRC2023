@@ -29,10 +29,10 @@ void GoToAThing::Execute() {
   units::second_t dt = currentTime - m_previousTime;
   m_previousTime = currentTime; 
 
-  // get result
-  ObjTrackingResult result; 
+  // get results
+  Vision::ObjDetectResults results; 
   
-  if (!result.hasTarget) {
+  if (!results.hasTargets) {
     m_drivetrain->TankDriveVolts(0_V, 0_V); 
     m_previousSpeed = frc::DifferentialDriveWheelSpeeds(); 
     return; 
@@ -40,7 +40,7 @@ void GoToAThing::Execute() {
 
   // get target 
 
-  frc::Rotation2d rotationToTarget(units::degree_t(result.YawToCursor)); 
+  frc::Rotation2d rotationToTarget(results.targets[0].yaw); 
 
   units::meter_t distance = 1_m; // keep it one m cuz i dont wanna do complex vision math yet-
 

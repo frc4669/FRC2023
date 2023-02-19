@@ -40,3 +40,45 @@ frc::Pose2d Vision::RobotPose(frc::Pose3d tagPose, frc::Transform3d relative) {
     frc::Pose3d robotPose = cameraPose.TransformBy(kCameraToRobot);
     return frc::Pose2d(robotPose.ToPose2d().Translation(), frc::Rotation2d(-m_drivetrain->GetYaw()));
 }
+
+//////////////////////
+// START OBJ DETECT //
+//////////////////////
+Vision::ObjDetectResults ObjDetectGetResults() {
+    nt::NetworkTableInstance inst = nt::NetworkTableInstance::GetDefault(); 
+    auto table = inst.GetTable("SmartDashboard/VisionServer/Objects"); 
+
+    if (table->GetBoolean("HasTargets", false) == false) {
+        return Vision::ObjDetectResults(); 
+    }; 
+
+    Vision::ObjDetectResults results;
+
+    auto cones = table->GetSubTable("Cones");
+
+    std::string yawStringData = cones->GetString("Yaw_Values", ""); 
+
+    // Tokenize & Interate throught all the data 
+    int start = 0, end = -1; 
+    do {
+        start = end + 1; 
+        end = yawStringData.find(',', start); 
+        double yaw = std::stod(yawStringData.substr(start, end - start)); 
+
+        Vision::ObjDetectTarget target = {
+            .yaw = units::degree_t(yaw)
+        };
+
+        results.targets.push_back(target); 
+
+    } while (end != -1); 
+
+    return results; 
+}
+
+Vision::ObjDetectTarget ObjDetectGetBestTarget(Vision::ObjDetectResults results) {
+    //TO DO
+}
+////////////////////
+// END OBJ DETECT //
+////////////////////

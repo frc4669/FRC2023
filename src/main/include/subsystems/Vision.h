@@ -41,6 +41,26 @@ class Vision : public frc2::SubsystemBase {
 
   frc::Pose2d RobotPose(frc::Pose3d tagPose, frc::Transform3d relative);
 
+
+  //////////////////////
+  // START OBJ DETECT //
+  //////////////////////
+  struct ObjDetectTarget {
+    units::degree_t yaw = 0_deg; 
+  }; 
+
+  struct ObjDetectResults {
+    bool hasTargets = false; 
+    std::vector<ObjDetectTarget> targets; 
+  }; 
+
+  ObjDetectResults ObjDetectGetResults(); 
+
+  ObjDetectTarget ObjDetectGetBestTarget(ObjDetectResults results);
+  ////////////////////
+  // END OBJ DETECT //
+  ////////////////////
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

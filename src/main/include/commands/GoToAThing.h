@@ -38,17 +38,6 @@ class GoToAThing
 
   bool IsFinished() override;
 
-  // public structs
-  struct ObjTrackingResult {
-    bool hasTarget; 
-
-    bool isCube;
-
-    // negative is left, postive is right
-    double YawToCursor;  
-
-  }; 
-
  private:
   // sub system requiremetns  
   Drivetrain* m_drivetrain; 
