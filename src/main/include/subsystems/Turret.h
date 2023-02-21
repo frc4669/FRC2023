@@ -7,6 +7,8 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/controller/PIDController.h>
+#include <frc/controller/SimpleMotorFeedforward.h>
 #include <ctre/Phoenix.h>
 
 #include "Constants.h"
@@ -22,7 +24,9 @@ class Turret : public frc2::SubsystemBase {
 
   units::degree_t GetAngle();
 
-  frc2::CommandPtr HomeCommand();
+  frc2::CommandPtr ZeroCommand();
+
+  frc2::CommandPtr SetAngleCommand(units::degree_t angle);
 
   frc2::CommandPtr DefaultControlCommand(std::function<double()> magnitude);
 
@@ -38,5 +42,7 @@ class Turret : public frc2::SubsystemBase {
 
   WPI_TalonSRX m_rotationMotor { TurretConstants::kTurretID };
 
-  double m_forwardLimit { 0 };
+  frc::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
+  // frc::SimpleMotorFeedforward<units:
+  :degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
 };
