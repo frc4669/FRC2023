@@ -58,6 +58,14 @@ namespace ManipulatorConstants {
 namespace TurretConstants {
   constexpr int kTurretID = 50;
 
-  constexpr double kTurretGearRatio = 4.5;
-  constexpr double kTurretDegreesPerTick = 360 / (kTurretGearRatio * 4096);
+  constexpr double kTurretGearRatio = 3.2727275; 
+  constexpr double kTurretDegreesPerTick = 360 / (4096 * kTurretGearRatio);
+
+  constexpr double kTurretP = 2.9196e-5;
+  constexpr double kTurretI = 0;
+  constexpr double kTurretD = 3.6052e-6;
+
+  constexpr auto kTurretS = 0.58412_V;
+  constexpr auto kTurretV = 0.0063192_V * 1_s / 1_m;
+  constexpr auto kTurretA = 0.0011897_V * 1_s * 1_s / 1_m;
 }

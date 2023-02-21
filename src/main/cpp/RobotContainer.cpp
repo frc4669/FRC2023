@@ -47,7 +47,10 @@ void RobotContainer::ConfigureBindings() {
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
 
-  m_operatorController.RightBumper().OnTrue(m_turret.HomeCommand());
+  m_operatorController.Start().OnTrue(m_turret.ZeroCommand());
+
+  m_operatorController.A().OnTrue(m_turret.SetAngleCommand(0_deg));
+  m_operatorController.B().OnTrue(m_turret.SetAngleCommand(90_deg));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
