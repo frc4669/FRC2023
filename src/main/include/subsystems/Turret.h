@@ -43,6 +43,5 @@ class Turret : public frc2::SubsystemBase {
   WPI_TalonSRX m_rotationMotor { TurretConstants::kTurretID };
 
   frc::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
-  // frc::SimpleMotorFeedforward<units:
-  :degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
+  // frc::SimpleMotorFeedforward<units::degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
 };
