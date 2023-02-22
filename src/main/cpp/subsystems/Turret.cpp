@@ -41,7 +41,7 @@ units::degree_t Turret::GetAngle() {
 }
 
 frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
-  /*return Run([this] {
+  return Run([this] {
     // no logic here for some reason...
   }).BeforeStarting([this, angle] {
     double desiredAngle = angle.value() / TurretConstants::kTurretDegreesPerTick;
@@ -51,16 +51,19 @@ frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
     double velocity = m_rotationMotor.GetSensorCollection().GetQuadratureVelocity();
 
     return std::abs(velocity) < 10;
-  })*/ // .WithTimeout(5_s);
+  }); // .WithTimeout(5_s);
 
-  m_rotationController.Reset();
-  m_rotationController.SetSetpoint(angle.value() / TurretConstants::kTurretDegreesPerTick);
-  frc::SmartDashboard::PutNumber("Desired Angle (ticks)", m_rotationController.GetSetpoint());
-
-  return Run([this, angle] {
+  /*return Run([this] {
     double currentAngle = m_rotationMotor.GetSensorCollection().GetQuadraturePosition();
-    m_rotationMotor.Set(TalonSRXControlMode::PercentOutput, m_rotationController.Calculate(currentAngle));
-  }).Until([this] { return m_rotationController.AtSetpoint(); });
+    frc::SmartDashboard::PutNumber("Current Error (degrees)", (m_rotationController.GetSetpoint() - currentAngle) * TurretConstants::kTurretDegreesPerTick);
+    m_rotationMotor.Set(TalonSRXControlMode::PercentOutput, -m_rotationController.Calculate(currentAngle));
+  })
+    .Until([this] { return m_rotationController.AtSetpoint(); })
+    .BeforeStarting([this, angle] {
+      m_rotationController.Reset();
+      m_rotationController.SetSetpoint(angle.value() / TurretConstants::kTurretDegreesPerTick);
+      frc::SmartDashboard::PutNumber("Desired Angle (ticks)", m_rotationController.GetSetpoint());
+    });*/
 }
 
 frc2::CommandPtr Turret::DefaultControlCommand(std::function<double()> magnitude) {
