@@ -8,6 +8,7 @@
 #include <frc2/command/RunCommand.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
+#include "commands/GoToAThing.h"
 
 RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
@@ -36,6 +37,8 @@ void RobotContainer::ConfigureBindings() {
 
   m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
   m_operatorController.X().OnTrue(m_claw.SelectPressure());
+
+  m_driverController.Y().WhileTrue(GoToAThing(&m_drivetrain, &m_vision).ToPtr());
 
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
