@@ -61,9 +61,9 @@ namespace TurretConstants {
   constexpr double kTurretGearRatio = 3.2727275; 
   constexpr double kTurretDegreesPerTick = 360 / (4096 * kTurretGearRatio);
 
-  constexpr double kTurretP = 2.9196e-5;
+  constexpr double kTurretP = 1.3e-3;
   constexpr double kTurretI = 0;
-  constexpr double kTurretD = 3.6052e-6;
+  constexpr double kTurretD = 3.6052e-5;
 
   constexpr auto kTurretS = 0.58412_V;
   constexpr auto kTurretV = 0.0063192_V * 1_s / 1_m;
