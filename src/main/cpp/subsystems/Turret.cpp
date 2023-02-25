@@ -4,7 +4,7 @@
 
 #include "subsystems/Turret.h"
 
-Turret::Turret() {
+Turret::Turret(Vision* vision) : m_vision(vision) {
   m_rotationMotor.ConfigMotionCruiseVelocity(20000);
   m_rotationMotor.ConfigMotionAcceleration(7000);
 
@@ -67,4 +67,13 @@ frc2::CommandPtr Turret::DefaultControlCommand(std::function<double()> magnitude
   return Run([this, magnitude = std::move(magnitude)] {
     SetSpeed(magnitude());
   });
+}
+
+frc2::CommandPtr Turret::AlignToTarget() {
+  Vision::ObjDetectResults results = m_vision->ObjDetectGetResults();
+
+  units::degree_t currentAngle = GetAngle();
+
+  if (results.hasTargets) return this->SetAngleCommand(currentAngle + results.targets[0].yaw);
+  else return this->SetAngleCommand(currentAngle); 
 }

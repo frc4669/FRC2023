@@ -8,9 +8,8 @@
 #include <frc2/command/RunCommand.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
-#include "commands/GoToAThing.h"
 
-RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
+RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain), m_turret(&m_vision) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
   
   m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
@@ -20,7 +19,7 @@ RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m
 
   m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
     [this] { return -m_operatorController.GetRightX() * 1; }
-  ));
+  )); 
 
   ConfigureBindings();
   ConfigureAutonomous();
@@ -38,7 +37,7 @@ void RobotContainer::ConfigureBindings() {
   m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
   m_operatorController.X().OnTrue(m_claw.SelectPressure());
 
-  m_driverController.Y().WhileTrue(GoToAThing(&m_drivetrain, &m_vision).ToPtr());
+  m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
 
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));

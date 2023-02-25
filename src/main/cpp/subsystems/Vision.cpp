@@ -44,7 +44,7 @@ frc::Pose2d Vision::RobotPose(frc::Pose3d tagPose, frc::Transform3d relative) {
 //////////////////////
 // START OBJ DETECT //
 //////////////////////
-Vision::ObjDetectResults ObjDetectGetResults() {
+Vision::ObjDetectResults Vision::ObjDetectGetResults() {
     nt::NetworkTableInstance inst = nt::NetworkTableInstance::GetDefault(); 
     auto table = inst.GetTable("SmartDashboard/VisionServer/Objects"); 
 
@@ -53,6 +53,7 @@ Vision::ObjDetectResults ObjDetectGetResults() {
     }; 
 
     Vision::ObjDetectResults results;
+    results.hasTargets = true; 
 
     auto cones = table->GetSubTable("Cones");
 
@@ -76,7 +77,7 @@ Vision::ObjDetectResults ObjDetectGetResults() {
     return results; 
 }
 
-Vision::ObjDetectTarget ObjDetectGetBestTarget(Vision::ObjDetectResults results) {
+Vision::ObjDetectTarget Vision::ObjDetectGetBestTarget(Vision::ObjDetectResults results) {
     //TO DO
 }
 ////////////////////

@@ -10,12 +10,13 @@
 #include <frc/controller/PIDController.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
 #include <ctre/Phoenix.h>
+#include "Vision.h"
 
 #include "Constants.h"
 
 class Turret : public frc2::SubsystemBase {
  public:
-  Turret();
+  Turret(Vision* vision);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -30,6 +31,8 @@ class Turret : public frc2::SubsystemBase {
 
   frc2::CommandPtr DefaultControlCommand(std::function<double()> magnitude);
 
+  frc2::CommandPtr AlignToTarget(); 
+
   void SetSpeed(double output);
 
   void Zero();
@@ -37,6 +40,8 @@ class Turret : public frc2::SubsystemBase {
   bool IsAtLimit();
 
  private:
+  Vision* m_vision; 
+
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
