@@ -6,6 +6,7 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <frc2/command/button/CommandGenericHID.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SendableChooser.h>
 
@@ -35,6 +36,9 @@ class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{ 0 };
   frc2::CommandXboxController m_operatorController{ 1 };
+
+  frc2::CommandGenericHID m_pickupBoard{ 2 }; 
+  frc2::CommandGenericHID m_scoringBoard{ 3 }; 
 
   frc::Field2d m_field;
 

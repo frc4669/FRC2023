@@ -69,3 +69,28 @@ namespace TurretConstants {
   constexpr auto kTurretV = 0.0063192_V * 1_s / 1_m;
   constexpr auto kTurretA = 0.0011897_V * 1_s * 1_s / 1_m;
 }
+
+namespace PickupControlBoardConst {
+  // turret control
+  constexpr int turretNorth = 1;
+  constexpr int turretSouth = 2;
+  constexpr int turretEast = 3; 
+  constexpr int turretWest = 4;
+
+  // pickup
+  constexpr int pickupGroundLevel = 5;
+  constexpr int pickupShelfLevel = 6;
+  constexpr int pickupStowBetween = 7;
+  constexpr int pickupSelectCone = 8;
+  constexpr int pickupSelectCube = 9;
+}
+
+namespace ScoringControlBoardConst {
+  // scoring selection
+  constexpr int scoringExtLow = 1;
+  constexpr int scoringExtMid = 2;
+  constexpr int scoringIntLeftMid = 3;
+  constexpr int scoringIntLeftHigh = 4;
+  constexpr int scoringIntRightMid = 5;
+  constexpr int scoringIntRightHigh = 6;
+}
