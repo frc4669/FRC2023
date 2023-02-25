@@ -1,10 +1,16 @@
 {
+  "canivore names": [
+    "rio",
+    "rio"
+  ],
   "counts per rotation": 2048.0,
+  "encoder canivore name": "rio",
   "encoder type": "Built-in",
   "encoding": false,
   "gearing denominator": 1.0,
   "gearing numerator": 11.25,
   "gyro": "NavX",
+  "gyro canivore name": "rio",
   "gyro ctor": "SPI (MXP)",
   "is drivetrain": true,
   "motor controllers": [
@@ -38,5 +44,5 @@
     false,
     true
   ],
-  "velocity measurement period": 100
+  "velocity measurement period": 1
 }

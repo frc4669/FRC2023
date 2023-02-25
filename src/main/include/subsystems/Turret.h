@@ -26,6 +26,7 @@ class Turret : public frc2::SubsystemBase {
   units::degree_t GetAngle();
 
   frc2::CommandPtr ZeroCommand();
+  frc2::CommandPtr HomeCommand();
 
   frc2::CommandPtr SetAngleCommand(units::degree_t angle);
 
@@ -47,6 +48,7 @@ class Turret : public frc2::SubsystemBase {
 
   WPI_TalonSRX m_rotationMotor { TurretConstants::kTurretID };
 
-  frc::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
+  bool m_isHomed = false;
+  frc2::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
   // frc::SimpleMotorFeedforward<units::degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
 };

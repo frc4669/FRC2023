@@ -9,9 +9,16 @@
 #include <frc/controller/RamseteController.h>
 #include <frc/Timer.h>
 #include <frc/kinematics/DifferentialDriveKinematics.h>
+#include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
+#include <frc/kinematics/ChassisSpeeds.h>
 #include <frc/controller/PIDController.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/trajectory/Trajectory.h>
+#include <frc/controller/SimpleMotorFeedforward.h>
+
+#include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/PathPlannerTrajectory.h>
 
 #include "Constants.h"
 #include "subsystems/Drivetrain.h"
@@ -26,7 +33,7 @@
 class FollowTrajectoryCommandNew
     : public frc2::CommandHelper<frc2::CommandBase, FollowTrajectoryCommandNew> {
  public:
-  FollowTrajectoryCommandNew(Drivetrain* drivetrain, frc::Field2d* field, std::string path);
+  FollowTrajectoryCommandNew(Drivetrain* drivetrain, frc::Field2d* field, std::string path, bool reverse);
 
   void Initialize() override;
 
@@ -37,13 +44,20 @@ class FollowTrajectoryCommandNew
   bool IsFinished() override;
 
  private:
-  frc::RamseteController m_ramseteController;
+  Drivetrain* m_drivetrain;
+  frc::Field2d* m_field;
+
   frc::Timer m_timer;
-  frc::DifferentialDriveKinematics m_kinematics { DriveConstants::kTrackWidth };
+  units::second_t m_prevTime;
+
+  frc::Trajectory m_trajectory;
+
+  frc::RamseteController m_ramseteController;
   frc::PIDController m_leftController { DriveConstants::kp, DriveConstants::ki, DriveConstants::kd };
   frc::PIDController m_rightController { DriveConstants::kp, DriveConstants::ki, DriveConstants::kd };
 
-  units::second_t m_prevTime;
+  frc::DifferentialDriveKinematics m_kinematics { DriveConstants::kTrackWidth };
+  // frc::SimpleMotorFeedforward<units::meters> m_feedforward { DriveConstants::ks, DriveConstants::kv, DriveConstants::ka };
 
-  Drivetrain* m_drivetrain;
+  bool m_finished;
 };

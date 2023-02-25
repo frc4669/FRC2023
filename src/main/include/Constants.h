@@ -13,7 +13,7 @@
 #include <units/math.h>
 
 namespace OperatorConstants {
-  constexpr double kTurningSpeedMutiplier = 1.0; // slows down turning movement as joystick is too sensentive. 
+  constexpr double kTurningSpeedMutiplier = 0.7; // slows down turning movement as joystick is too sensentive. 
 } 
 
 namespace DriveConstants {
@@ -23,11 +23,11 @@ namespace DriveConstants {
   constexpr int kRightMain = 11;         // Leading right motor
   constexpr int kRightSecondary = 12;    // Following right motor
 
-  constexpr auto ks = 0.11524_V;
-  constexpr auto kv = 2.5203_V * 1_s / 1_m;
-  constexpr auto ka = 0.35042_V * 1_s * 1_s / 1_m;
+  constexpr auto ks = 0.10013_V; // 0.10013
+  constexpr auto kv = 2.5964_V * 1_s / 1_m; // 2.5964
+  constexpr auto ka = 0.28575_V * 1_s * 1_s / 1_m; // 0.28575
 
-  constexpr double kp = 0.0000000000000; // 0.000025
+  constexpr double kp = 2.5; // 2.1589 sysid
   constexpr double ki = 0;
   constexpr double kd = 0;
 
@@ -37,7 +37,7 @@ namespace DriveConstants {
   constexpr double kWheelCircumference = 6 * 3.141592;
   constexpr double kInchesPerTick = kWheelCircumference / (2048 * kGearRatio);
 
-  constexpr auto kMaxAutoSpeed = 1_mps;
+  constexpr auto kMaxAutoSpeed = 3_mps;
   constexpr auto kMaxAutoAccel = 2_mps_sq;
 }
 
@@ -68,6 +68,9 @@ namespace TurretConstants {
   constexpr auto kTurretS = 0.58412_V;
   constexpr auto kTurretV = 0.0063192_V * 1_s / 1_m;
   constexpr auto kTurretA = 0.0011897_V * 1_s * 1_s / 1_m;
+
+  constexpr double kTurretFwdThreshold = 180 / kTurretDegreesPerTick;
+  constexpr double kTurretRevThreshold = -180 / kTurretDegreesPerTick;
 }
 
 namespace PickupControlBoardConst {

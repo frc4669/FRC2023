@@ -50,7 +50,8 @@ class RobotContainer {
   Elevator m_elevator;
   Turret m_turret;
 
-  frc2::CommandPtr m_defaultAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
+  frc2::CommandPtr m_curveAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
+  frc2::CommandPtr m_defaultAutoCommand { autos::StraightLineAutoCommand(&m_drivetrain, &m_field) };
 
   frc::SendableChooser<frc2::Command*> m_autoChooser;
 

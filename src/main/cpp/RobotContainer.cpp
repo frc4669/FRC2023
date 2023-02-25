@@ -25,10 +25,12 @@ RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m
   ConfigureAutonomous();
 
   frc::SmartDashboard::PutData("Field", &m_field);
+  frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 }
 
 void RobotContainer::ConfigureAutonomous() {
   m_autoChooser.SetDefaultOption("Default Auto", m_defaultAutoCommand.get());
+  m_autoChooser.AddOption("Curve Auto", m_curveAutoCommand.get());
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -49,7 +51,8 @@ void RobotContainer::ConfigureBindings() {
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
   frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
 
-  m_operatorController.Start().OnTrue(m_turret.ZeroCommand());
+  // m_operatorController.Start().OnTrue(m_turret.ZeroCommand());
+  m_operatorController.Start().OnTrue(m_turret.HomeCommand());
 
   m_operatorController.A().OnTrue(m_turret.SetAngleCommand(0_deg));
   m_operatorController.B().OnTrue(m_turret.SetAngleCommand(90_deg));

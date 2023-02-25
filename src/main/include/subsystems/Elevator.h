@@ -26,5 +26,5 @@ class Elevator : public frc2::SubsystemBase {
  private:
   WPI_TalonFX m_mainMotor { ManipulatorConstants::kElevatorID };
 
-  frc::PIDController m_heightController { ManipulatorConstants::kElevatorP, ManipulatorConstants::kElevatorI, ManipulatorConstants::kElevatorD };
+  frc2::PIDController m_heightController { ManipulatorConstants::kElevatorP, ManipulatorConstants::kElevatorI, ManipulatorConstants::kElevatorD };
 };
