@@ -41,15 +41,19 @@ void RobotContainer::ConfigureBindings() {
 
   m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
 
+  m_pickupBoard.Button(1).OnTrue(m_pivot.SetPosInCommand());
+  m_pickupBoard.Button(2).OnTrue(m_pivot.SetPosDownCommand());
+  m_pickupBoard.Button(3).OnTrue(m_pivot.SetPosOutCommand());
+
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
   // Please disable below line if not debugging
   m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
 
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 0; }).OnTrue(m_elevator.SetDistanceCommand(60_in));
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 0; }).OnTrue(m_elevator.SetDistanceCommandVertical(60_in));
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommandVertical(30_in));
+  frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommandVertical(10_in));
 
   // m_operatorController.Start().OnTrue(m_turret.ZeroCommand());
   m_operatorController.Start().OnTrue(m_turret.HomeCommand());
