@@ -76,9 +76,9 @@ namespace PivotConstants {
   constexpr int kPivotID = 53; 
 
   constexpr double kPivotGearRatio = 30; 
-  constexpr double kPivotDegreesPerTick = 360 / (4096); 
+  constexpr double kPivotDegreesPerTick = 360.0 / 4096.0; 
 
-  constexpr double kPivotP = 0.001;
+  constexpr double kPivotP = 1;
   constexpr double kPivotI = 0;
   constexpr double kPivotD = 0;
 
