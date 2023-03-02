@@ -13,45 +13,81 @@
 #include <units/math.h>
 
 namespace OperatorConstants {
-  constexpr double kTurningSpeedMutiplier = 0.7; // slows down turning movement as joystick is too sensentive. 
+  // Controller IDs
+  constexpr int kDriverController = 0;
+  constexpr int kOperatorController = 1;
+  constexpr int kButtonBoardA = 2;
+  constexpr int kButtonBoardB = 3;
+
+  // Button board button IDs
+  // Turret and pickup control on board A, score control on board B
+  namespace ButtonBoard {
+    constexpr int kTurretS = 1;
+    constexpr int kTurretW = 2;
+    constexpr int kTurretN = 3;
+    constexpr int kTurretE = 4;
+
+    constexpr int kPickupShelf = 5;
+    constexpr int kPickupGround = 6;
+    constexpr int kPickupCone = 7;
+    constexpr int kPickupCube = 8;
+    constexpr int kStow = 9;
+
+    constexpr int kScoreLowCenter = 1;
+    constexpr int kScoreMidCenter = 2;
+    constexpr int kScoreMidLeft = 3;
+    constexpr int kScoreMidRight = 4;
+    constexpr int kScoreHighLeft = 5;
+    constexpr int kScoreHighRight = 6;
+  }
+
+  // Joystick sensitivity
+  constexpr double kTurningSpeedMutiplier = 0.7;
 } 
 
 namespace DriveConstants {
-  constexpr int kLeftMain = 21;          // Leading left motor
-  constexpr int kLeftSecondary = 22;     // Following left motor
+  // Drive motor CAN IDs
+  constexpr int kLeftMain = 21;
+  constexpr int kLeftSecondary = 22;
+  constexpr int kRightMain = 11;
+  constexpr int kRightSecondary = 12;
 
-  constexpr int kRightMain = 11;         // Leading right motor
-  constexpr int kRightSecondary = 12;    // Following right motor
+  // Feedforward gains
+  constexpr auto ks = 0.10013_V;
+  constexpr auto kv = 2.5964_V * 1_s / 1_m;
+  constexpr auto ka = 0.28575_V * 1_s * 1_s / 1_m;
 
-  constexpr auto ks = 0.10013_V; // 0.10013
-  constexpr auto kv = 2.5964_V * 1_s / 1_m; // 2.5964
-  constexpr auto ka = 0.28575_V * 1_s * 1_s / 1_m; // 0.28575
-
-  constexpr double kp = 2.5; // 2.1589 sysid
+  // PID controller gains
+  constexpr double kp = 2.1589;
   constexpr double ki = 0;
   constexpr double kd = 0;
 
+  // Physical parameters
   constexpr auto kTrackWidth = 20.75_in;
-
   constexpr double kGearRatio = 11.25;
   constexpr double kWheelCircumference = 6 * 3.141592;
   constexpr double kInchesPerTick = kWheelCircumference / (2048 * kGearRatio);
 
+  // Autonomous parameters
   constexpr auto kMaxAutoSpeed = 3_mps;
   constexpr auto kMaxAutoAccel = 2_mps_sq;
 }
 
 namespace VerticalElevatorConstants {
+  // Elevator motor CAN ID
   constexpr int kElevatorID = 51;
 
+  // Elevator physical parameters
   constexpr double kElevatorGearRatio = 50;
   constexpr double kElevatorTeeth = 15;
   constexpr double kElevatorInchesPerTick = (kElevatorTeeth * 0.25) / (kElevatorGearRatio * 2048);
 
+  // Elevator PID controller gains
   constexpr double kElevatorP = 0.001;
   constexpr double kElevatorI = 0;
   constexpr double kElevatorD = 0;
 
+  // ???
   constexpr auto kShelfHeight = 10_in;
   constexpr auto kGroundHeight = 1_in;
 
@@ -87,44 +123,24 @@ namespace PivotConstants {
 }
 
 namespace TurretConstants {
+  // Turret motor CAN ID
   constexpr int kTurretID = 50;
 
+  // Turret physical parameters
   constexpr double kTurretGearRatio = 3.2727275; 
   constexpr double kTurretDegreesPerTick = 360 / (4096 * kTurretGearRatio);
 
-  constexpr double kTurretP = 1.3e-3;
+  // Turret PID controller gains
+  constexpr double kTurretP = 0.0008;
   constexpr double kTurretI = 0;
-  constexpr double kTurretD = 3.6052e-5;
+  constexpr double kTurretD = 0.000025;
 
-  constexpr auto kTurretS = 0.58412_V;
-  constexpr auto kTurretV = 0.0063192_V * 1_s / 1_m;
-  constexpr auto kTurretA = 0.0011897_V * 1_s * 1_s / 1_m;
+  // Turret feedforward gains
+  constexpr auto kTurretS = 0_V; // 0.58412_V;
+  constexpr auto kTurretV = 0.0063192_V * 1_s / 1_deg;
+  constexpr auto kTurretA = 0_V * 1_s * 1_s / 1_deg; // 0.0011897_V * 1_s * 1_s / 1_m;
 
+  // Turret rotation limits
   constexpr double kTurretFwdThreshold = 180 / kTurretDegreesPerTick;
   constexpr double kTurretRevThreshold = -180 / kTurretDegreesPerTick;
-}
-
-namespace PickupControlBoardConst {
-  // turret control
-  constexpr int turretNorth = 1;
-  constexpr int turretSouth = 2;
-  constexpr int turretEast = 3; 
-  constexpr int turretWest = 4;
-
-  // pickup
-  constexpr int pickupGroundLevel = 5;
-  constexpr int pickupShelfLevel = 6;
-  constexpr int pickupStowBetween = 7;
-  constexpr int pickupSelectCone = 8;
-  constexpr int pickupSelectCube = 9;
-}
-
-namespace ScoringControlBoardConst {
-  // scoring selection
-  constexpr int scoringExtLow = 1;
-  constexpr int scoringExtMid = 2;
-  constexpr int scoringIntLeftMid = 3;
-  constexpr int scoringIntLeftHigh = 4;
-  constexpr int scoringIntRightMid = 5;
-  constexpr int scoringIntRightHigh = 6;
 }
