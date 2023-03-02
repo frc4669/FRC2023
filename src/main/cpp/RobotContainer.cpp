@@ -11,21 +11,12 @@
 
 RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain), m_turret(&m_vision) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
-  
-  m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
-    [this] { return -m_driverController.GetLeftY(); },
-    [this] { return -m_driverController.GetRightX() * OperatorConstants::kTurningSpeedMutiplier; }
-  ));
-
-  m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
-    [this] { return -m_operatorController.GetRightX() * 1; }
-  )); 
 
   ConfigureBindings();
   ConfigureAutonomous();
 
   frc::SmartDashboard::PutData("Field", &m_field);
-  frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
+  frc::SmartDashboard::PutData("Scheduled Autonomous Routine", &m_autoChooser);
 }
 
 void RobotContainer::ConfigureAutonomous() {
@@ -34,28 +25,30 @@ void RobotContainer::ConfigureAutonomous() {
 }
 
 void RobotContainer::ConfigureBindings() {
-  // Configure your trigger bindings here
-
-  m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
-  m_operatorController.X().OnTrue(m_claw.SelectPressure());
-
-  m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
+  m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
+    [this] { return -m_driverController.GetLeftY(); },
+    [this] { return -m_driverController.GetRightX() * OperatorConstants::kTurningSpeedMutiplier; }
+  ));
 
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
-  // Please disable below line if not debugging
-  m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
+  m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
+  m_operatorController.X().OnTrue(m_claw.SelectPressure());
 
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 0; }).OnTrue(m_elevator.SetDistanceCommand(60_in));
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 90; }).OnTrue(m_elevator.SetDistanceCommand(30_in));
-  frc2::Trigger([this] { return m_operatorController.GetPOV() == 180; }).OnTrue(m_elevator.SetDistanceCommand(10_in));
-
-  // m_operatorController.Start().OnTrue(m_turret.ZeroCommand());
   m_operatorController.Start().OnTrue(m_turret.HomeCommand());
+  m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
 
-  m_operatorController.A().OnTrue(m_turret.SetAngleCommand(0_deg));
-  m_operatorController.B().OnTrue(m_turret.SetAngleCommand(90_deg));
+  m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
+    [this] { return m_operatorController.GetRightX(); }
+  ));
+
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretW).OnTrue(m_turret.SetAngleCommand(-90_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretS).OnTrue(m_turret.SetAngleCommand(180_deg));
+
+  // m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

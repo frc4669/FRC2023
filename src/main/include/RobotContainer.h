@@ -33,16 +33,12 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
 
  private:
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  frc2::CommandXboxController m_driverController{ 0 };
-  frc2::CommandXboxController m_operatorController{ 1 };
-
-  frc2::CommandGenericHID m_pickupBoard{ 2 }; 
-  frc2::CommandGenericHID m_scoringBoard{ 3 }; 
+  frc2::CommandXboxController m_driverController { OperatorConstants::kDriverController };
+  frc2::CommandXboxController m_operatorController { OperatorConstants::kOperatorController };
+  frc2::CommandGenericHID m_buttonBoardA { OperatorConstants::kButtonBoardA }; 
+  frc2::CommandGenericHID m_buttonBoardB { OperatorConstants::kButtonBoardB }; 
 
   frc::Field2d m_field;
-
-  // The robot's subsystems are defined here...
 
   Drivetrain m_drivetrain;
   Vision m_vision;

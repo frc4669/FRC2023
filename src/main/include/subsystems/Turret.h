@@ -24,6 +24,7 @@ class Turret : public frc2::SubsystemBase {
   void Periodic() override;
 
   units::degree_t GetAngle();
+  units::degrees_per_second_t GetVelocity();
 
   frc2::CommandPtr ZeroCommand();
   frc2::CommandPtr HomeCommand();
@@ -50,5 +51,5 @@ class Turret : public frc2::SubsystemBase {
 
   bool m_isHomed = false;
   frc2::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
-  // frc::SimpleMotorFeedforward<units::degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
+  frc::SimpleMotorFeedforward<units::degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
 };
