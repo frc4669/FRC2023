@@ -14,9 +14,11 @@ class Elevator : public frc2::SubsystemBase {
  public:
   Elevator();
 
-  units::inch_t GetDistance();
+  units::inch_t GetDistanceVertical();
+  units::inch_t GetDistanceHorizontal(); 
 
-  frc2::CommandPtr SetDistanceCommand( units::inch_t distance );
+  frc2::CommandPtr SetDistanceCommandVertical( units::inch_t distance );
+  frc2::CommandPtr SetDistanceCommandHorizontal( units::inch_t distance );
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -24,7 +26,10 @@ class Elevator : public frc2::SubsystemBase {
   void Periodic() override;
 
  private:
-  WPI_TalonFX m_mainMotor { ManipulatorConstants::kElevatorID };
+  WPI_TalonFX m_verticalMotor { VerticalElevatorConstants::kElevatorID };
+  WPI_TalonFX m_horizontalMotor { HorizontalElevatorConstants::kElevatorID};
 
-  frc2::PIDController m_heightController { ManipulatorConstants::kElevatorP, ManipulatorConstants::kElevatorI, ManipulatorConstants::kElevatorD };
+  frc2::PIDController m_verticalController { VerticalElevatorConstants::kElevatorP, VerticalElevatorConstants::kElevatorI, VerticalElevatorConstants::kElevatorD };
+  frc2::PIDController m_horizontalController { HorizontalElevatorConstants::kElevatorP, HorizontalElevatorConstants::kElevatorI, HorizontalElevatorConstants::kElevatorD}; 
+
 };

@@ -16,7 +16,7 @@
 #include "subsystems/Claw.h"
 #include "subsystems/Elevator.h"
 #include "subsystems/Turret.h"
-
+#include "subsystems/Pivot.h"
 #include "commands/Autos.h"
 
 /**
@@ -45,6 +45,7 @@ class RobotContainer {
   Claw m_claw;
   Elevator m_elevator;
   Turret m_turret;
+  Pivot m_pivot;
 
   frc2::CommandPtr m_curveAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
   frc2::CommandPtr m_defaultAutoCommand { autos::StraightLineAutoCommand(&m_drivetrain, &m_field) };

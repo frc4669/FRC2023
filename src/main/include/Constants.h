@@ -73,9 +73,9 @@ namespace DriveConstants {
   constexpr auto kMaxAutoAccel = 2_mps_sq;
 }
 
-namespace ManipulatorConstants {
+namespace VerticalElevatorConstants {
   // Elevator motor CAN ID
-  constexpr int kElevatorID = 111;
+  constexpr int kElevatorID = 51;
 
   // Elevator physical parameters
   constexpr double kElevatorGearRatio = 50;
@@ -88,7 +88,38 @@ namespace ManipulatorConstants {
   constexpr double kElevatorD = 0;
 
   // ???
+  constexpr auto kShelfHeight = 10_in;
+  constexpr auto kGroundHeight = 1_in;
+
   constexpr auto kElevatorSetpointThreshold = 3_in;
+}
+
+namespace HorizontalElevatorConstants {
+  constexpr int kElevatorID = 52;
+
+  constexpr double kElevatorGearRatio = 50; // place holder 
+  constexpr double kElevatorTeeth = 15; // place holder
+  constexpr double kElevatorInchesPerTick = (kElevatorTeeth * 0.25) / (kElevatorGearRatio * 2048);
+
+  constexpr double kElevatorP = 1;
+  constexpr double kElevatorI = 0;
+  constexpr double kElevatorD = 0;
+
+  constexpr auto kElevatorSetpointThreshold = 3_in;
+}
+
+namespace PivotConstants {
+  constexpr int kPivotID = 53; 
+
+  constexpr double kPivotGearRatio = 30; 
+  constexpr double kPivotDegreesPerTick = 360 / (4096); 
+
+  constexpr double kPivotP = 0.001;
+  constexpr double kPivotI = 0;
+  constexpr double kPivotD = 0;
+
+  // 0 when limit active 
+  constexpr double kMaxAngle = 180; 
 }
 
 namespace TurretConstants {
