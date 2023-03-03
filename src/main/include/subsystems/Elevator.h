@@ -14,11 +14,16 @@ class Elevator : public frc2::SubsystemBase {
  public:
   Elevator();
 
-  units::inch_t GetDistanceVertical();
-  units::inch_t GetDistanceHorizontal(); 
+  units::inch_t GetDistance(WPI_TalonFX* motor, double kElevatorInchesPerTick);
+  void SetDistance(WPI_TalonFX* motor, units::inch_t distance, double kElevatorInchesPerTick); 
+
+  //units::inch_t GetDistanceVertical();
+  //units::inch_t GetDistanceHorizontal(); 
 
   frc2::CommandPtr SetDistanceCommandVertical( units::inch_t distance );
   frc2::CommandPtr SetDistanceCommandHorizontal( units::inch_t distance );
+
+  void ConfigMotor(WPI_TalonFX* motor); 
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.

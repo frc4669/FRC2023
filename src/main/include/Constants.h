@@ -78,8 +78,8 @@ namespace VerticalElevatorConstants {
   constexpr int kElevatorID = 51;
 
   // Elevator physical parameters
-  constexpr double kElevatorGearRatio = 50;
-  constexpr double kElevatorTeeth = 15;
+  constexpr double kElevatorGearRatio = 100;
+  constexpr double kElevatorTeeth = 16;
   constexpr double kElevatorInchesPerTick = (kElevatorTeeth * 0.25) / (kElevatorGearRatio * 2048);
 
   // Elevator PID controller gains
@@ -88,10 +88,10 @@ namespace VerticalElevatorConstants {
   constexpr double kElevatorD = 0;
 
   // ???
-  constexpr auto kShelfHeight = 10_in;
-  constexpr auto kGroundHeight = 1_in;
+  constexpr auto kShelfHeight = 20_in;
+  constexpr auto kGroundHeight = 5_in;
 
-  constexpr auto kElevatorSetpointThreshold = 3_in;
+  constexpr auto kElevatorSetpointThreshold = 30_in;
 }
 
 namespace HorizontalElevatorConstants {

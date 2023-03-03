@@ -36,6 +36,9 @@ void RobotContainer::ConfigureBindings() {
   m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
   m_operatorController.X().OnTrue(m_claw.SelectPressure());
 
+  m_operatorController.A().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kGroundHeight));
+  m_operatorController.B().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kShelfHeight));
+
   m_operatorController.Start().OnTrue(m_turret.HomeCommand());
   m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
 
@@ -47,6 +50,7 @@ void RobotContainer::ConfigureBindings() {
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretW).OnTrue(m_turret.SetAngleCommand(-90_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretS).OnTrue(m_turret.SetAngleCommand(180_deg));
+
 
   // m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
 }
