@@ -26,7 +26,7 @@ class Drivetrain : public frc2::SubsystemBase {
 
   void CurvatureDrive(double forward, double rotation); 
 
-  frc2::CommandPtr DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation);
+  frc2::CommandPtr DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation, std::function<double()> elevatorHeight);
 
   frc2::CommandPtr BoostCommand(double boost);
 

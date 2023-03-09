@@ -73,6 +73,14 @@ namespace DriveConstants {
   constexpr auto kMaxAutoAccel = 2_mps_sq;
 }
 
+namespace ClawConstants {
+  constexpr int kPressureOpenID = 6;
+  constexpr int kPressureCloseID = 7;
+
+  constexpr int kControlOpenID = 0;
+  constexpr int kControlCloseID = 1;
+}
+
 namespace VerticalElevatorConstants {
   // Elevator motor CAN ID
   constexpr int kElevatorID = 51;

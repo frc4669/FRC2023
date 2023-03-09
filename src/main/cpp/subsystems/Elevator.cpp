@@ -6,11 +6,16 @@
 
 Elevator::Elevator() {
   ConfigMotor(&m_verticalMotor);
-  ConfigMotor(&m_horizontalMotor);
 };
 
 // This method will be called once per scheduler run
 void Elevator::Periodic() {}
+
+frc2::CommandPtr Elevator::DefaultControlCommand(std::function<double()> magnitude) {
+  return Run([this, magnitude = std::move(magnitude)] {
+    if (std::abs(magnitude()) > 0.05) m_verticalMotor.Set(TalonFXControlMode::PercentOutput, magnitude() * 0.6);
+  });
+}
 
 void Elevator::ConfigMotor(WPI_TalonFX* motor) {
   motor->ConfigMotionCruiseVelocity(30000);
@@ -28,61 +33,45 @@ void Elevator::ConfigMotor(WPI_TalonFX* motor) {
 
   motor->SetNeutralMode(NeutralMode::Brake);
   motor->SetSafetyEnabled(false);
-  motor->SetInverted(true);
+  motor->SetInverted(false);
 
   motor->GetSensorCollection().SetIntegratedSensorPositionToAbsolute();
   motor->GetSensorCollection().SetIntegratedSensorPosition(0);
+
+  motor->OverrideLimitSwitchesEnable(true); 
+  motor->ConfigForwardSoftLimitEnable(false);
+  motor->ConfigReverseSoftLimitEnable(false);
 }; 
 
-units::inch_t Elevator::GetDistance(WPI_TalonFX* motor, double kElevatorInchesPerTick) {
-  return units::inch_t(motor->GetSensorCollection().GetIntegratedSensorPosition() * kElevatorInchesPerTick);
+frc2::CommandPtr Elevator::MoveVertical(int direction) {
+    double output = 0.25; 
+    if (direction < 0) output *= -1;
+    if (!(direction == 0)) m_verticalMotor.Set(TalonFXControlMode::PercentOutput, output);  
+};
+
+frc2::CommandPtr Elevator::ZeroVertical() {
+    return Run([this] { m_verticalMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
+    .Until([this] { return m_verticalMotor.IsRevLimitSwitchClosed(); })
+    .AndThen([this] {
+        m_verticalMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
+        m_verticalZeroed = true; 
+    });
+};
+
+units::inch_t Elevator::GetDistance() {
+  return units::inch_t(m_verticalMotor.GetSensorCollection().GetIntegratedSensorPosition() * VerticalElevatorConstants::kElevatorInchesPerTick);
 };
 
 void Elevator::SetDistance(WPI_TalonFX* motor, units::inch_t distance, double kElevatorInchesPerTick) {
-    double ticks = distance.value() / kElevatorInchesPerTick; 
+    double ticks = distance.value() / kElevatorInchesPerTick;
     motor->Set(TalonFXControlMode::MotionMagic, ticks); 
 }; 
 
 frc2::CommandPtr Elevator::SetDistanceCommandVertical(units::inch_t distance) {
     return this->RunOnce(
         [this, distance] {
-            SetDistance(&m_verticalMotor, distance, VerticalElevatorConstants::kElevatorInchesPerTick);
+            if(m_verticalZeroed) SetDistance(&m_verticalMotor, distance, VerticalElevatorConstants::kElevatorInchesPerTick);
         }
     );
 }
 
-frc2::CommandPtr Elevator::SetDistanceCommandHorizontal(units::inch_t distance) {
-    return this->RunOnce(
-        [this, distance] {
-            SetDistance(&m_horizontalMotor, distance, HorizontalElevatorConstants::kElevatorInchesPerTick);
-        }
-    );
-}
-
-// units::inch_t Elevator::GetDistanceVertical() {
-//     return units::inch_t(m_verticalMotor.GetSensorCollection().GetIntegratedSensorPosition() * VerticalElevatorConstants::kElevatorInchesPerTick);
-// }
-
-// units::inch_t Elevator::GetDistanceHorizontal() {
-//     return units::inch_t(m_horizontalMotor.GetSensorCollection().GetIntegratedSensorPosition() * HorizontalElevatorConstants::kElevatorInchesPerTick);
-// }
-
-// frc2::CommandPtr Elevator::SetDistanceCommandVertical(units::inch_t distance) {
-//     return this->Run(
-//         [this, distance] {
-//             double current = GetDistanceVertical().value();
-//             double output = m_verticalController.Calculate(current, distance.value());
-//             m_verticalMotor.Set(output);
-//         }
-//     ).Until([this, distance] { return units::math::abs(distance - GetDistanceVertical()) < VerticalElevatorConstants::kElevatorSetpointThreshold; });
-// }
-
-// frc2::CommandPtr Elevator::SetDistanceCommandHorizontal(units::inch_t distance) {
-//     return this->Run(
-//         [this, distance] {
-//             double current = GetDistanceHorizontal().value();
-//             double output = m_horizontalController.Calculate(current, distance.value());
-//             m_horizontalMotor.Set(output);
-//         }
-//     ).Until([this, distance] { return units::math::abs(distance - GetDistanceHorizontal()) < HorizontalElevatorConstants::kElevatorSetpointThreshold; });
-// }

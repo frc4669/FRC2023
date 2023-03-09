@@ -17,6 +17,7 @@
 #include "subsystems/Elevator.h"
 #include "subsystems/Turret.h"
 #include "subsystems/Pivot.h"
+#include "subsystems/HorizontalExtension.h"
 #include "commands/Autos.h"
 
 /**
@@ -44,6 +45,7 @@ class RobotContainer {
   Vision m_vision;
   Claw m_claw;
   Elevator m_elevator;
+  HorizontalExtension m_horizontalExtension;
   Turret m_turret;
   Pivot m_pivot;
 

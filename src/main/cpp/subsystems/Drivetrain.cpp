@@ -16,7 +16,7 @@ Drivetrain::Drivetrain(frc::Field2d* field) : m_field(field) {
   ConfigureMotor(m_rightMain, true);
   ConfigureMotor(m_rightSecondary, true);
   m_rightSecondary.Follow(m_rightMain); // set back right motor to follow the front right motor
-};
+}
 
 // This method will be called once per scheduler run
 void Drivetrain::Periodic() {
@@ -81,7 +81,7 @@ frc2::CommandPtr Drivetrain::BoostCommand(double boost) {
   );
 }
 
-frc2::CommandPtr Drivetrain::DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation) {
+frc2::CommandPtr Drivetrain::DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation, std::function<double()> elevatorHeight) {
   return Run([this, speed = std::move(speed), rotation = std::move(rotation)] {
     CurvatureDrive(speed() * this->m_boost, rotation());
   }).WithName("DefaultDriveCommand");
