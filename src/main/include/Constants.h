@@ -74,11 +74,18 @@ namespace DriveConstants {
 }
 
 namespace ClawConstants {
+  // Pressure selection port IDs
   constexpr int kPressureOpenID = 6;
   constexpr int kPressureCloseID = 7;
 
+  // Activation state port IDs
   constexpr int kControlOpenID = 0;
   constexpr int kControlCloseID = 1;
+
+  constexpr bool kConePressure = true;
+  constexpr bool kCubePressure = false;
+  constexpr bool kOpenPosition = true;
+  constexpr bool kClosePosition = false;
 }
 
 namespace VerticalElevatorConstants {
@@ -98,30 +105,32 @@ namespace VerticalElevatorConstants {
   // ???
   constexpr auto kShelfHeight = 20_in;
   constexpr auto kGroundHeight = 5_in;
-
-  constexpr auto kElevatorSetpointThreshold = 30_in;
 }
 
 namespace HorizontalElevatorConstants {
+  // Extension motor CAN ID
   constexpr int kElevatorID = 52;
 
+  // Extension physical parameters
   constexpr double kElevatorGearRatio = 50; // place holder 
   constexpr double kElevatorTeeth = 15; // place holder
   constexpr double kElevatorInchesPerTick = (kElevatorTeeth * 0.25) / (kElevatorGearRatio * 2048);
 
+  // Extension PID controller gains
   constexpr double kElevatorP = 1;
   constexpr double kElevatorI = 0;
   constexpr double kElevatorD = 0;
-
-  constexpr auto kElevatorSetpointThreshold = 3_in;
 }
 
 namespace PivotConstants {
+  // Wrist pivot motor CAN ID
   constexpr int kPivotID = 53; 
 
+  // Wrist pivot physical parameters
   constexpr double kPivotGearRatio = 30; 
   constexpr double kPivotDegreesPerTick = 360.0 / 4096.0; 
 
+  // Wrist pivot PID controller gains
   constexpr double kPivotP = 1;
   constexpr double kPivotI = 0;
   constexpr double kPivotD = 0;
@@ -151,4 +160,28 @@ namespace TurretConstants {
   // Turret rotation limits
   constexpr double kTurretFwdThreshold = 180 / kTurretDegreesPerTick;
   constexpr double kTurretRevThreshold = -180 / kTurretDegreesPerTick;
+}
+
+namespace PositioningConstants {
+  constexpr auto kSafePivotHeight = 0_in; // TODO
+
+  constexpr auto kShelfElevatorHeight = 0_in; // TODO
+  constexpr auto kShelfExtensionLength = 0_in; // TODO
+  constexpr auto kShelfPivotAngle = 0_deg; // TODO
+
+  constexpr auto kGroundElevatorHeight = 0_in; // TODO
+  constexpr auto kGroundExtensionLength = 0_in; // TODO
+  constexpr auto kGroundPivotAngle = 0_deg; // TODO
+
+  constexpr auto kStowElevatorHeight = 0_in; // TODO
+  constexpr auto kStowExtensionLength = 0_in; // TODO
+  constexpr auto kStowPivotAngle = 0_deg; // TODO
+
+  constexpr auto kLowElevatorHeight = 0_in; // TODO
+  constexpr auto kLowExtensionLength = 0_in; // TODO
+  constexpr auto kLowPivotAngle = 0_deg; // TODO
+
+  constexpr auto kMidElevatorHeight = 0_in; // TODO
+  constexpr auto kMidSideExtensionLength = 0_in; // TODO
+  constexpr auto kMidSideTurretAngle = 0_deg; // TODO
 }

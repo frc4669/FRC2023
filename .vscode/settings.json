@@ -91,5 +91,6 @@
     "typeindex": "cpp",
     "typeinfo": "cpp",
     "variant": "cpp"
-  }
+  },
+  "editor.tabSize": 2
 }

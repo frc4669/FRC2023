@@ -19,7 +19,9 @@ class Pivot : public frc2::SubsystemBase {
   frc2::CommandPtr SetPosDownCommand(); // 90
   frc2::CommandPtr SetPosOutCommand(); // 180
 
-  void SetAngle(units::degree_t angle); 
+  void SetAngle(units::degree_t angle);
+
+  frc2::CommandPtr SetAngleCommand(units::degree_t angle);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -32,5 +34,4 @@ class Pivot : public frc2::SubsystemBase {
   WPI_TalonSRX m_controlMotor = { PivotConstants::kPivotID }; 
 
   frc2::PIDController m_controller = { PivotConstants::kPivotP, PivotConstants::kPivotI, PivotConstants::kPivotD };
-  
 };

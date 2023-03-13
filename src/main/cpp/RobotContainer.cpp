@@ -34,18 +34,13 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
-  m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
-  m_operatorController.X().OnTrue(m_claw.SelectPressure());
+  m_operatorController.Y().OnTrue(m_claw.ToggleActivationStateCommand());
+  m_operatorController.X().OnTrue(m_claw.TogglePressureCommand());
 
   m_operatorController.A().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kGroundHeight));
   m_operatorController.B().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kShelfHeight));
 
   m_operatorController.Start().OnTrue(m_turret.HomeCommand());
-  m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
-
-  // m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
-  //   [this] { return m_operatorController.GetRightX(); }
-  // ));
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
@@ -59,11 +54,6 @@ void RobotContainer::ConfigureBindings() {
   m_horizontalExtension.SetDefaultCommand(m_horizontalExtension.DefaultControlCommand(
     [this] { return m_operatorController.GetRightX(); }
   ));
-
-  // m_buttonBoardB.Button(1).WhileTrue(m_elevator.MoveVertical(-1));
-  // m_buttonBoardB.Button(2).WhileTrue(m_elevator.MoveVertical(1));
-
-  // m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

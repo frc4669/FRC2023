@@ -61,3 +61,9 @@ frc2::CommandPtr Pivot::SetPosInCommand() {
     }
   );
 }
+
+frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
+  return RunOnce(
+    [this, angle] { SetAngle(angle); }
+  );
+}

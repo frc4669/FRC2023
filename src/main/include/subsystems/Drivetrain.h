@@ -3,18 +3,20 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-#include <ctre/Phoenix.h>
-#include <AHRS.h>
-#include <frc2/command/SubsystemBase.h>
 
-#include "Constants.h"
+#include <AHRS.h>
+#include <ctre/Phoenix.h>
+
+#include <frc2/command/SubsystemBase.h>
+#include <frc2/command/CommandPtr.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/kinematics/DifferentialDriveOdometry.h>
 #include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
-#include <frc2/command/CommandPtr.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+
+#include "Constants.h"
 
 class Drivetrain : public frc2::SubsystemBase {
  public:
@@ -43,32 +45,24 @@ class Drivetrain : public frc2::SubsystemBase {
 
   void TankDriveVolts(units::volt_t left, units::volt_t right);
 
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
   void Periodic() override;
 
  private:
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
-  WPI_TalonFX m_leftMain{ DriveConstants::kLeftMain };
-  WPI_TalonFX m_leftSecondary{ DriveConstants::kLeftSecondary };
-  WPI_TalonFX m_rightMain{ DriveConstants::kRightMain };
-  WPI_TalonFX m_rightSecondary{ DriveConstants::kRightSecondary };
+  WPI_TalonFX m_leftMain { DriveConstants::kLeftMain };
+  WPI_TalonFX m_leftSecondary { DriveConstants::kLeftSecondary };
+  WPI_TalonFX m_rightMain { DriveConstants::kRightMain };
+  WPI_TalonFX m_rightSecondary { DriveConstants::kRightSecondary };
 
-  frc::MotorControllerGroup m_leftMotors{ m_leftMain, m_leftSecondary };
-  frc::MotorControllerGroup m_rightMotors{ m_rightMain, m_rightSecondary };
+  frc::MotorControllerGroup m_leftMotors { m_leftMain, m_leftSecondary };
+  frc::MotorControllerGroup m_rightMotors { m_rightMain, m_rightSecondary };
 
-  frc::DifferentialDrive m_drive{ m_leftMotors, m_rightMotors };
+  frc::DifferentialDrive m_drive { m_leftMotors, m_rightMotors };
 
   double m_boost = 0.3;
 
+  AHRS m_IMU { frc::SPI::Port::kMXP };
   units::degree_t m_yawOffset = 0_deg;
 
-  AHRS m_IMU{ frc::SPI::Port::kMXP };
-
-  frc::Field2d* m_field;
-
   frc::DifferentialDriveOdometry m_odometry { frc::Rotation2d(), 0_m, 0_m, frc::Pose2d() };
-  int m_odometryReset { 0 };
+  frc::Field2d* m_field;
 };

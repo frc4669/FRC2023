@@ -118,7 +118,6 @@ void Drivetrain::ResetOdometry(frc::Pose2d pose, frc::Rotation2d rotation) {
   ResetEncoders();
   m_IMU.ZeroYaw();
   m_yawOffset = rotation.Degrees();
-  m_odometryReset++;
   m_odometry.ResetPosition(rotation, 0_m, 0_m, pose);
 }
 
