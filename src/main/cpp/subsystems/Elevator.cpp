@@ -49,3 +49,9 @@ frc2::CommandPtr Elevator::SetHeightCommand(units::inch_t height) {
     if (m_isHomed) SetHeight(height);
   });
 }
+
+frc2::CommandPtr Elevator::SetToSafePivotHeightCommand() {
+  return RunOnce([this] {
+    if (GetHeight() < PositioningConstants::kSafePivotHeight && m_isHomed) SetHeight(PositioningConstants::kSafePivotHeight); 
+  });
+}

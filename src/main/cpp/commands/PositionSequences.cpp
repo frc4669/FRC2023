@@ -25,7 +25,7 @@ frc2::CommandPtr positioning::ShelfPickupCommand(Elevator* elevator, Extension* 
 
 frc2::CommandPtr positioning::GroundPickupCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
   return frc2::cmd::Sequence(
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kShelfPivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kGroundElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kGroundExtensionLength),
@@ -35,10 +35,10 @@ frc2::CommandPtr positioning::GroundPickupCommand(Elevator* elevator, Extension*
 
 frc2::CommandPtr positioning::StowCommand(Elevator* elevator, Extension* extension, Pivot* pivot) {
   return frc2::cmd::Sequence(
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kStowPivotAngle),
-    elevator->SetHeightCommand(PositioningConstants::kStowElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kStowExtensionLength)
+    extension->SetExtensionCommand(PositioningConstants::kStowExtensionLength),
+    elevator->SetHeightCommand(PositioningConstants::kStowElevatorHeight)
   );
 }
 
@@ -46,7 +46,7 @@ frc2::CommandPtr positioning::ScoreLowCenterCommand(Elevator* elevator, Extensio
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(PositioningConstants::kLowTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kLowPivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kLowElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kLowExtensionLength)
@@ -57,7 +57,7 @@ frc2::CommandPtr positioning::ScoreMidCenterCommand(Elevator* elevator, Extensio
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(PositioningConstants::kMidCenterTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kMidCenterPivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kMidCenterExtensionLength)
@@ -68,7 +68,7 @@ frc2::CommandPtr positioning::ScoreMidLeftCommand(Elevator* elevator, Extension*
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kMidSideTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength)
@@ -79,7 +79,7 @@ frc2::CommandPtr positioning::ScoreMidRightCommand(Elevator* elevator, Extension
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(PositioningConstants::kMidSideTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength)
@@ -90,7 +90,7 @@ frc2::CommandPtr positioning::ScoreHighLeftCommand(Elevator* elevator, Extension
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kHighSideTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kHighElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength)
@@ -101,7 +101,7 @@ frc2::CommandPtr positioning::ScoreHighRightCommand(Elevator* elevator, Extensio
   return frc2::cmd::Sequence(
     StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kHighSideTurretAngle),
-    elevator->SetHeightCommand(PositioningConstants::kSafePivotHeight),
+    elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kHighElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength)

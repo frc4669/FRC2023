@@ -22,6 +22,7 @@ class Elevator : public frc2::SubsystemBase {
 
   frc2::CommandPtr HomeCommand();
   frc2::CommandPtr SetHeightCommand(units::inch_t height);
+  frc2::CommandPtr SetToSafePivotHeightCommand();
 
  private:
   WPI_TalonFX m_mainMotor { CAN::kElevatorMain };
