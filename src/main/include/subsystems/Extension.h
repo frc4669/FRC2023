@@ -6,25 +6,25 @@
 
 #include <ctre/Phoenix.h>
 
-#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/controller/PIDController.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
 
 #include "Constants.h"
 
-class Pivot : public frc2::SubsystemBase {
+class Extension : public frc2::SubsystemBase {
  public:
-  Pivot();
+  Extension();
   void Periodic() override;
 
-  units::degree_t GetAngle();
-  void SetAngle(units::degree_t angle);
+  units::inch_t GetExtension();
+  void SetExtension(units::inch_t extension); 
 
   frc2::CommandPtr HomeCommand();
-  frc2::CommandPtr SetAngleCommand(units::degree_t angle);
+  frc2::CommandPtr SetExtensionCommand(units::inch_t extension);
 
  private:
-  WPI_TalonFX m_mainMotor { CAN::kPivotMain };
+  WPI_TalonFX m_mainMotor { CAN::kExtensionMain };
 
-  bool m_isHomed;
+  bool m_isHomed = false; 
 };

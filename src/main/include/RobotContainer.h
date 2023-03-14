@@ -17,8 +17,9 @@
 #include "subsystems/Elevator.h"
 #include "subsystems/Turret.h"
 #include "subsystems/Pivot.h"
-#include "subsystems/HorizontalExtension.h"
+#include "subsystems/Extension.h"
 #include "commands/Autos.h"
+#include "commands/PositionSequences.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -45,7 +46,7 @@ class RobotContainer {
   Vision m_vision;
   Claw m_claw;
   Elevator m_elevator;
-  HorizontalExtension m_horizontalExtension;
+  Extension m_extension;
   Turret m_turret;
   Pivot m_pivot;
 

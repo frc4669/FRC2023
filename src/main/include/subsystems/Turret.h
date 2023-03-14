@@ -4,52 +4,35 @@
 
 #pragma once
 
-#include <frc2/command/SubsystemBase.h>
-#include <frc2/command/CommandPtr.h>
-#include <frc/smartdashboard/SmartDashboard.h>
+#include <ctre/Phoenix.h>
+
 #include <frc/controller/PIDController.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
-#include <ctre/Phoenix.h>
-#include "Vision.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc2/command/CommandPtr.h>
+#include <frc2/command/SubsystemBase.h>
 
 #include "Constants.h"
 
 class Turret : public frc2::SubsystemBase {
  public:
-  Turret(Vision* vision);
-
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
+  Turret();
   void Periodic() override;
 
   units::degree_t GetAngle();
   units::degrees_per_second_t GetVelocity();
-
-  frc2::CommandPtr ZeroCommand();
-  frc2::CommandPtr HomeCommand();
-
-  frc2::CommandPtr SetAngleCommand(units::degree_t angle);
-
-  frc2::CommandPtr DefaultControlCommand(std::function<double()> magnitude);
-
-  frc2::CommandPtr AlignToTarget(); 
-
   void SetSpeed(double output);
+
+  frc2::CommandPtr HomeCommand();
+  frc2::CommandPtr SetAngleCommand(units::degree_t angle);
 
   void Zero();
 
-  bool IsAtLimit();
-
  private:
-  Vision* m_vision; 
+  WPI_TalonSRX m_mainMotor { CAN::kTurretMain };
 
-  // Components (e.g. motor controllers and sensors) should generally be
-  // declared private and exposed only through public methods.
-
-  WPI_TalonSRX m_rotationMotor { TurretConstants::kTurretID };
+  frc2::PIDController m_controller { TurretConstants::kp, TurretConstants::ki, TurretConstants::kd };
+  frc::SimpleMotorFeedforward<units::degrees> m_feedforward { TurretConstants::ks, TurretConstants::kv, TurretConstants::ka };
 
   bool m_isHomed = false;
-  frc2::PIDController m_rotationController { TurretConstants::kTurretP, TurretConstants::kTurretI, TurretConstants::kTurretD };
-  frc::SimpleMotorFeedforward<units::degrees> m_rotationFF { TurretConstants::kTurretS, TurretConstants::kTurretV, TurretConstants::kTurretA };
 };

@@ -4,39 +4,27 @@
 
 #pragma once
 
-#include <frc2/command/SubsystemBase.h>
 #include <ctre/Phoenix.h>
-#include "Constants.h"
-#include <frc2/command/CommandPtr.h>
+
 #include <frc/controller/PIDController.h>
+#include <frc2/command/SubsystemBase.h>
+#include <frc2/command/CommandPtr.h>
+
+#include "Constants.h"
 
 class Elevator : public frc2::SubsystemBase {
  public:
   Elevator();
-
-  units::inch_t GetDistance();
-  void SetDistance(WPI_TalonFX* motor, units::inch_t distance, double kElevatorInchesPerTick); 
-  bool Home(WPI_TalonFX* motor); 
-
-  //units::inch_t GetDistanceVertical();
-
-  frc2::CommandPtr SetDistanceCommandVertical( units::inch_t distance );
-
-  frc2::CommandPtr ZeroVertical(); 
- 
-  frc2::CommandPtr MoveVertical(int direction);
-
-  void ConfigMotor(WPI_TalonFX* motor);
-
-  frc2::CommandPtr DefaultControlCommand(std::function<double()> magnitude);
-
-  /**
-   * Will be called periodically whenever the CommandScheduler runs.
-   */
   void Periodic() override;
 
- private:
-  WPI_TalonFX m_verticalMotor { VerticalElevatorConstants::kElevatorID };
+  units::inch_t GetHeight();
+  void SetHeight(units::inch_t height);
 
-  bool m_verticalZeroed = false; 
+  frc2::CommandPtr HomeCommand();
+  frc2::CommandPtr SetHeightCommand(units::inch_t height);
+
+ private:
+  WPI_TalonFX m_mainMotor { CAN::kElevatorMain };
+
+  bool m_isHomed = false; 
 };

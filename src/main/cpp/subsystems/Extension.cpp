@@ -2,15 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "subsystems/Elevator.h"
+#include "subsystems/Extension.h"
 
-Elevator::Elevator() {
-  m_mainMotor.ConfigMotionAcceleration(8000);
+Extension::Extension() {
   m_mainMotor.ConfigMotionCruiseVelocity(30000);
+  m_mainMotor.ConfigMotionAcceleration(8000);
 
-  m_mainMotor.Config_kP(0, ElevatorConstants::kp);
-  m_mainMotor.Config_kI(0, ElevatorConstants::ki);
-  m_mainMotor.Config_kD(0, ElevatorConstants::kd);
+  m_mainMotor.Config_kP(0, ExtensionConstants::kp);
+  m_mainMotor.Config_kI(0, ExtensionConstants::ki);
+  m_mainMotor.Config_kD(0, ExtensionConstants::kd);
 
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
@@ -19,23 +19,23 @@ Elevator::Elevator() {
 
   m_mainMotor.SetNeutralMode(NeutralMode::Brake);
   m_mainMotor.SetSafetyEnabled(false);
-  m_mainMotor.SetInverted(false);
+  m_mainMotor.SetInverted(true);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true);
+};
+
+void Extension::Periodic() {}
+
+units::inch_t Extension::GetExtension() {
+  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ExtensionConstants::kInchesPerTick);
 }
 
-void Elevator::Periodic() {}
-
-units::inch_t Elevator::GetHeight() {
-  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ElevatorConstants::kInchesPerTick);
-}
-
-void Elevator::SetHeight(units::inch_t height) {
-  double ticks = height.value() / ElevatorConstants::kInchesPerTick;
+void Extension::SetExtension(units::inch_t extension) {
+  double ticks = extension.value() / ExtensionConstants::kInchesPerTick;
   m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
 }
 
-frc2::CommandPtr Elevator::HomeCommand() {
+frc2::CommandPtr Extension::HomeCommand() {
   return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
     .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] {
@@ -44,8 +44,8 @@ frc2::CommandPtr Elevator::HomeCommand() {
     });
 }
 
-frc2::CommandPtr Elevator::SetHeightCommand(units::inch_t height) {
-  return RunOnce([this, height] {
-    if (m_isHomed) SetHeight(height);
+frc2::CommandPtr Extension::SetExtensionCommand(units::inch_t extension) {
+  return RunOnce([this, extension] {
+    if (m_isHomed) SetExtension(extension);
   });
 }
