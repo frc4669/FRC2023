@@ -9,7 +9,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 
-RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain), m_turret(&m_vision) {
+RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
 
   ConfigureBindings();
@@ -28,42 +28,34 @@ void RobotContainer::ConfigureBindings() {
   m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
     [this] { return -m_driverController.GetLeftY(); },
     [this] { return -m_driverController.GetRightX() * OperatorConstants::kTurningSpeedMutiplier; },
-    [this] { return m_elevator.GetDistance().value(); }
+    [this] { return m_elevator.GetHeight().value(); }
   ));
 
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
-  m_operatorController.Y().OnTrue(m_claw.ChangeActivationState());
-  m_operatorController.X().OnTrue(m_claw.SelectPressure());
-
-  m_operatorController.A().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kGroundHeight));
-  m_operatorController.B().OnTrue(m_elevator.SetDistanceCommandVertical(VerticalElevatorConstants::kShelfHeight));
+  m_operatorController.Y().OnTrue(m_claw.ToggleActivationStateCommand());
+  m_operatorController.X().OnTrue(m_claw.TogglePressureCommand());
 
   m_operatorController.Start().OnTrue(m_turret.HomeCommand());
-  m_operatorController.LeftBumper().OnTrue(m_turret.AlignToTarget());
-
-  // m_turret.SetDefaultCommand(m_turret.DefaultControlCommand(
-  //   [this] { return m_operatorController.GetRightX(); }
-  // ));
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretW).OnTrue(m_turret.SetAngleCommand(-90_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretS).OnTrue(m_turret.SetAngleCommand(180_deg));
 
-  m_elevator.SetDefaultCommand(m_elevator.DefaultControlCommand(
-    [this] { return m_operatorController.GetLeftY(); }
-  ));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupCone).OnTrue(positioning::ConePickupSelectCommand(&m_claw));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupCube).OnTrue(positioning::CubePickupSelectCommand(&m_claw));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupShelf).OnTrue(positioning::ShelfPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupGround).OnTrue(positioning::GroundPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kStow).OnTrue(positioning::StowCommand(&m_elevator, &m_extension, &m_pivot));
 
-  m_horizontalExtension.SetDefaultCommand(m_horizontalExtension.DefaultControlCommand(
-    [this] { return m_operatorController.GetRightX(); }
-  ));
-
-  // m_buttonBoardB.Button(1).WhileTrue(m_elevator.MoveVertical(-1));
-  // m_buttonBoardB.Button(2).WhileTrue(m_elevator.MoveVertical(1));
-
-  // m_driverController.RightBumper().OnTrue(m_drivetrain.RunOnce([this] { m_drivetrain.ResetOdometry(frc::Pose2d(), frc::Rotation2d()); }));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreLowCenter).OnTrue(positioning::ScoreLowCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidCenter).OnTrue(positioning::ScoreMidCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidLeft).OnTrue(positioning::ScoreMidLeftCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidRight).OnTrue(positioning::ScoreMidRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighLeft).OnTrue(positioning::ScoreHighLeftCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+  m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighRight).OnTrue(positioning::ScoreHighRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

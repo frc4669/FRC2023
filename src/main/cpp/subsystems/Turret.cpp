@@ -4,105 +4,74 @@
 
 #include "subsystems/Turret.h"
 
-Turret::Turret(Vision* vision) : m_vision(vision) {
-  m_rotationMotor.ConfigMotionCruiseVelocity(1500);
-  m_rotationMotor.ConfigMotionAcceleration(1500);
+Turret::Turret() {
+  m_mainMotor.ConfigMotionCruiseVelocity(1500);
+  m_mainMotor.ConfigMotionAcceleration(1500);
 
-  m_rotationMotor.SetNeutralMode(NeutralMode::Brake);
-  m_rotationMotor.SetSafetyEnabled(false);
-  m_rotationMotor.SetInverted(true);
+  m_mainMotor.SetNeutralMode(NeutralMode::Brake);
+  m_mainMotor.SetSafetyEnabled(false);
+  m_mainMotor.SetInverted(true);
 
-  m_rotationMotor.SelectProfileSlot(0, 0);
-  m_rotationMotor.Config_kP(0, 0.01);
-  m_rotationMotor.Config_kI(0, 0);
-  m_rotationMotor.Config_kD(0, 0);
-  m_rotationMotor.Config_kF(0, 0);
+  m_mainMotor.Config_kP(0, 0.01);
+  m_mainMotor.Config_kI(0, 0);
+  m_mainMotor.Config_kD(0, 0);
 
-  m_rotationMotor.ConfigNominalOutputForward(0);
-  m_rotationMotor.ConfigNominalOutputReverse(0);
-  m_rotationMotor.ConfigPeakOutputForward(1);
-  m_rotationMotor.ConfigPeakOutputReverse(-1);
+  m_mainMotor.ConfigNominalOutputForward(0);
+  m_mainMotor.ConfigNominalOutputReverse(0);
+  m_mainMotor.ConfigPeakOutputForward(1);
+  m_mainMotor.ConfigPeakOutputReverse(-1);
 
-  m_rotationMotor.OverrideLimitSwitchesEnable(false);
-  m_rotationMotor.ConfigForwardSoftLimitEnable(false);
-  m_rotationMotor.ConfigReverseSoftLimitEnable(false);
-};
+  m_mainMotor.OverrideLimitSwitchesEnable(false);
+  m_mainMotor.ConfigForwardSoftLimitEnable(false);
+  m_mainMotor.ConfigReverseSoftLimitEnable(false);
+}
 
-// This method will be called once per scheduler run
 void Turret::Periodic() {
   frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());
-  frc::SmartDashboard::PutNumber("Turret Velocity", GetVelocity().value());
-}
-
-frc2::CommandPtr Turret::ZeroCommand() {
-  return RunOnce([this] {
-    Zero();
-  });
-}
-
-frc2::CommandPtr Turret::HomeCommand() {
-  return
-    Run([this] { SetSpeed(-0.2); })
-    .Until([this] { return m_rotationMotor.IsFwdLimitSwitchClosed(); })
-    .AndThen(ZeroCommand())
-    .AndThen(SetAngleCommand(180_deg))
-    .AndThen(ZeroCommand())
-    .AndThen([this] { m_isHomed = true; });
-}
-
-void Turret::SetSpeed(double output) {
-  double position = m_rotationMotor.GetSensorCollection().GetQuadraturePosition();
-  if (m_isHomed == true
-    && ((output < 0 && position <= TurretConstants::kTurretRevThreshold)
-    || (output > 0 && position >= TurretConstants::kTurretFwdThreshold))) {
-      m_rotationMotor.Set(TalonSRXControlMode::PercentOutput, 0);
-      return;
-  }
-  m_rotationMotor.Set(TalonSRXControlMode::PercentOutput, output);
-}
-
-void Turret::Zero() {
-  m_rotationMotor.GetSensorCollection().SetQuadraturePosition(0);
 }
 
 units::degree_t Turret::GetAngle() {
-  return units::degree_t(m_rotationMotor.GetSensorCollection().GetQuadraturePosition() * TurretConstants::kTurretDegreesPerTick);
+  return units::degree_t(m_mainMotor.GetSensorCollection().GetQuadraturePosition() * TurretConstants::kDegreesPerTick);
 }
 
 units::degrees_per_second_t Turret::GetVelocity() {
-  return units::degrees_per_second_t(m_rotationMotor.GetSensorCollection().GetQuadratureVelocity() * 10 * TurretConstants::kTurretDegreesPerTick);
+  return units::degrees_per_second_t(m_mainMotor.GetSensorCollection().GetQuadratureVelocity() * 10 * TurretConstants::kDegreesPerTick);
+}
+
+void Turret::SetSpeed(double output) {
+  double position = m_mainMotor.GetSensorCollection().GetQuadraturePosition();
+  if (m_isHomed == true
+    && ((output < 0 && position <= TurretConstants::kRevThreshold)
+    || (output > 0 && position >= TurretConstants::kFwdThreshold))) {
+      m_mainMotor.Set(TalonSRXControlMode::PercentOutput, 0);
+      return;
+  }
+  m_mainMotor.Set(TalonSRXControlMode::PercentOutput, output);
+}
+
+frc2::CommandPtr Turret::HomeCommand() {
+  return Run([this] { SetSpeed(-0.2); })
+    .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed(); })
+    .AndThen([this] { Zero(); })
+    .AndThen(SetAngleCommand(180_deg))
+    .AndThen([this] { Zero(); })
+    .AndThen([this] { m_isHomed = true; });
 }
 
 frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
-  /*return Run([] {}).BeforeStarting([this, angle] {
-    m_rotationMotor.Set(TalonSRXControlMode::MotionMagic, angle.value() / TurretConstants::kTurretDegreesPerTick);
-    frc::SmartDashboard::PutNumber("Turret Setpoint", angle.value());
-  }).Until([this, angle] {
-    return units::math::abs(GetVelocity()) < (5_deg / 1_s) && units::math::abs(GetAngle() - angle) < 2_deg;
-  });*/
-
   return Run([this] {
-    double currentAngle = m_rotationMotor.GetSensorCollection().GetQuadraturePosition();
-    m_rotationMotor.Set(TalonSRXControlMode::PercentOutput, m_rotationController.Calculate(currentAngle));
+    double currentAngle = m_mainMotor.GetSensorCollection().GetQuadraturePosition();
+    m_mainMotor.Set(TalonSRXControlMode::PercentOutput, m_controller.Calculate(currentAngle));
   }).Until([this, angle] {
-    return units::math::abs(GetVelocity()) < (2_deg / 1_s) && units::math::abs(GetAngle() - angle) < 2_deg;
+    return
+      units::math::abs(GetVelocity()) < TurretConstants::kVelocityThreshold
+      && units::math::abs(GetAngle() - angle) < TurretConstants::kPositionThreshold;
   }).BeforeStarting([this, angle] {
-    m_rotationController.Reset();
-    m_rotationController.SetSetpoint(angle.value() / TurretConstants::kTurretDegreesPerTick);
+    m_controller.Reset();
+    m_controller.SetSetpoint(angle.value() / TurretConstants::kDegreesPerTick);
   });
 }
 
-frc2::CommandPtr Turret::DefaultControlCommand(std::function<double()> magnitude) {
-  return Run([this, magnitude = std::move(magnitude)] {
-    SetSpeed(magnitude());
-  });
-}
-
-frc2::CommandPtr Turret::AlignToTarget() {
-  Vision::ObjDetectResults results = m_vision->ObjDetectGetResults();
-
-  units::degree_t currentAngle = GetAngle();
-
-  if (results.hasTargets) return this->SetAngleCommand(currentAngle + results.targets[0].yaw);
-  else return this->SetAngleCommand(currentAngle); 
+void Turret::Zero() {
+  m_mainMotor.GetSensorCollection().SetQuadraturePosition(0);
 }

@@ -5,41 +5,41 @@
 #include "subsystems/Claw.h"
 
 Claw::Claw() {
-  m_openingControlSolenoid.Set(frc::DoubleSolenoid::kOff);
-  m_pressureSolenoid.Set(frc::DoubleSolenoid::kOff);
-  m_openingControlSolenoid.Set(frc::DoubleSolenoid::kForward);
-  m_pressureSolenoid.Set(frc::DoubleSolenoid::kForward);
-  // m_solenoid.Set(true);
-  // m_solenoid.Set(false);
-}
-
-// frc2::CommandPtr Claw::ManipulateCommand(bool position) {
-//   return RunOnce([this, position] {
-//     frc::SmartDashboard::PutBoolean("IsOpened", position);
-//     this->m_solenoid.Set(position);
-//   });
-// }
-
-// true = high, false = low, nothing means toggle
-frc2::CommandPtr Claw::SelectPressure() {
-  return RunOnce([this] {
-    this->m_pressureSolenoid.Toggle();
-
-  });
-}
-
-frc2::CommandPtr Claw::ChangeActivationState() {
-  return RunOnce([this] {
-    this->m_openingControlSolenoid.Toggle();
-  });
-}
-
-void Claw::DisableCompressor()
-{
-  m_phCompressor.Disable(); 
-}
-
-// This method will be called once per scheduler run
-void Claw::Periodic() {
+  m_controlSolenoid.Set(frc::DoubleSolenoid::kOff);
+  m_controlSolenoid.Set(frc::DoubleSolenoid::kForward);
   
+  m_pressureSolenoid.Set(frc::DoubleSolenoid::kOff);
+  m_pressureSolenoid.Set(frc::DoubleSolenoid::kForward);
 }
+
+frc2::CommandPtr Claw::TogglePressureCommand(bool pressure) {
+  return RunOnce([this, pressure] {
+    if (pressure == ClawConstants::kConePressure) m_pressureSolenoid.Set(frc::DoubleSolenoid::kForward);
+    else m_pressureSolenoid.Set(frc::DoubleSolenoid::kReverse);
+  });
+}
+
+frc2::CommandPtr Claw::TogglePressureCommand() {
+  return RunOnce([this] {
+    m_pressureSolenoid.Toggle();
+  });
+}
+
+frc2::CommandPtr Claw::ToggleActivationStateCommand(bool state) {
+  return RunOnce([this, state] {
+    if (state == ClawConstants::kClosePosition) m_controlSolenoid.Set(frc::DoubleSolenoid::kForward);
+    else m_controlSolenoid.Set(frc::DoubleSolenoid::kReverse);
+  });
+}
+
+frc2::CommandPtr Claw::ToggleActivationStateCommand() {
+  return RunOnce([this] {
+    m_controlSolenoid.Toggle();
+  });
+}
+
+void Claw::DisableCompressor() {
+  m_compressor.Disable(); 
+}
+
+void Claw::Periodic() {}
