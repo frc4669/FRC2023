@@ -48,7 +48,7 @@ void RobotContainer::ConfigureBindings() {
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupCube).OnTrue(positioning::CubePickupSelectCommand(&m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupShelf).OnTrue(positioning::ShelfPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupGround).OnTrue(positioning::GroundPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kStow).OnTrue(positioning::StowCommand(&m_elevator, &m_extension, &m_pivot));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kStow).OnTrue(positioning::StowCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
 
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreLowCenter).OnTrue(positioning::ScoreLowCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidCenter).OnTrue(positioning::ScoreMidCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
@@ -56,6 +56,8 @@ void RobotContainer::ConfigureBindings() {
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidRight).OnTrue(positioning::ScoreMidRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighLeft).OnTrue(positioning::ScoreHighLeftCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighRight).OnTrue(positioning::ScoreHighRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
+
+  // m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kDrop).OnTrue(positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

@@ -28,6 +28,10 @@ units::degree_t Pivot::GetAngle() {
   return units::degree_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * PivotConstants::kDegreesPerTick);
 }
 
+double Pivot::GetVelocity() {
+  return m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * PivotConstants::kDegreesPerTick;
+}
+
 void Pivot::SetAngle(units::degree_t angle) {
   double ticks = angle.value() / PivotConstants::kDegreesPerTick;
   m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
@@ -46,4 +50,13 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
   return RunOnce([this, angle] {
     SetAngle(angle);
   });
+  return frc2::cmd::Either(
+    Run([] {})
+      .BeforeStarting([this, angle] { SetAngle(angle); })
+      .Until([this, angle] {
+        return units::math::abs(GetAngle() - angle) < ExtensionConstants::kPositionThreshold
+          && GetVelocity() < ExtensionConstants::kVelocityThreshold.value();
+      }),
+    RunOnce([] {}), [this] { return m_isHomed; }
+  );
 }

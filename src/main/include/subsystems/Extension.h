@@ -9,6 +9,7 @@
 #include <frc/controller/PIDController.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/Commands.h>
 
 #include "Constants.h"
 
@@ -18,6 +19,7 @@ class Extension : public frc2::SubsystemBase {
   void Periodic() override;
 
   units::inch_t GetExtension();
+  units::meters_per_second_t GetVelocity();
   void SetExtension(units::inch_t extension); 
 
   frc2::CommandPtr HomeCommand();

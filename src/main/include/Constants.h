@@ -39,6 +39,8 @@ namespace OperatorConstants {
     constexpr int kScoreMidRight = 4;
     constexpr int kScoreHighLeft = 5;
     constexpr int kScoreHighRight = 6;
+
+    constexpr int kDrop = 7;
   }
 
   // Joystick sensitivity
@@ -113,6 +115,10 @@ namespace ElevatorConstants {
   constexpr double kp = 0.001;
   constexpr double ki = 0;
   constexpr double kd = 0;
+
+  // Elevator setpoint thresholds
+  constexpr auto kPositionThreshold = 4_in;
+  constexpr auto kVelocityThreshold = 1.5_in / 1_s;
 }
 
 namespace ExtensionConstants {
@@ -125,6 +131,10 @@ namespace ExtensionConstants {
   constexpr double kp = 1;
   constexpr double ki = 0;
   constexpr double kd = 0;
+
+  // Extension setpoint thresholds
+  constexpr auto kPositionThreshold = 3_in;
+  constexpr auto kVelocityThreshold = 1_in / 1_s;
 }
 
 namespace PivotConstants {
@@ -136,6 +146,10 @@ namespace PivotConstants {
   constexpr double kp = 1;
   constexpr double ki = 0;
   constexpr double kd = 0;
+
+  // Wrist pivot setpoint thresholds
+  constexpr auto kPositionThreshold = 8_deg;
+  constexpr auto kVelocityThreshold = 4_deg / 1_s;
 }
 
 namespace TurretConstants {
@@ -158,12 +172,15 @@ namespace TurretConstants {
   constexpr double kRevThreshold = -180 / kDegreesPerTick;
 
   // Turret setpoint thresholds
-  constexpr auto kVelocityThreshold = 2_deg / 1_s;
-  constexpr auto kPositionThreshold = 2_deg;
+  constexpr auto kVelocityThreshold = 8_deg / 1_s;
+  constexpr auto kPositionThreshold = 4_deg;
 }
 
 namespace PositioningConstants {
   constexpr auto kSafePivotHeight = 0_in; // TODO
+  constexpr auto kDropDelta = 0_in; // TODO
+  constexpr auto kStowDelay = 0_s; // TODO
+  constexpr auto kDropDelay = 0_s; // TODO
 
   constexpr auto kShelfElevatorHeight = 0_in; // TODO
   constexpr auto kShelfExtensionLength = 0_in; // TODO

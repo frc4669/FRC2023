@@ -18,7 +18,7 @@ namespace positioning {
   // Pickup and stow position commands
   frc2::CommandPtr ShelfPickupCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
   frc2::CommandPtr GroundPickupCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
-  frc2::CommandPtr StowCommand(Elevator* elevator, Extension* extension, Pivot* pivot);
+  frc2::CommandPtr StowCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
 
   // L1 scoring commands
   frc2::CommandPtr ScoreLowCenterCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret);
@@ -31,4 +31,7 @@ namespace positioning {
   // L3 scoring commands
   frc2::CommandPtr ScoreHighLeftCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret);
   frc2::CommandPtr ScoreHighRightCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret);
+
+  // Drop command
+  frc2::CommandPtr DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
 }

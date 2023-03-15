@@ -30,6 +30,10 @@ units::inch_t Elevator::GetHeight() {
   return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ElevatorConstants::kInchesPerTick);
 }
 
+units::meters_per_second_t Elevator::GetVelocity() {
+  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * ElevatorConstants::kInchesPerTick) / 1_s;
+}
+
 void Elevator::SetHeight(units::inch_t height) {
   double ticks = height.value() / ElevatorConstants::kInchesPerTick;
   m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
@@ -45,9 +49,15 @@ frc2::CommandPtr Elevator::HomeCommand() {
 }
 
 frc2::CommandPtr Elevator::SetHeightCommand(units::inch_t height) {
-  return RunOnce([this, height] {
-    if (m_isHomed) SetHeight(height);
-  });
+  return frc2::cmd::Either(
+    Run([] {})
+      .BeforeStarting([this, height] { SetHeight(height); })
+      .Until([this, height] {
+        return units::math::abs(GetHeight() - height) < ElevatorConstants::kPositionThreshold
+          && units::math::abs(GetVelocity()) < ElevatorConstants::kVelocityThreshold;
+      }),
+    RunOnce([] {}), [this] { return m_isHomed; }
+  );
 }
 
 frc2::CommandPtr Elevator::SetToSafePivotHeightCommand() {

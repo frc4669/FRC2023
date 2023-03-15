@@ -30,6 +30,10 @@ units::inch_t Extension::GetExtension() {
   return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ExtensionConstants::kInchesPerTick);
 }
 
+units::meters_per_second_t Extension::GetVelocity() {
+  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * ExtensionConstants::kInchesPerTick) / 1_s;
+}
+
 void Extension::SetExtension(units::inch_t extension) {
   double ticks = extension.value() / ExtensionConstants::kInchesPerTick;
   m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
@@ -45,7 +49,13 @@ frc2::CommandPtr Extension::HomeCommand() {
 }
 
 frc2::CommandPtr Extension::SetExtensionCommand(units::inch_t extension) {
-  return RunOnce([this, extension] {
-    if (m_isHomed) SetExtension(extension);
-  });
+  return frc2::cmd::Either(
+    Run([] {})
+      .BeforeStarting([this, extension] { SetExtension(extension); })
+      .Until([this, extension] {
+        return units::math::abs(GetExtension() - extension) < ExtensionConstants::kPositionThreshold
+          && units::math::abs(GetVelocity()) < ExtensionConstants::kVelocityThreshold;
+      }),
+    RunOnce([] {}), [this] { return m_isHomed; }
+  );
 }

@@ -9,6 +9,7 @@
 #include <frc/controller/PIDController.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/Commands.h>
 
 #include "Constants.h"
 
@@ -18,6 +19,7 @@ class Elevator : public frc2::SubsystemBase {
   void Periodic() override;
 
   units::inch_t GetHeight();
+  units::meters_per_second_t GetVelocity();
   void SetHeight(units::inch_t height);
 
   frc2::CommandPtr HomeCommand();

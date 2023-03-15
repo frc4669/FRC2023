@@ -33,8 +33,9 @@ frc2::CommandPtr positioning::GroundPickupCommand(Elevator* elevator, Extension*
   );
 }
 
-frc2::CommandPtr positioning::StowCommand(Elevator* elevator, Extension* extension, Pivot* pivot) {
+frc2::CommandPtr positioning::StowCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
   return frc2::cmd::Sequence(
+    claw->ToggleActivationStateCommand(ClawConstants::kClosePosition),
     elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kStowPivotAngle),
     extension->SetExtensionCommand(PositioningConstants::kStowExtensionLength),
@@ -44,66 +45,81 @@ frc2::CommandPtr positioning::StowCommand(Elevator* elevator, Extension* extensi
 
 frc2::CommandPtr positioning::ScoreLowCenterCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
-    turret->SetAngleCommand(PositioningConstants::kLowTurretAngle),
+    // turret->SetAngleCommand(PositioningConstants::kLowTurretAngle),
     elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kLowPivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kLowElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kLowExtensionLength)
+    extension->SetExtensionCommand(PositioningConstants::kLowExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw)
   );
 }
 
 frc2::CommandPtr positioning::ScoreMidCenterCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
-    turret->SetAngleCommand(PositioningConstants::kMidCenterTurretAngle),
-    elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kMidCenterPivotAngle),
+    // turret->SetAngleCommand(PositioningConstants::kMidCenterTurretAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kMidCenterExtensionLength)
+    pivot->SetAngleCommand(PositioningConstants::kMidCenterPivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kMidCenterExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw)
   );
 }
 
 frc2::CommandPtr positioning::ScoreMidLeftCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kMidSideTurretAngle),
-    elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength)
+    pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw),
+    turret->SetAngleCommand(0_deg)
   );
 }
 
 frc2::CommandPtr positioning::ScoreMidRightCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(PositioningConstants::kMidSideTurretAngle),
-    elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kMidElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength)
+    pivot->SetAngleCommand(PositioningConstants::kMidSidePivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kMidSideExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw),
+    turret->SetAngleCommand(0_deg)
   );
 }
 
 frc2::CommandPtr positioning::ScoreHighLeftCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kHighSideTurretAngle),
-    elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kHighElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength)
+    pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw),
+    turret->SetAngleCommand(0_deg)
   );
 }
 
 frc2::CommandPtr positioning::ScoreHighRightCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret) {
   return frc2::cmd::Sequence(
-    StowCommand(elevator, extension, pivot),
     turret->SetAngleCommand(-PositioningConstants::kHighSideTurretAngle),
-    elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
     elevator->SetHeightCommand(PositioningConstants::kHighElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength)
+    pivot->SetAngleCommand(PositioningConstants::kHighSidePivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kHighSideExtensionLength),
+    frc2::cmd::Wait(PositioningConstants::kDropDelay),
+    DropCommand(elevator, extension, pivot, claw),
+    turret->SetAngleCommand(0_deg)
+  );
+}
+
+frc2::CommandPtr positioning::DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
+  return frc2::cmd::Sequence(
+    elevator->SetHeightCommand(elevator->GetHeight() - PositioningConstants::kDropDelta),
+    claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition),
+    frc2::cmd::Wait(PositioningConstants::kStowDelay),
+    elevator->SetHeightCommand(elevator->GetHeight() + PositioningConstants::kDropDelta),
+    StowCommand(elevator, extension, pivot, claw)
   );
 }

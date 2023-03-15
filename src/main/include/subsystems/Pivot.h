@@ -9,6 +9,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
+#include <frc2/command/Commands.h>
 
 #include "Constants.h"
 
@@ -18,6 +19,7 @@ class Pivot : public frc2::SubsystemBase {
   void Periodic() override;
 
   units::degree_t GetAngle();
+  double GetVelocity();
   void SetAngle(units::degree_t angle);
 
   frc2::CommandPtr HomeCommand();
