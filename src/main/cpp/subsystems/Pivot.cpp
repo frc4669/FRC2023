@@ -54,8 +54,8 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
     Run([] {})
       .BeforeStarting([this, angle] { SetAngle(angle); })
       .Until([this, angle] {
-        return units::math::abs(GetAngle() - angle) < ExtensionConstants::kPositionThreshold
-          && GetVelocity() < ExtensionConstants::kVelocityThreshold.value();
+        return units::math::abs(GetAngle() - angle) < PivotConstants::kPositionThreshold
+          && GetVelocity() < PivotConstants::kVelocityThreshold.value();
       }),
     RunOnce([] {}), [this] { return m_isHomed; }
   );

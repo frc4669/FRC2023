@@ -17,9 +17,9 @@ frc2::CommandPtr positioning::CubePickupSelectCommand(Claw* claw) {
 frc2::CommandPtr positioning::ShelfPickupCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
   return frc2::cmd::Sequence(
     elevator->SetHeightCommand(PositioningConstants::kShelfElevatorHeight),
-    extension->SetExtensionCommand(PositioningConstants::kShelfExtensionLength),
     pivot->SetAngleCommand(PositioningConstants::kShelfPivotAngle),
-    claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition)
+    claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition),
+    extension->SetExtensionCommand(PositioningConstants::kShelfExtensionLength)
   );
 }
 
@@ -27,9 +27,9 @@ frc2::CommandPtr positioning::GroundPickupCommand(Elevator* elevator, Extension*
   return frc2::cmd::Sequence(
     elevator->SetToSafePivotHeightCommand(),
     pivot->SetAngleCommand(PositioningConstants::kShelfPivotAngle),
-    elevator->SetHeightCommand(PositioningConstants::kGroundElevatorHeight),
     extension->SetExtensionCommand(PositioningConstants::kGroundExtensionLength),
-    claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition)
+    claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition),
+    elevator->SetHeightCommand(PositioningConstants::kGroundElevatorHeight)
   );
 }
 

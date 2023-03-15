@@ -15,6 +15,7 @@
 #include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/controller/PIDController.h>
 
 #include "Constants.h"
 
@@ -33,11 +34,15 @@ class Drivetrain : public frc2::SubsystemBase {
 
   frc2::CommandPtr DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation, std::function<double()> elevatorHeight);
   frc2::CommandPtr BoostCommand(double boost);
+  frc2::CommandPtr AutomaticBalanceCommand();
+
+  double AutomaticBalance();
 
   frc::DifferentialDriveWheelSpeeds GetWheelSpeeds();
   units::meter_t GetLeftDistance();
   units::meter_t GetRightDistance();
   units::degree_t GetYaw();
+  units::degree_t GetPitch();
   frc::Pose2d OdometryPose();
 
  private:
@@ -58,4 +63,6 @@ class Drivetrain : public frc2::SubsystemBase {
   units::degree_t m_yawOffset = 0_deg;
 
   double m_boost = 0.3;
+
+  frc2::PIDController m_balanceController { DriveConstants::kBalanceP, 0, 0 };
 };

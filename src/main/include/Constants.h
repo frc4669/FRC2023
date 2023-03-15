@@ -87,6 +87,15 @@ namespace DriveConstants {
   // Autonomous parameters
   constexpr auto kMaxAutoSpeed = 3_mps;
   constexpr auto kMaxAutoAccel = 2_mps_sq;
+
+  // Autonomous balancing parameters
+  constexpr double kBalanceInitialSpeed = 0.3;
+  constexpr auto kBalanceThresholdA = 20_deg;
+  constexpr double kBalanceSlowSpeed = 0.15;
+  constexpr auto kBalanceThresholdB = 10_deg;
+  constexpr auto kBalanceMaxControllerSpeed = 0.1;
+  constexpr double kBalanceP = 0.01;
+  constexpr auto kLevelThreshold = 1_deg;
 }
 
 namespace ClawConstants {
@@ -207,10 +216,10 @@ namespace PositioningConstants {
 
   constexpr auto kMidSideExtensionLength = 0_in; // TODO
   constexpr auto kMidSidePivotAngle = 0_deg; // TODO
-  constexpr auto kMidSideTurretAngle = 0_deg; // TODO
+  constexpr auto kMidSideTurretAngle = 21_deg;
 
   constexpr auto kHighElevatorHeight = 0_in; // TODO
   constexpr auto kHighSideExtensionLength = 0_in; // TODO
   constexpr auto kHighSidePivotAngle = 0_deg; // TODO
-  constexpr auto kHighSideTurretAngle = 0_deg; // TODO
+  constexpr auto kHighSideTurretAngle = 13_deg;
 }

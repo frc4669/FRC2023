@@ -81,9 +81,31 @@ frc2::CommandPtr Drivetrain::DefaultDriveCommand(std::function<double()> speed, 
 }
 
 frc2::CommandPtr Drivetrain::BoostCommand(double boost) {
-  return this->RunOnce(
+  return RunOnce(
     [this, boost] { m_boost = boost; }
   );
+}
+
+frc2::CommandPtr Drivetrain::AutomaticBalanceCommand() {
+  return Run([this] {
+    m_drive.ArcadeDrive(AutomaticBalance(), 0, false);
+  });
+  
+  // Likely do not need the below
+  // .Until([this] {
+  //   return units::math::abs(GetPitch()) <= DriveConstants::kLevelThreshold;
+  // });
+}
+
+double Drivetrain::AutomaticBalance() {
+  units::degree_t pitch = GetPitch();
+  double direction = pitch <= 0_deg ? 1 : -1;
+  
+  if (units::math::abs(pitch) > DriveConstants::kBalanceThresholdA)
+    return DriveConstants::kBalanceInitialSpeed * direction;
+  else if (units::math::abs(pitch) > DriveConstants::kBalanceThresholdB)
+    return DriveConstants::kBalanceSlowSpeed * direction;
+  else return std::clamp(m_balanceController.Calculate(pitch.value(), 0), -DriveConstants::kBalanceMaxControllerSpeed, DriveConstants::kBalanceMaxControllerSpeed);
 }
 
 frc::DifferentialDriveWheelSpeeds Drivetrain::GetWheelSpeeds() {
@@ -108,6 +130,10 @@ units::meter_t Drivetrain::GetRightDistance() {
 
 units::degree_t Drivetrain::GetYaw() {
   return units::degree_t(-m_IMU.GetYaw()) - m_yawOffset;
+}
+
+units::degree_t Drivetrain::GetPitch() {
+  return units::degree_t(m_IMU.GetPitch());
 }
 
 frc::Pose2d Drivetrain::OdometryPose() {
