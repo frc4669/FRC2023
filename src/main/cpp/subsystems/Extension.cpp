@@ -19,7 +19,7 @@ Extension::Extension() {
 
   m_mainMotor.SetNeutralMode(NeutralMode::Brake);
   m_mainMotor.SetSafetyEnabled(false);
-  m_mainMotor.SetInverted(true);
+  m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true);
 };

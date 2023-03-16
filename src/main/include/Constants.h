@@ -50,7 +50,7 @@ namespace OperatorConstants {
 namespace CAN {
   // Drivetrain motors
   constexpr int kDrivetrainLeftMain = 21;
-  constexpr int kDrivetrainLeftSecondary = 11;
+  constexpr int kDrivetrainLeftSecondary = 22;
   constexpr int kDrivetrainRightMain = 11;
   constexpr int kDrivetrainRightSecondary = 12;
 

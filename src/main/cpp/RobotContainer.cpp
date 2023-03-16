@@ -34,10 +34,10 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
-  m_operatorController.Y().OnTrue(m_claw.ToggleActivationStateCommand());
-  m_operatorController.X().OnTrue(m_claw.TogglePressureCommand());
-
-  m_operatorController.Start().OnTrue(m_turret.HomeCommand());
+  m_operatorController.X().OnTrue(m_turret.HomeCommand());
+  m_operatorController.Y().OnTrue(m_elevator.HomeCommand());
+  m_operatorController.A().OnTrue(m_pivot.HomeCommand());
+  m_operatorController.B().OnTrue(m_extension.HomeCommand());
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
@@ -56,8 +56,6 @@ void RobotContainer::ConfigureBindings() {
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidRight).OnTrue(positioning::ScoreMidRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighLeft).OnTrue(positioning::ScoreHighLeftCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreHighRight).OnTrue(positioning::ScoreHighRightCommand(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret));
-
-  // m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kDrop).OnTrue(positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

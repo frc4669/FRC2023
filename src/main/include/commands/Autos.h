@@ -8,5 +8,4 @@
 namespace autos {
   frc2::CommandPtr TestCurveAutoCommand(Drivetrain* drivetrain, frc::Field2d* field);
   frc2::CommandPtr StraightLineAutoCommand(Drivetrain* drivetrain, frc::Field2d* field);
-  frc2::CommandPtr StraightMotionMagicAutoCommand(Drivetrain* drivetrain);
 }

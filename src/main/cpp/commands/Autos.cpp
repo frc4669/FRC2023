@@ -15,7 +15,3 @@ frc2::CommandPtr autos::StraightLineAutoCommand(Drivetrain* drivetrain, frc::Fie
     FollowTrajectoryCommandNew(drivetrain, field, "StraightLine", true).ToPtr()
   );
 }
-
-frc2::CommandPtr autos::StraightMotionMagicAutoCommand(Drivetrain* drivetrain) {
-  
-}
