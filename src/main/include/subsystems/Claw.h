@@ -34,5 +34,5 @@ class Claw : public frc2::SubsystemBase {
   frc::Compressor m_compressor { frc::PneumaticsModuleType::REVPH };
 
   frc::DoubleSolenoid m_pressureSolenoid { frc::PneumaticsModuleType::REVPH, 6, 7 }; 
-  frc::DoubleSolenoid m_controlSolenoid { frc::PneumaticsModuleType::REVPH, 0, 1 };
+  frc::DoubleSolenoid m_controlSolenoid { frc::PneumaticsModuleType::REVPH, 1, 0 };
 };

@@ -27,7 +27,8 @@ Turret::Turret() {
 }
 
 void Turret::Periodic() {
-  frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());
+  frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());(
+  frc::SmartDashboard::PutBoolean("Fwd Limit Switch Closed", m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed()));
 }
 
 units::degree_t Turret::GetAngle() {
@@ -50,11 +51,10 @@ void Turret::SetSpeed(double output) {
 }
 
 frc2::CommandPtr Turret::HomeCommand() {
-  return Run([this] { SetSpeed(-0.2); })
-    .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed(); })
-    .AndThen([this] { Zero(); })
-    .AndThen(SetAngleCommand(180_deg))
-    .AndThen([this] { Zero(); })
+  return Run([this] { SetSpeed(-0.1); })
+    .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed(); })
+    .AndThen([this] { SetSpeed(0); m_mainMotor.GetSensorCollection().SetQuadraturePosition(-180 / TurretConstants::kDegreesPerTick); })
+    .AndThen(SetAngleCommand(0_deg))
     .AndThen([this] { m_isHomed = true; });
 }
 

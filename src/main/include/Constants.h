@@ -22,25 +22,25 @@ namespace OperatorConstants {
   // Button board button IDs
   // Turret and pickup control on board A, score control on board B
   namespace ButtonBoard {
-    constexpr int kTurretS = 1;
-    constexpr int kTurretW = 2;
+    constexpr int kTurretS = 2;
+    constexpr int kTurretW = 1;
     constexpr int kTurretN = 3;
     constexpr int kTurretE = 4;
 
-    constexpr int kPickupShelf = 5;
-    constexpr int kPickupGround = 6;
-    constexpr int kPickupCone = 7;
+    constexpr int kPickupCone = 5;
+    constexpr int kPickupShelf = 6;
+    constexpr int kStow = 7;
     constexpr int kPickupCube = 8;
-    constexpr int kStow = 9;
+    constexpr int kPickupGround = 9;
 
-    constexpr int kScoreLowCenter = 1;
-    constexpr int kScoreMidCenter = 2;
-    constexpr int kScoreMidLeft = 3;
-    constexpr int kScoreMidRight = 4;
-    constexpr int kScoreHighLeft = 5;
-    constexpr int kScoreHighRight = 6;
+    constexpr int kScoreLowCenter = 4;
+    constexpr int kScoreMidCenter = 3;
+    constexpr int kScoreMidLeft = 2;
+    constexpr int kScoreMidRight = 6;
+    constexpr int kScoreHighLeft = 1;
+    constexpr int kScoreHighRight = 5;
 
-    constexpr int kDrop = 7;
+    // constexpr int kDrop = 7;
   }
 
   // Joystick sensitivity
@@ -119,6 +119,7 @@ namespace ElevatorConstants {
   constexpr double kGearRatio = 50;
   constexpr double kTeeth = 16;
   constexpr double kInchesPerTick = (kTeeth * 0.25) / (kGearRatio * 2048);
+  constexpr auto kLimitSwitchSeparation = 30_in;
 
   // Elevator PID controller gains
   constexpr double kp = 0.001;
@@ -186,40 +187,40 @@ namespace TurretConstants {
 }
 
 namespace PositioningConstants {
-  constexpr auto kSafePivotHeight = 0_in; // TODO
-  constexpr auto kDropDelta = 0_in; // TODO
-  constexpr auto kStowDelay = 0_s; // TODO
-  constexpr auto kDropDelay = 0_s; // TODO
+  constexpr auto kSafePivotHeight = 18.5_in;
+  constexpr auto kDropDelta = 0_in;
+  constexpr auto kStowDelay = 1_s;
+  constexpr auto kDropDelay = 0.5_s;
 
-  constexpr auto kShelfElevatorHeight = 0_in; // TODO
-  constexpr auto kShelfExtensionLength = 0_in; // TODO
-  constexpr auto kShelfPivotAngle = 0_deg; // TODO
+  constexpr auto kShelfElevatorHeight = 29_in; // UNTESTED
+  constexpr auto kShelfExtensionLength = 0_in; // UNTESTED
+  constexpr auto kShelfPivotAngle = 130_deg; // UNTESTED
 
-  constexpr auto kGroundElevatorHeight = 0_in; // TODO
-  constexpr auto kGroundExtensionLength = 0_in; // TODO
-  constexpr auto kGroundPivotAngle = 0_deg; // TODO
+  constexpr auto kGroundElevatorHeight = 6_in;
+  constexpr auto kGroundExtensionLength = 12_in;
+  constexpr auto kGroundPivotAngle = 90_deg;
 
-  constexpr auto kStowElevatorHeight = 0_in; // TODO
-  constexpr auto kStowExtensionLength = 0_in; // TODO
-  constexpr auto kStowPivotAngle = 0_deg; // TODO
+  constexpr auto kStowElevatorHeight = 19_in;
+  constexpr auto kStowExtensionLength = 0_in;
+  constexpr auto kStowPivotAngle = 55_deg;
 
-  constexpr auto kLowElevatorHeight = 0_in; // TODO
-  constexpr auto kLowExtensionLength = 0_in; // TODO
-  constexpr auto kLowPivotAngle = 0_deg; // TODO
+  constexpr auto kLowElevatorHeight = 21_in;
+  constexpr auto kLowExtensionLength = 0_in;
+  constexpr auto kLowPivotAngle = 100_deg;
   constexpr auto kLowTurretAngle = 0_deg;
 
-  constexpr auto kMidElevatorHeight = 0_in; // TODO
+  constexpr auto kMidElevatorHeight = 28_in;
 
-  constexpr auto kMidCenterExtensionLength = 0_in; // TODO
-  constexpr auto kMidCenterPivotAngle = 0_deg; // TODO
+  constexpr auto kMidCenterExtensionLength = 12_in;
+  constexpr auto kMidCenterPivotAngle = 155_deg;
   constexpr auto kMidCenterTurretAngle = 0_deg;
 
-  constexpr auto kMidSideExtensionLength = 0_in; // TODO
-  constexpr auto kMidSidePivotAngle = 0_deg; // TODO
+  constexpr auto kMidSideExtensionLength = 0_in;
+  constexpr auto kMidSidePivotAngle = 130_deg;
   constexpr auto kMidSideTurretAngle = 21_deg;
 
-  constexpr auto kHighElevatorHeight = 0_in; // TODO
-  constexpr auto kHighSideExtensionLength = 0_in; // TODO
-  constexpr auto kHighSidePivotAngle = 0_deg; // TODO
+  constexpr auto kHighElevatorHeight = 29_in;
+  constexpr auto kHighSideExtensionLength = 19_in;
+  constexpr auto kHighSidePivotAngle = 155_deg;
   constexpr auto kHighSideTurretAngle = 13_deg;
 }

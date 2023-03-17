@@ -20,9 +20,13 @@ Pivot::Pivot() {
   m_mainMotor.SetNeutralMode(NeutralMode::Brake);
   m_mainMotor.SetSafetyEnabled(false);
   m_mainMotor.SetInverted(false);
+
+  m_mainMotor.OverrideLimitSwitchesEnable(true); // Forward = pivoted out
 }
 
-void Pivot::Periodic() {}
+void Pivot::Periodic() {
+  frc::SmartDashboard::PutNumber("Pivot Angle (deg)", GetAngle().value());
+}
 
 units::degree_t Pivot::GetAngle() {
   return units::degree_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * PivotConstants::kDegreesPerTick);
@@ -34,7 +38,7 @@ double Pivot::GetVelocity() {
 
 void Pivot::SetAngle(units::degree_t angle) {
   double ticks = angle.value() / PivotConstants::kDegreesPerTick;
-  m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
+  if (m_isHomed) m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
 }
 
 frc2::CommandPtr Pivot::HomeCommand() {
@@ -43,7 +47,7 @@ frc2::CommandPtr Pivot::HomeCommand() {
     .AndThen([this] {
       m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
       m_isHomed = true;
-    });
+    }); // TODO: Move down a few inches after homing
 }
 
 frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {

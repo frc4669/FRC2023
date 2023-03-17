@@ -21,10 +21,12 @@ Extension::Extension() {
   m_mainMotor.SetSafetyEnabled(false);
   m_mainMotor.SetInverted(false);
 
-  m_mainMotor.OverrideLimitSwitchesEnable(true);
+  m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit switch = full extension
 };
 
-void Extension::Periodic() {}
+void Extension::Periodic() {
+  frc::SmartDashboard::PutNumber("Extension (in)", GetExtension().value());
+}
 
 units::inch_t Extension::GetExtension() {
   return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ExtensionConstants::kInchesPerTick);
@@ -36,12 +38,12 @@ units::meters_per_second_t Extension::GetVelocity() {
 
 void Extension::SetExtension(units::inch_t extension) {
   double ticks = extension.value() / ExtensionConstants::kInchesPerTick;
-  m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
+  if(m_isHomed) m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
 }
 
 frc2::CommandPtr Extension::HomeCommand() {
-  return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
-    .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
+  return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0.2); })
+    .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed(); })
     .AndThen([this] {
       m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
       m_isHomed = true; 

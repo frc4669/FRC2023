@@ -35,9 +35,14 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
   m_operatorController.X().OnTrue(m_turret.HomeCommand());
-  m_operatorController.Y().OnTrue(m_elevator.HomeCommand());
-  m_operatorController.A().OnTrue(m_pivot.HomeCommand());
-  m_operatorController.B().OnTrue(m_extension.HomeCommand());
+
+  m_operatorController.Start().OnTrue(frc2::cmd::Sequence(
+    m_claw.ToggleActivationStateCommand(ClawConstants::kClosePosition),
+    m_elevator.HomeCommand(),
+    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand())
+  ));
+
+  m_operatorController.RightBumper().OnTrue(m_claw.ToggleActivationStateCommand());
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
