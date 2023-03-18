@@ -22,15 +22,10 @@ Pivot::Pivot() {
   m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Forward = pivoted out
-
-  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Pivot::Periodic() {
   frc::SmartDashboard::PutNumber("Pivot Angle (deg)", GetAngle().value());
-  frc::SmartDashboard::PutNumber("P", m_controller.GetP()); 
-  frc::SmartDashboard::PutNumber("I", m_controller.GetI()); 
-  frc::SmartDashboard::PutNumber("D", m_controller.GetD()); 
 }
 
 units::degree_t Pivot::GetAngle() {

@@ -33,7 +33,14 @@
 class FollowTrajectoryCommandNew
     : public frc2::CommandHelper<frc2::CommandBase, FollowTrajectoryCommandNew> {
  public:
-  FollowTrajectoryCommandNew(Drivetrain* drivetrain, frc::Field2d* field, std::string path, bool reverse);
+  FollowTrajectoryCommandNew(
+    Drivetrain* drivetrain,
+    frc::Field2d* field,
+    std::string path,
+    bool reverse,
+    units::meters_per_second_t maxSpeed,
+    units::meters_per_second_squared_t maxAccel
+  );
 
   void Initialize() override;
 
@@ -57,7 +64,7 @@ class FollowTrajectoryCommandNew
   frc::PIDController m_rightController { DriveConstants::kp, DriveConstants::ki, DriveConstants::kd };
 
   frc::DifferentialDriveKinematics m_kinematics { DriveConstants::kTrackWidth };
-  // frc::SimpleMotorFeedforward<units::meters> m_feedforward { DriveConstants::ks, DriveConstants::kv, DriveConstants::ka };
+  frc::SimpleMotorFeedforward<units::meters> m_feedforward { DriveConstants::ks, DriveConstants::kv, DriveConstants::ka };
 
   bool m_finished;
 };

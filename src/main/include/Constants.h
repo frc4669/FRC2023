@@ -69,24 +69,20 @@ namespace CAN {
 
 namespace DriveConstants {
   // Feedforward gains
-  constexpr auto ks = 0.16421_V; //0.10013_V;
-  constexpr auto kv = 2.3937_V * 1_s / 1_m; //2.5964_V * 1_s / 1_m;
-  constexpr auto ka = 0.80146_V * 1_s * 1_s / 1_m; ///0.28575_V * 1_s * 1_s / 1_m;
+  constexpr auto ks = 0.096137_V;
+  constexpr auto kv = 2.3718_V * 1_s / 1_m;
+  constexpr auto ka = 0.39708_V * 1_s * 1_s / 1_m;
 
   // PID controller gains
-  constexpr double kp = 3.0087;//2.1589;
+  constexpr double kp = 2.4087;
   constexpr double ki = 0;
   constexpr double kd = 0;
 
   // Physical parameters
-  constexpr auto kTrackWidth = 20.75_in;
+  constexpr auto kTrackWidth = 20.75_in; // VERIFY
   constexpr double kGearRatio = 11.25;
-  constexpr double kWheelCircumference = 6 * 3.141592;
-  constexpr double kInchesPerTick = kWheelCircumference / (2048 * kGearRatio);
-
-  // Autonomous parameters
-  constexpr auto kMaxAutoSpeed = 3_mps;
-  constexpr auto kMaxAutoAccel = 2_mps_sq;
+  constexpr double kWheelCircumference = 0.1524 * 3.141592; // 6 in
+  constexpr double kMetersPerTick = kWheelCircumference / (2048 * kGearRatio);
 
   // Autonomous balancing parameters
   constexpr double kBalanceInitialSpeed = 0.3;

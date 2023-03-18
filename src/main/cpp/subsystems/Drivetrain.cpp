@@ -24,6 +24,7 @@ void Drivetrain::Periodic() {
   m_field->SetRobotPose(robotPose);
 
   frc::SmartDashboard::PutNumber("Yaw", GetYaw().value());
+  frc::SmartDashboard::PutNumber("Pitch", GetPitch().value());
   frc::SmartDashboard::PutBoolean("Boost", m_boost == 1.0);
 }
 
@@ -70,6 +71,7 @@ void Drivetrain::CurvatureDrive(double speed, double rotation) {
 void Drivetrain::TankDriveVolts(units::volt_t left, units::volt_t right) {
   m_leftMain.SetVoltage(left);
   m_rightMain.SetVoltage(right);
+
   m_leftSecondary.SetVoltage(left);
   m_rightSecondary.SetVoltage(right);
 }
@@ -97,6 +99,10 @@ frc2::CommandPtr Drivetrain::AutomaticBalanceCommand() {
   // });
 }
 
+frc2::CommandPtr Drivetrain::MoveCommand(double speed, units::second_t duration) {
+  return Run([this, speed] { m_drive.ArcadeDrive(speed, 0, false); }).WithTimeout(duration);
+}
+
 double Drivetrain::AutomaticBalance() {
   units::degree_t pitch = GetPitch();
   double direction = pitch <= 0_deg ? 1 : -1;
@@ -109,23 +115,23 @@ double Drivetrain::AutomaticBalance() {
 }
 
 frc::DifferentialDriveWheelSpeeds Drivetrain::GetWheelSpeeds() {
-  units::meters_per_second_t leftVelocity = units::meters_per_second_t(units::meter_t(units::inch_t(
-    m_leftMain.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * DriveConstants::kInchesPerTick
-  )).value());
+  units::meters_per_second_t leftVelocity = units::meters_per_second_t(
+    m_leftMain.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * DriveConstants::kMetersPerTick
+  );
 
-  units::meters_per_second_t rightVelocity = -units::meters_per_second_t(units::meter_t(units::inch_t(
-    m_rightMain.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * DriveConstants::kInchesPerTick
-  )).value());
+  units::meters_per_second_t rightVelocity = units::meters_per_second_t(
+    -m_rightMain.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * DriveConstants::kMetersPerTick
+  );
 
   return { leftVelocity, rightVelocity };
 }
 
 units::meter_t Drivetrain::GetLeftDistance() {
-  return units::inch_t(m_leftMain.GetSensorCollection().GetIntegratedSensorPosition() * DriveConstants::kInchesPerTick);
+  return units::meter_t(m_leftMain.GetSensorCollection().GetIntegratedSensorPosition() * DriveConstants::kMetersPerTick);
 }
 
 units::meter_t Drivetrain::GetRightDistance() {
-  return -units::inch_t(m_rightMain.GetSensorCollection().GetIntegratedSensorPosition() * DriveConstants::kInchesPerTick);
+  return units::meter_t(-m_rightMain.GetSensorCollection().GetIntegratedSensorPosition() * DriveConstants::kMetersPerTick);
 }
 
 units::degree_t Drivetrain::GetYaw() {

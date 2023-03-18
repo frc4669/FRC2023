@@ -22,8 +22,6 @@ Extension::Extension() {
   m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit switch = full extension
-  
-  frc::SmartDashboard::PutData(&m_controller);
 };
 
 void Extension::Periodic() {

@@ -23,6 +23,9 @@ class Claw : public frc2::SubsystemBase {
   frc2::CommandPtr ToggleActivationStateCommand(bool state);
   frc2::CommandPtr ToggleActivationStateCommand();
 
+  bool GetPressure();
+  bool GetActivationState();
+
   void DisableCompressor(); 
 
   void Periodic() override;

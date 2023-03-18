@@ -23,8 +23,6 @@ Elevator::Elevator() {
   m_mainMotor.SetInverted(true);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit = up (inverted)
-
-  frc::SmartDashboard::PutData(&m_mainController);
 }
 
 void Elevator::Periodic() {
@@ -39,12 +37,6 @@ units::meters_per_second_t Elevator::GetVelocity() {
   return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * ElevatorConstants::kInchesPerTick) / 1_s;
 }
 
-// void Elevator::SetHeight(units::inch_t height) {
-//   double ticks = height.value() / ElevatorConstants::kInchesPerTick;
-//   frc::SmartDashboard::PutNumber("TTicks elev", ticks);
-//   if(m_isHomed) m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
-// }
-
 frc2::CommandPtr Elevator::HomeCommand() {
   return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
     .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
@@ -52,7 +44,6 @@ frc2::CommandPtr Elevator::HomeCommand() {
       m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(ElevatorConstants::kLimitSwitchSeparation.value() / ElevatorConstants::kInchesPerTick);
       m_isHomed = true; 
     })
-    // .AndThen(Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0.2); }).WithTimeout(4_s))
     .AndThen(SetHeightCommand(20_in))
     .AndThen([this] { 
       m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0);

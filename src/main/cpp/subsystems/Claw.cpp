@@ -6,10 +6,7 @@
 
 Claw::Claw() {
   m_controlSolenoid.Set(frc::DoubleSolenoid::kOff);
-  m_controlSolenoid.Set(frc::DoubleSolenoid::kForward);
-  
-  m_pressureSolenoid.Set(frc::DoubleSolenoid::kOff);
-  m_pressureSolenoid.Set(frc::DoubleSolenoid::kForward);
+  m_pressureSolenoid.Set(frc::DoubleSolenoid::kReverse);
 }
 
 frc2::CommandPtr Claw::TogglePressureCommand(bool pressure) {
@@ -38,8 +35,20 @@ frc2::CommandPtr Claw::ToggleActivationStateCommand() {
   });
 }
 
+bool Claw::GetPressure() {
+  return m_pressureSolenoid.Get() == frc::DoubleSolenoid::kForward ? ClawConstants::kConePressure : ClawConstants::kCubePressure;
+}
+
+bool Claw::GetActivationState() {
+  return m_controlSolenoid.Get() == frc::DoubleSolenoid::kForward ? ClawConstants::kClosePosition : ClawConstants::kOpenPosition;
+}
+
 void Claw::DisableCompressor() {
   m_compressor.Disable(); 
 }
 
-void Claw::Periodic() {}
+void Claw::Periodic() {
+  frc::SmartDashboard::PutBoolean("Cone Pressure", GetPressure() == ClawConstants::kConePressure);
+  frc::SmartDashboard::PutBoolean("Cube Pressure", GetPressure() == ClawConstants::kCubePressure);
+  frc::SmartDashboard::PutBoolean("Closed", GetActivationState() == ClawConstants::kClosePosition);
+}

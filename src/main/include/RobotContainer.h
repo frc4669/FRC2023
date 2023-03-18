@@ -50,11 +50,24 @@ class RobotContainer {
   Turret m_turret;
   Pivot m_pivot;
 
-  frc2::CommandPtr m_curveAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
-  frc2::CommandPtr m_defaultAutoCommand { autos::StraightLineAutoCommand(&m_drivetrain, &m_field) };
-
   frc::SendableChooser<frc2::Command*> m_autoChooser;
 
   void ConfigureBindings();
   void ConfigureAutonomous();
+
+  frc2::CommandPtr m_curveAutoCommand { autos::TestCurveAutoCommand(&m_drivetrain, &m_field) };
+  frc2::CommandPtr m_doNothingAutoCommand { autos::DoNothingAutoCommand() };
+
+  frc2::CommandPtr m_blueLeftL3CubeMobilityAutoCommand {
+    autos::Blue_Left_L3Cube_Mobility(&m_drivetrain, &m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret, &m_field)
+  };
+  frc2::CommandPtr m_blueCenterL3CubeMobilityAutoCommand {
+    autos::Blue_Center_L3Cube_Mobility(&m_drivetrain, &m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret, &m_field)
+  };
+  frc2::CommandPtr m_blueRightL3CubeMobilityAutoCommand {
+    autos::Blue_Right_L3Cube_Mobility(&m_drivetrain, &m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret, &m_field)
+  };
+  frc2::CommandPtr m_L2CubeAutoCommand {
+    autos::L2Cube(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret)
+  };
 };

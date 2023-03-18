@@ -24,17 +24,10 @@ Turret::Turret() {
   m_mainMotor.OverrideLimitSwitchesEnable(false);
   m_mainMotor.ConfigForwardSoftLimitEnable(false);
   m_mainMotor.ConfigReverseSoftLimitEnable(false);
-
-  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Turret::Periodic() {
   frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());
-  frc::SmartDashboard::PutBoolean("Fwd Limit Switch Closed", m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed());
-  
-  frc::SmartDashboard::PutNumber("P", m_controller.GetP()); 
-  frc::SmartDashboard::PutNumber("I", m_controller.GetI()); 
-  frc::SmartDashboard::PutNumber("D", m_controller.GetD()); 
 }
 
 units::degree_t Turret::GetAngle() {

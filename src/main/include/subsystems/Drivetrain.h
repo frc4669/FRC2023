@@ -35,6 +35,7 @@ class Drivetrain : public frc2::SubsystemBase {
   frc2::CommandPtr DefaultDriveCommand(std::function<double()> speed, std::function<double()> rotation, std::function<double()> elevatorHeight);
   frc2::CommandPtr BoostCommand(double boost);
   frc2::CommandPtr AutomaticBalanceCommand();
+  frc2::CommandPtr MoveCommand(double speed, units::second_t duration);
 
   double AutomaticBalance();
 

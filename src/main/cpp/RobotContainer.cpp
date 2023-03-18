@@ -20,8 +20,13 @@ RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m
 }
 
 void RobotContainer::ConfigureAutonomous() {
-  m_autoChooser.SetDefaultOption("Default Auto", m_defaultAutoCommand.get());
-  m_autoChooser.AddOption("Curve Auto", m_curveAutoCommand.get());
+  m_autoChooser.AddOption("Testing Curve", m_curveAutoCommand.get());
+  m_autoChooser.AddOption("Blue Left L3 Cube Mobility", m_blueLeftL3CubeMobilityAutoCommand.get());
+  m_autoChooser.AddOption("Blue Center L3 Cube Mobility", m_blueCenterL3CubeMobilityAutoCommand.get());
+  m_autoChooser.AddOption("Blue Right L3 Cube Mobility", m_blueRightL3CubeMobilityAutoCommand.get());
+  m_autoChooser.AddOption("L2 Cube", m_L2CubeAutoCommand.get());
+  
+  m_autoChooser.SetDefaultOption("Do Nothing", m_doNothingAutoCommand.get());
 }
 
 void RobotContainer::ConfigureBindings() {
