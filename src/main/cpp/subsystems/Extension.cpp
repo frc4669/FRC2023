@@ -8,9 +8,9 @@ Extension::Extension() {
   m_mainMotor.ConfigMotionCruiseVelocity(30000);
   m_mainMotor.ConfigMotionAcceleration(8000);
 
-  m_mainMotor.Config_kP(0, ExtensionConstants::kp);
-  m_mainMotor.Config_kI(0, ExtensionConstants::ki);
-  m_mainMotor.Config_kD(0, ExtensionConstants::kd);
+  // m_mainMotor.Config_kP(0, ExtensionConstants::kp);
+  // m_mainMotor.Config_kI(0, ExtensionConstants::ki);
+  // m_mainMotor.Config_kD(0, ExtensionConstants::kd);
 
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
@@ -22,6 +22,8 @@ Extension::Extension() {
   m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit switch = full extension
+  
+  frc::SmartDashboard::PutData(&m_controller);
 };
 
 void Extension::Periodic() {
@@ -29,16 +31,11 @@ void Extension::Periodic() {
 }
 
 units::inch_t Extension::GetExtension() {
-  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ExtensionConstants::kInchesPerTick);
+  return -units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ExtensionConstants::kInchesPerTick);
 }
 
 units::meters_per_second_t Extension::GetVelocity() {
-  return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * ExtensionConstants::kInchesPerTick) / 1_s;
-}
-
-void Extension::SetExtension(units::inch_t extension) {
-  double ticks = extension.value() / ExtensionConstants::kInchesPerTick;
-  if(m_isHomed) m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
+  return -units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * ExtensionConstants::kInchesPerTick) / 1_s;
 }
 
 frc2::CommandPtr Extension::HomeCommand() {
@@ -52,12 +49,23 @@ frc2::CommandPtr Extension::HomeCommand() {
 
 frc2::CommandPtr Extension::SetExtensionCommand(units::inch_t extension) {
   return frc2::cmd::Either(
-    Run([] {})
-      .BeforeStarting([this, extension] { SetExtension(extension); })
-      .Until([this, extension] {
-        return units::math::abs(GetExtension() - extension) < ExtensionConstants::kPositionThreshold
-          && units::math::abs(GetVelocity()) < ExtensionConstants::kVelocityThreshold;
-      }),
+    Run([this, extension] {
+      double currentExtension = GetExtension().value();
+      double output = -m_controller.Calculate(currentExtension);
+      m_mainMotor.Set(TalonFXControlMode::PercentOutput, output);
+    })
+    .BeforeStarting([this, extension] {
+      m_controller.Reset();
+      m_controller.SetSetpoint(extension.value());
+    })
+    .Until([this, extension] {
+      return units::math::abs(GetExtension() - extension) < ExtensionConstants::kPositionThreshold
+      && units::math::abs(GetVelocity()) < ExtensionConstants::kVelocityThreshold;
+    }).AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }),
     RunOnce([] {}), [this] { return m_isHomed; }
   );
+}
+
+frc2::CommandPtr Extension::SetHomedCommand() {
+  return RunOnce([this] { m_isHomed = true; });
 }

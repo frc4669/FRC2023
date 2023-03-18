@@ -24,11 +24,17 @@ Turret::Turret() {
   m_mainMotor.OverrideLimitSwitchesEnable(false);
   m_mainMotor.ConfigForwardSoftLimitEnable(false);
   m_mainMotor.ConfigReverseSoftLimitEnable(false);
+
+  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Turret::Periodic() {
-  frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());(
-  frc::SmartDashboard::PutBoolean("Fwd Limit Switch Closed", m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed()));
+  frc::SmartDashboard::PutNumber("Turret Angle", GetAngle().value());
+  frc::SmartDashboard::PutBoolean("Fwd Limit Switch Closed", m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed());
+  
+  frc::SmartDashboard::PutNumber("P", m_controller.GetP()); 
+  frc::SmartDashboard::PutNumber("I", m_controller.GetI()); 
+  frc::SmartDashboard::PutNumber("D", m_controller.GetD()); 
 }
 
 units::degree_t Turret::GetAngle() {
@@ -51,11 +57,11 @@ void Turret::SetSpeed(double output) {
 }
 
 frc2::CommandPtr Turret::HomeCommand() {
-  return Run([this] { SetSpeed(-0.1); })
+  return Run([this] { SetSpeed(-0.15); })
     .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] { SetSpeed(0); m_mainMotor.GetSensorCollection().SetQuadraturePosition(-180 / TurretConstants::kDegreesPerTick); })
     .AndThen(SetAngleCommand(0_deg))
-    .AndThen([this] { m_isHomed = true; });
+    .AndThen([this] { m_isHomed = true; SetSpeed(0); });
 }
 
 frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
@@ -69,9 +75,13 @@ frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
   }).BeforeStarting([this, angle] {
     m_controller.Reset();
     m_controller.SetSetpoint(angle.value() / TurretConstants::kDegreesPerTick);
-  });
+  }).AndThen([this] { SetSpeed(0); });
 }
 
 void Turret::Zero() {
   m_mainMotor.GetSensorCollection().SetQuadraturePosition(0);
+}
+
+frc2::CommandPtr Turret::SetHomedCommand() {
+  return RunOnce([this] { m_isHomed = true; });
 }

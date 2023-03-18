@@ -8,9 +8,9 @@ Pivot::Pivot() {
   m_mainMotor.ConfigMotionCruiseVelocity(7000);
   m_mainMotor.ConfigMotionAcceleration(3000);
 
-  m_mainMotor.Config_kP(0, PivotConstants::kp);
-  m_mainMotor.Config_kI(0, PivotConstants::ki);
-  m_mainMotor.Config_kD(0, PivotConstants::kd);
+  // m_mainMotor.Config_kP(0, PivotConstants::kp);
+  // m_mainMotor.Config_kI(0, PivotConstants::ki);
+  // m_mainMotor.Config_kD(0, PivotConstants::kd);
 
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
@@ -22,10 +22,15 @@ Pivot::Pivot() {
   m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Forward = pivoted out
+
+  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Pivot::Periodic() {
   frc::SmartDashboard::PutNumber("Pivot Angle (deg)", GetAngle().value());
+  frc::SmartDashboard::PutNumber("P", m_controller.GetP()); 
+  frc::SmartDashboard::PutNumber("I", m_controller.GetI()); 
+  frc::SmartDashboard::PutNumber("D", m_controller.GetD()); 
 }
 
 units::degree_t Pivot::GetAngle() {
@@ -36,25 +41,17 @@ double Pivot::GetVelocity() {
   return m_mainMotor.GetSensorCollection().GetIntegratedSensorVelocity() * 10 * PivotConstants::kDegreesPerTick;
 }
 
-void Pivot::SetAngle(units::degree_t angle) {
-  double ticks = angle.value() / PivotConstants::kDegreesPerTick;
-  if (m_isHomed) m_mainMotor.Set(TalonFXControlMode::MotionMagic, ticks); 
-}
-
 frc2::CommandPtr Pivot::HomeCommand() {
   return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
     .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] {
       m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
       m_isHomed = true;
-    }); // TODO: Move down a few inches after homing
+    });
 }
 
 frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
-  return RunOnce([this, angle] {
-    SetAngle(angle);
-  });
-  return frc2::cmd::Either(
+  /*return frc2::cmd::Either(
     Run([] {})
       .BeforeStarting([this, angle] { SetAngle(angle); })
       .Until([this, angle] {
@@ -62,5 +59,28 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
           && GetVelocity() < PivotConstants::kVelocityThreshold.value();
       }),
     RunOnce([] {}), [this] { return m_isHomed; }
+  );*/
+
+  return frc2::cmd::Either(
+    Run([this] {
+      double currentAngle = GetAngle().value();
+      double output = m_controller.Calculate(currentAngle);
+      m_mainMotor.Set(TalonFXControlMode::PercentOutput, output);
+    })
+    .BeforeStarting([this, angle] {
+      m_controller.Reset();
+      m_controller.SetSetpoint(angle.value());
+    })
+    .Until([this, angle] {
+      return
+        std::abs(GetVelocity()) < PivotConstants::kVelocityThreshold.value()
+        && units::math::abs(GetAngle() - angle) < TurretConstants::kPositionThreshold;
+    }).AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }),
+    RunOnce([] {}), [this] { return m_isHomed; }
   );
 }
+
+frc2::CommandPtr Pivot::SetHomedCommand() {
+  return RunOnce([this] { m_isHomed = true; });
+}
+

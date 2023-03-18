@@ -21,13 +21,15 @@ class Extension : public frc2::SubsystemBase {
 
   units::inch_t GetExtension();
   units::meters_per_second_t GetVelocity();
-  void SetExtension(units::inch_t extension); 
 
   frc2::CommandPtr HomeCommand();
   frc2::CommandPtr SetExtensionCommand(units::inch_t extension);
+  frc2::CommandPtr SetHomedCommand();
 
  private:
   WPI_TalonFX m_mainMotor { CAN::kExtensionMain };
+
+  frc2::PIDController m_controller { ExtensionConstants::kp, ExtensionConstants::ki, ExtensionConstants::kd };
 
   bool m_isHomed = false; 
 };

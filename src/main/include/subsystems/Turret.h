@@ -26,6 +26,7 @@ class Turret : public frc2::SubsystemBase {
 
   frc2::CommandPtr HomeCommand();
   frc2::CommandPtr SetAngleCommand(units::degree_t angle);
+  frc2::CommandPtr SetHomedCommand();
 
   void Zero();
 

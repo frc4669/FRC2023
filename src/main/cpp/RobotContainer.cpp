@@ -34,15 +34,25 @@ void RobotContainer::ConfigureBindings() {
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
-  m_operatorController.X().OnTrue(m_turret.HomeCommand());
+  m_operatorController.Back().OnTrue(frc2::cmd::Parallel(
+    m_turret.SetHomedCommand(),
+    m_elevator.SetHomedCommand(),
+    m_extension.SetHomedCommand(),
+    m_pivot.SetHomedCommand()
+  ));
 
   m_operatorController.Start().OnTrue(frc2::cmd::Sequence(
     m_claw.ToggleActivationStateCommand(ClawConstants::kClosePosition),
     m_elevator.HomeCommand(),
-    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand())
+    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand()),
+    m_turret.HomeCommand()
   ));
 
-  m_operatorController.RightBumper().OnTrue(m_claw.ToggleActivationStateCommand());
+  m_operatorController.RightBumper().OnTrue(positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+  m_driverController.RightBumper().WhileTrue(m_drivetrain.AutomaticBalanceCommand());
+
+  m_operatorController.A().OnTrue(m_elevator.SetHeightCommand(15_in));
+  m_operatorController.B().OnTrue(m_elevator.SetHeightCommand(25_in));
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
@@ -64,5 +74,5 @@ void RobotContainer::ConfigureBindings() {
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
-  return m_autoChooser.GetSelected();
+  return m_autoChooser.GetSelected(); // nullptr
 }
