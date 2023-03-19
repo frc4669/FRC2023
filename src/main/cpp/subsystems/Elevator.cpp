@@ -99,3 +99,9 @@ frc2::CommandPtr Elevator::SetToSafePivotHeightCommand() {
 frc2::CommandPtr Elevator::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
 }
+
+frc2::CommandPtr Elevator::DefaultControlCommand(std::function<double()> speed) {
+  return Run([this, speed = std::move(speed)] {
+    m_mainMotor.Set(TalonFXControlMode::PercentOutput, speed());
+  });
+}

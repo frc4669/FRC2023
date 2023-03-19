@@ -70,6 +70,12 @@ class RobotContainer {
   frc2::CommandPtr m_L2CubeAutoCommand {
     autos::L2Cube(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret)
   };
+  frc2::CommandPtr m_L3CubeRightAutoCommand {
+    autos::L3CubeRight(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret)
+  };
+  frc2::CommandPtr m_L3CubeLeftAutoCommand {
+    autos::L3CubeLeft(&m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret)
+  };
   frc2::CommandPtr m_redLeftL3CubeMobilityAutoCommand {
     autos::Red_Left_L3Cube_Mobility(&m_drivetrain, &m_elevator, &m_extension, &m_pivot, &m_claw, &m_turret, &m_field)
   };

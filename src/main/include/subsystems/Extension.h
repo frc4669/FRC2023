@@ -25,6 +25,7 @@ class Extension : public frc2::SubsystemBase {
   frc2::CommandPtr HomeCommand();
   frc2::CommandPtr SetExtensionCommand(units::inch_t extension);
   frc2::CommandPtr SetHomedCommand();
+  frc2::CommandPtr DefaultControlCommand(std::function<double()> speed);
 
  private:
   WPI_TalonFX m_mainMotor { CAN::kExtensionMain };

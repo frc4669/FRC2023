@@ -30,11 +30,17 @@ RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m
 }
 
 void RobotContainer::ConfigureAutonomous() {
+  m_autoChooser.SetDefaultOption("Do Nothing", m_doNothingAutoCommand.get());
+
   m_autoChooser.AddOption("Testing Curve", m_curveAutoCommand.get());
 
   m_autoChooser.AddOption("Blue Left L3 Cube Mobility", m_blueLeftL3CubeMobilityAutoCommand.get());
   m_autoChooser.AddOption("Blue Center L3 Cube Mobility", m_blueCenterL3CubeMobilityAutoCommand.get());
   m_autoChooser.AddOption("Blue Right L3 Cube Mobility", m_blueRightL3CubeMobilityAutoCommand.get());
+
+  m_autoChooser.AddOption("L2 Cube", m_L2CubeAutoCommand.get());
+  m_autoChooser.AddOption("L3 Cube Right", m_L3CubeRightAutoCommand.get());
+  m_autoChooser.AddOption("L3 Cube Left", m_L3CubeLeftAutoCommand.get());
 
   m_autoChooser.AddOption("Red Left L3 Cube Mobility", m_redLeftL3CubeMobilityAutoCommand.get());
   m_autoChooser.AddOption("Red Center L3 Cube Mobility", m_redCenterL3CubeMobilityAutoCommand.get());
@@ -43,9 +49,6 @@ void RobotContainer::ConfigureAutonomous() {
   m_autoChooser.AddOption("Red Right L2 Cube Mobility", m_redRightL2CubeMobilityAutoCommand.get());
   m_autoChooser.AddOption("Red Right Mobility", m_redRightMobilityAutoCommand.get());
   
-  m_autoChooser.AddOption("L2 Cube", m_L2CubeAutoCommand.get());
-  
-  m_autoChooser.SetDefaultOption("Do Nothing", m_doNothingAutoCommand.get());
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -55,8 +58,18 @@ void RobotContainer::ConfigureBindings() {
     [this] { return m_elevator.GetHeight().value(); }
   ));
 
-  m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(0.9));
+  m_extension.SetDefaultCommand(m_extension.DefaultControlCommand(
+    [this] { return m_operatorController.GetRightX(); }
+  ));
+
+  m_elevator.SetDefaultCommand(m_elevator.DefaultControlCommand(
+    [this] { return m_operatorController.GetLeftY(); }
+  ));
+
+  m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
+  m_driverController.LeftTrigger().OnTrue(m_drivetrain.BoostCommand(0.141));
+  m_driverController.LeftTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
   m_operatorController.Back().OnTrue(frc2::cmd::Parallel(
     m_turret.SetHomedCommand(),

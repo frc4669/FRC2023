@@ -12,9 +12,9 @@ Turret::Turret() {
   m_mainMotor.SetSafetyEnabled(false);
   m_mainMotor.SetInverted(true);
 
-  m_mainMotor.Config_kP(0, 0.01);
-  m_mainMotor.Config_kI(0, 0);
-  m_mainMotor.Config_kD(0, 0);
+  // m_mainMotor.Config_kP(0, 0.01);
+  // m_mainMotor.Config_kI(0, 0);
+  // m_mainMotor.Config_kD(0, 0);
 
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
@@ -39,12 +39,12 @@ units::degrees_per_second_t Turret::GetVelocity() {
 }
 
 void Turret::SetSpeed(double output) {
-  double position = m_mainMotor.GetSensorCollection().GetQuadraturePosition();
+  units::degree_t position = GetAngle();
   if (m_isHomed == true
-    && ((output < 0 && position <= TurretConstants::kRevThreshold)
-    || (output > 0 && position >= TurretConstants::kFwdThreshold))) {
-      m_mainMotor.Set(TalonSRXControlMode::PercentOutput, 0);
-      return;
+  && ((output < 0 && position <= TurretConstants::kRevThreshold)
+  || (output > 0 && position >= TurretConstants::kFwdThreshold))) {
+    m_mainMotor.Set(TalonSRXControlMode::PercentOutput, 0);
+    return;
   }
   m_mainMotor.Set(TalonSRXControlMode::PercentOutput, output);
 }
@@ -59,7 +59,7 @@ frc2::CommandPtr Turret::HomeCommand() {
 
 frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
   return Run([this] {
-    double currentAngle = m_mainMotor.GetSensorCollection().GetQuadraturePosition();
+    double currentAngle = GetAngle().value();
     m_mainMotor.Set(TalonSRXControlMode::PercentOutput, m_controller.Calculate(currentAngle));
   }).Until([this, angle] {
     return
@@ -67,7 +67,7 @@ frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
       && units::math::abs(GetAngle() - angle) < TurretConstants::kPositionThreshold;
   }).BeforeStarting([this, angle] {
     m_controller.Reset();
-    m_controller.SetSetpoint(angle.value() / TurretConstants::kDegreesPerTick);
+    m_controller.SetSetpoint(angle.value());
   }).AndThen([this] { SetSpeed(0); });
 }
 

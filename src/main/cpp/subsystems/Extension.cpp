@@ -67,3 +67,9 @@ frc2::CommandPtr Extension::SetExtensionCommand(units::inch_t extension) {
 frc2::CommandPtr Extension::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
 }
+
+frc2::CommandPtr Extension::DefaultControlCommand(std::function<double()> speed) {
+  return Run([this, speed = std::move(speed)] {
+    m_mainMotor.Set(TalonFXControlMode::PercentOutput, speed());
+  });
+}

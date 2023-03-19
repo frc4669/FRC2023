@@ -86,7 +86,7 @@ frc2::CommandPtr autos::L2Cube(
   );
 }
 
-frc2::CommandPtr autos::L3Cube(
+frc2::CommandPtr autos::L3CubeRight(
   Elevator* elevator,
   Extension* extension,
   Pivot* pivot,
@@ -96,6 +96,19 @@ frc2::CommandPtr autos::L3Cube(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret),
+    Positioning::DropCommand(elevator, extension, pivot, claw)
+  );
+}
+frc2::CommandPtr autos::L3CubeLeft(
+  Elevator* elevator,
+  Extension* extension,
+  Pivot* pivot,
+  Claw* claw,
+  Turret* turret
+) {
+  return frc2::cmd::Sequence(
+    Positioning::CubePickupSelectCommand(claw),
+    Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret),
     Positioning::DropCommand(elevator, extension, pivot, claw)
   );
 }
@@ -175,12 +188,6 @@ frc2::CommandPtr autos::Red_Right_L2Cube_Mobility(
   Turret* turret,
   frc::Field2d* field
 ) {
-  return frc2::cmd::Sequence(
-    Positioning::CubePickupSelectCommand(claw),
-    Positioning::ScoreMidCenterCommand(elevator, extension, pivot, claw),
-    Positioning::DropCommand(elevator, extension, pivot, claw),
-    FollowTrajectoryCommandNew(drivetrain, field, "Red_Right_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr()
-  );
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreMidCenterCommand(elevator, extension, pivot, claw),

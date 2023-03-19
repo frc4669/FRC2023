@@ -53,7 +53,14 @@ namespace autos {
     Claw* claw,
     Turret* turret
   );
-  frc2::CommandPtr L3Cube(
+  frc2::CommandPtr L3CubeRight(
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret
+  );
+  frc2::CommandPtr L3CubeLeft(
     Elevator* elevator,
     Extension* extension,
     Pivot* pivot,

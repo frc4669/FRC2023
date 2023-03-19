@@ -166,7 +166,7 @@ namespace PivotConstants {
 
 namespace TurretConstants {
   // Turret physical parameters
-  constexpr double kGearRatio = 3.2727275; 
+  constexpr double kGearRatio = 72.0 / 22.0;
   constexpr double kDegreesPerTick = 360 / (4096 * kGearRatio);
 
   // Turret PID controller gains
@@ -175,13 +175,13 @@ namespace TurretConstants {
   constexpr double kd = 0.0000125;
 
   // Turret feedforward gains
-  constexpr auto ks = 0_V; // 0.58412_V;
-  constexpr auto kv = 0.0063192_V * 1_s / 1_deg;
-  constexpr auto ka = 0_V * 1_s * 1_s / 1_deg; // 0.0011897_V * 1_s * 1_s / 1_m;
+  constexpr auto ks = 0_V;
+  constexpr auto kv = 0_V * 1_s / 1_deg;
+  constexpr auto ka = 0_V * 1_s * 1_s / 1_deg;
 
   // Turret rotation limits
-  constexpr double kFwdThreshold = 180 / kDegreesPerTick;
-  constexpr double kRevThreshold = -180 / kDegreesPerTick;
+  constexpr auto kFwdThreshold = 180_deg;
+  constexpr auto kRevThreshold = -180_deg;
 
   // Turret setpoint thresholds
   constexpr auto kVelocityThreshold = 8_deg / 1_s;
