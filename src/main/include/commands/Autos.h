@@ -53,4 +53,52 @@ namespace autos {
     Claw* claw,
     Turret* turret
   );
+  frc2::CommandPtr L3Cube(
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret
+  );
+
+  frc2::CommandPtr Red_Left_L3Cube_Mobility(
+    Drivetrain* drivetrain,
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret,
+    frc::Field2d* field
+  );
+  frc2::CommandPtr Red_Center_L3Cube_Mobility(
+    Drivetrain* drivetrain,
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret,
+    frc::Field2d* field
+  );
+  frc2::CommandPtr Red_Right_L3Cube_Mobility(
+    Drivetrain* drivetrain,
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret,
+    frc::Field2d* field
+  );
+  frc2::CommandPtr Red_Right_L2Cube_Mobility(
+    Drivetrain* drivetrain,
+    Elevator* elevator,
+    Extension* extension,
+    Pivot* pivot,
+    Claw* claw,
+    Turret* turret,
+    frc::Field2d* field
+  );
+  frc2::CommandPtr Red_Right_Mobility(
+    Drivetrain* drivetrain,
+    frc::Field2d* field
+  );
 }

@@ -5,7 +5,7 @@
       "autoPopulate": true,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 100.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
@@ -13,8 +13,8 @@
         "tiles": {
           "0,0": {
             "size": [
-              5,
-              3
+              7,
+              4
             ],
             "content": {
               "_type": "Field",
@@ -28,24 +28,20 @@
               "Colors/trajectory": "#FFFFFFFF"
             }
           },
-          "5,2": {
+          "0,4": {
             "size": [
-              2,
-              2
+              3,
+              1
             ],
             "content": {
-              "_type": "Gyro",
-              "_source0": "network_table:///SmartDashboard/Turret Angle",
-              "_title": "Turret Angle",
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Scheduled Autonomous Routine",
+              "_title": "Scheduled Autonomous Routine",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Visuals/Major tick spacing": 45.0,
-              "Visuals/Starting angle": 180.0,
-              "Visuals/Show tick mark ring": true,
-              "Visuals/Counter clockwise": false
+              "_showGlyph": false
             }
           },
-          "5,0": {
+          "7,1": {
             "size": [
               2,
               2
@@ -62,7 +58,7 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "7,3": {
+          "3,4": {
             "size": [
               2,
               1
@@ -77,68 +73,139 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
+          "5,4": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Angle (deg)",
+              "_title": "Pivot Angle (deg)",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,1": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Number Bar",
+              "_source0": "network_table:///SmartDashboard/Elevator Height (in)",
+              "_title": "Elevator Height (in)",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 30.0,
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 6,
+              "Visuals/Show text": true,
+              "Visuals/Orientation": "VERTICAL"
+            }
+          },
+          "8,4": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Extension (in)",
+              "_title": "Extension (in)",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/Turret Angle",
+              "_title": "Turret Angle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          },
+          "11,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pitch",
+              "_title": "Pitch",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Cone Pressure",
+              "_title": "Cone Pressure",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "9,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Cube Pressure",
+              "_title": "Cube Pressure",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
           "7,0": {
             "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "Number Bar",
-              "_source0": "network_table:///SmartDashboard/Left Velocity",
-              "_title": "Left Velocity",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Range/Min": -4.0,
-              "Range/Max": 4.0,
-              "Range/Center": 0.0,
-              "Visuals/Num tick marks": 9,
-              "Visuals/Show text": true,
-              "Visuals/Orientation": "VERTICAL"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "Number Bar",
-              "_source0": "network_table:///SmartDashboard/Right Velocity",
-              "_title": "Right Velocity",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Range/Min": -4.0,
-              "Range/Max": 4.0,
-              "Range/Center": 0.0,
-              "Visuals/Num tick marks": 9,
-              "Visuals/Show text": true,
-              "Visuals/Orientation": "VERTICAL"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
+              2,
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Tick Vel",
-              "_title": "Left Tick Vel",
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Closed",
+              "_title": "Closed",
               "_glyph": 148,
-              "_showGlyph": false
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           },
-          "8,2": {
+          "7,3": {
             "size": [
-              1,
+              4,
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right Tick Vel",
-              "_title": "Right Tick Vel",
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Positioning in Progress",
+              "_title": "Positioning in Progress",
               "_glyph": 148,
-              "_showGlyph": false
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -149,7 +216,7 @@
       "autoPopulate": true,
       "autoPopulatePrefix": "LiveWindow/",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 100.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
@@ -159,9 +226,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }

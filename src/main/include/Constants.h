@@ -190,7 +190,7 @@ namespace TurretConstants {
 
 namespace PositioningConstants {
   constexpr auto kSafePivotHeight = 18.5_in;
-  constexpr auto kDropDelta = 0_in;
+  constexpr auto kClearPivotAngle = 145_deg;
   constexpr auto kStowDelay = 1_s;
 
   constexpr auto kShelfElevatorHeight = 29_in;
