@@ -6,7 +6,9 @@
 
 #include <frc2/command/CommandScheduler.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit() {
+  EnableLiveWindowInTest(false); 
+}
 
 /**
  * This function is called every 20 ms, no matter the mode. Use
@@ -34,6 +36,13 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+  if (!isContainerInited) {
+    m_container.ClearTestBinding();
+    m_container.ConfigureBindings();
+    m_container.ConfigureAutonomous();
+    isContainerInited = true;
+  }
+  
   m_autonomousCommand = m_container.GetAutonomousCommand();
 
   if (m_autonomousCommand) {
@@ -44,6 +53,13 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
+  if (!isContainerInited) {
+    m_container.ClearTestBinding();
+    m_container.ConfigureBindings();
+    m_container.ConfigureAutonomous();
+    isContainerInited = true;
+  }
+
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
@@ -58,10 +74,18 @@ void Robot::TeleopInit() {
  */
 void Robot::TeleopPeriodic() {}
 
+void Robot::TestInit() {
+  isContainerInited = false;
+  
+  m_container.ConfigTest();
+}
+
 /**
  * This function is called periodically during test mode.
  */
-void Robot::TestPeriodic() {}
+void Robot::TestPeriodic() {
+  m_container.RunTest(); 
+}
 
 /**
  * This function is called once when the robot is first started up.

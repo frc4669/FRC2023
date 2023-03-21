@@ -79,3 +79,6 @@ frc2::CommandPtr Pivot::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
 }
 
+void Pivot::SetMotor(double output) {
+  m_mainMotor.Set(TalonFXControlMode::PercentOutput, output); 
+}

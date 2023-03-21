@@ -78,3 +78,7 @@ void Turret::Zero() {
 frc2::CommandPtr Turret::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
 }
+
+void Turret::SetMotor(double output) {
+  m_mainMotor.Set(TalonSRXControlMode::PercentOutput, output); 
+}

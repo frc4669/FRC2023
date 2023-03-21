@@ -105,3 +105,7 @@ frc2::CommandPtr Elevator::DefaultControlCommand(std::function<double()> speed) 
     m_mainMotor.Set(TalonFXControlMode::PercentOutput, speed());
   });
 }
+
+void Elevator::SetMotor(double output) {
+  m_mainMotor.Set(TalonFXControlMode::PercentOutput, output); 
+}

@@ -73,3 +73,7 @@ frc2::CommandPtr Extension::DefaultControlCommand(std::function<double()> speed)
     m_mainMotor.Set(TalonFXControlMode::PercentOutput, speed());
   });
 }
+
+void Extension::SetMotor(double output) {
+  m_mainMotor.Set(TalonFXControlMode::PercentOutput, output); 
+}

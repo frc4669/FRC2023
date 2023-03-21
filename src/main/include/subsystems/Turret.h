@@ -30,6 +30,8 @@ class Turret : public frc2::SubsystemBase {
 
   void Zero();
 
+  void SetMotor(double output); 
+
  private:
   WPI_TalonSRX m_mainMotor { CAN::kTurretMain };
 

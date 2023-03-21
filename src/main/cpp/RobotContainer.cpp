@@ -8,12 +8,13 @@
 #include <frc2/command/RunCommand.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
+#include <frc2/command/CommandPtr.h>
 
 RobotContainer::RobotContainer() : m_drivetrain(&m_field), m_vision(&m_field, &m_drivetrain) {
   frc::DriverStation::SilenceJoystickConnectionWarning(true);
 
-  ConfigureBindings();
-  ConfigureAutonomous();
+  // ConfigureBindings();
+  // ConfigureAutonomous();
 
   frc::SmartDashboard::PutData("Field", &m_field);
   frc::SmartDashboard::PutData("Scheduled Autonomous Routine", &m_autoChooser);
@@ -109,4 +110,52 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   return m_autoChooser.GetSelected();
+}
+
+
+void RobotContainer::ConfigTest() {
+
+  // clear bindings
+  m_drivetrain.SetDefaultCommand((frc2::CommandPtr)nullptr);
+
+  m_extension.SetDefaultCommand((frc2::CommandPtr)nullptr);
+
+  m_elevator.SetDefaultCommand((frc2::CommandPtr)nullptr);
+
+  m_driverController.RightTrigger().OnTrue((frc2::CommandPtr)nullptr);
+  m_driverController.RightTrigger().OnFalse((frc2::CommandPtr)nullptr);
+  m_driverController.LeftTrigger().OnTrue((frc2::CommandPtr)nullptr);
+  m_driverController.LeftTrigger().OnFalse((frc2::CommandPtr)nullptr);
+
+  m_operatorController.Back().OnTrue((frc2::CommandPtr)nullptr);
+
+  m_operatorController.Start().OnTrue((frc2::CommandPtr)nullptr);
+
+  m_operatorController.RightBumper().OnTrue((frc2::CommandPtr)nullptr);
+  m_driverController.RightBumper().WhileTrue((frc2::CommandPtr)nullptr);
+
+  // set button bindings again
+  m_operatorController.Y().OnTrue(m_claw.SetPressure(true));
+  m_operatorController.A().OnTrue(m_claw.SetPressure(false));
+
+  m_operatorController.X().OnTrue(m_claw.SetPosition(true));
+  m_operatorController.B().OnTrue(m_claw.SetPosition(false));
+
+}
+
+void RobotContainer::ClearTestBinding() {
+  m_operatorController.Y().OnTrue((frc2::CommandPtr)nullptr);
+  m_operatorController.A().OnTrue((frc2::CommandPtr)nullptr);
+
+  m_operatorController.X().OnTrue((frc2::CommandPtr)nullptr);
+  m_operatorController.B().OnTrue((frc2::CommandPtr)nullptr);
+}
+
+void RobotContainer::RunTest() {
+  m_extension.SetMotor(m_operatorController.GetLeftY() * 0.3);
+  m_elevator.SetMotor(m_operatorController.GetLeftX() * 0.3);
+  m_turret.SetMotor(m_operatorController.GetRightX() * 0.3);
+  m_pivot.SetMotor(m_operatorController.GetRightY() * 0.3);
+  
+
 }

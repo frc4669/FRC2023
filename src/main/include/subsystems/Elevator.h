@@ -30,6 +30,8 @@ class Elevator : public frc2::SubsystemBase {
   frc2::CommandPtr SetHomedCommand();
   frc2::CommandPtr DefaultControlCommand(std::function<double()>);
 
+  void SetMotor(double output);
+
  private:
   WPI_TalonFX m_mainMotor { CAN::kElevatorMain };
 

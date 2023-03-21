@@ -35,6 +35,24 @@ frc2::CommandPtr Claw::ToggleActivationStateCommand() {
   });
 }
 
+frc2::CommandPtr Claw::SetPressure(bool isCone) {
+  return RunOnce (
+    [this, isCone] {
+      if (isCone) m_pressureSolenoid.Set(frc::DoubleSolenoid::kForward);
+      else m_pressureSolenoid.Set(frc::DoubleSolenoid::kReverse);
+    }
+  );
+} 
+
+frc2::CommandPtr  Claw::SetPosition(bool isOpen) {
+  return RunOnce (
+    [this, isOpen] {
+      if (isOpen) m_controlSolenoid.Set(frc::DoubleSolenoid::kForward);
+      else m_controlSolenoid.Set(frc::DoubleSolenoid::kReverse); 
+    }
+  );
+}
+
 bool Claw::GetPressure() {
   return m_pressureSolenoid.Get() == frc::DoubleSolenoid::kForward ? ClawConstants::kConePressure : ClawConstants::kCubePressure;
 }

@@ -104,8 +104,8 @@ namespace ClawConstants {
   constexpr int kControlCloseID = 1;
 
   // "Enumerations" of claw states
-  constexpr bool kConePressure = true;
-  constexpr bool kCubePressure = false;
+  constexpr bool kConePressure = true; // forward
+  constexpr bool kCubePressure = false; // reverse 
   constexpr bool kOpenPosition = true;
   constexpr bool kClosePosition = false;
 }

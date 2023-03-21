@@ -27,6 +27,8 @@ class Extension : public frc2::SubsystemBase {
   frc2::CommandPtr SetHomedCommand();
   frc2::CommandPtr DefaultControlCommand(std::function<double()> speed);
 
+  void SetMotor(double output); 
+  void SetUpTest();
  private:
   WPI_TalonFX m_mainMotor { CAN::kExtensionMain };
 
