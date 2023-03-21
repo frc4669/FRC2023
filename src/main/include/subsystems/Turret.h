@@ -6,7 +6,7 @@
 
 #include <ctre/Phoenix.h>
 
-#include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandPtr.h>
@@ -33,7 +33,8 @@ class Turret : public frc2::SubsystemBase {
  private:
   WPI_TalonSRX m_mainMotor { CAN::kTurretMain };
 
-  frc2::PIDController m_controller { TurretConstants::kp, TurretConstants::ki, TurretConstants::kd };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints { TurretConstants::kMaxVelocity, TurretConstants::kMaxAccel };
+  frc::ProfiledPIDController<units::degrees> m_controller { TurretConstants::kp, TurretConstants::ki, TurretConstants::kd, m_constraints };
   frc::SimpleMotorFeedforward<units::degrees> m_feedforward { TurretConstants::ks, TurretConstants::kv, TurretConstants::ka };
 
   bool m_isHomed = false;

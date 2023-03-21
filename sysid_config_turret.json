@@ -6,7 +6,7 @@
   "encoder canivore name": "rio",
   "encoder type": "Built-in",
   "encoding": false,
-  "gearing denominator": 22.0,
+  "gearing denominator": 16.0,
   "gearing numerator": 72.0,
   "gyro": "Analog Gyro",
   "gyro canivore name": "rio",

@@ -5,6 +5,8 @@
 #pragma once
 
 #include <units/velocity.h>
+#include <units/angular_acceleration.h>
+#include <units/angular_velocity.h>
 #include <units/acceleration.h>
 #include <units/time.h>
 #include <units/voltage.h>
@@ -166,26 +168,30 @@ namespace PivotConstants {
 
 namespace TurretConstants {
   // Turret physical parameters
-  constexpr double kGearRatio = 72.0 / 22.0;
+  constexpr double kGearRatio = 72.0 / 16.0;
   constexpr double kDegreesPerTick = 360 / (4096 * kGearRatio);
 
   // Turret PID controller gains
-  constexpr double kp = 0.0004;
+  constexpr double kp = 0.02; // 1.0576
   constexpr double ki = 0;
-  constexpr double kd = 0.0000125;
+  constexpr double kd = 0; // 0.079649
+
+  // Turret motion profile constraints
+  constexpr auto kMaxVelocity = 180_deg_per_s;
+  constexpr auto kMaxAccel = 100_deg_per_s_sq;
 
   // Turret feedforward gains
-  constexpr auto ks = 0_V;
-  constexpr auto kv = 0_V * 1_s / 1_deg;
-  constexpr auto ka = 0_V * 1_s * 1_s / 1_deg;
+  constexpr auto ks = 0.68611_V;
+  constexpr auto kv = 0.087389_V * 1_s / 1_deg;
+  constexpr auto ka = 0.0029981_V * 1_s * 1_s / 1_deg;
 
   // Turret rotation limits
-  constexpr auto kFwdThreshold = 180_deg;
+  constexpr auto kFwdThreshold = 90_deg;
   constexpr auto kRevThreshold = -180_deg;
 
   // Turret setpoint thresholds
-  constexpr auto kVelocityThreshold = 8_deg / 1_s;
-  constexpr auto kPositionThreshold = 4_deg;
+  constexpr auto kVelocityThreshold = 4_deg / 1_s;
+  constexpr auto kPositionThreshold = 2_deg;
 }
 
 namespace PositioningConstants {

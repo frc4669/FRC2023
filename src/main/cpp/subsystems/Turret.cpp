@@ -24,6 +24,8 @@ Turret::Turret() {
   m_mainMotor.OverrideLimitSwitchesEnable(false);
   m_mainMotor.ConfigForwardSoftLimitEnable(false);
   m_mainMotor.ConfigReverseSoftLimitEnable(false);
+
+  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Turret::Periodic() {
@@ -51,7 +53,7 @@ void Turret::SetSpeed(double output) {
 
 frc2::CommandPtr Turret::HomeCommand() {
   return Run([this] { SetSpeed(-0.15); })
-    .Until([this] { return m_mainMotor.IsFwdLimitSwitchClosed() || m_mainMotor.IsRevLimitSwitchClosed(); })
+    .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] { SetSpeed(0); m_mainMotor.GetSensorCollection().SetQuadraturePosition(-180 / TurretConstants::kDegreesPerTick); })
     .AndThen(SetAngleCommand(0_deg))
     .AndThen([this] { m_isHomed = true; SetSpeed(0); });
@@ -59,15 +61,15 @@ frc2::CommandPtr Turret::HomeCommand() {
 
 frc2::CommandPtr Turret::SetAngleCommand(units::degree_t angle) {
   return Run([this] {
-    double currentAngle = GetAngle().value();
+    units::degree_t currentAngle = GetAngle();
     m_mainMotor.Set(TalonSRXControlMode::PercentOutput, m_controller.Calculate(currentAngle));
   }).Until([this, angle] {
     return
       units::math::abs(GetVelocity()) < TurretConstants::kVelocityThreshold
       && units::math::abs(GetAngle() - angle) < TurretConstants::kPositionThreshold;
   }).BeforeStarting([this, angle] {
-    m_controller.Reset();
-    m_controller.SetSetpoint(angle.value());
+    m_controller.Reset(GetAngle(), GetVelocity());
+    m_controller.SetGoal(angle);
   }).AndThen([this] { SetSpeed(0); });
 }
 
