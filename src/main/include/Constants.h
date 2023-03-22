@@ -120,15 +120,19 @@ namespace ElevatorConstants {
   constexpr auto kLimitSwitchSeparation = 30_in;
 
   // Elevator PID controller gains
-  constexpr double kp = 1.3;
+  constexpr double kp = 21.8;
   constexpr double ki = 0;
-  constexpr double kd = 0.08;
+  constexpr double kd = 0.1;
 
   // Elevator feedforward gains
   constexpr auto ks = 0.021916_V;
   constexpr auto kv = 1.3565_V * 1_s / 1_in;
   constexpr auto ka = 0.074867_V * 1_s * 1_s / 1_in;
   constexpr auto kg = -0.088634_V;
+
+  // Elevator motion profile constraints
+  constexpr auto kMaxVelocity = 1_mps;
+  constexpr auto kMaxAccel = 1_mps_sq;
 
   // Elevator setpoint thresholds
   constexpr auto kPositionThreshold = 4_in;
@@ -142,9 +146,13 @@ namespace ExtensionConstants {
   constexpr double kInchesPerTick = (kTeeth * 0.25) / (kGearRatio * 2048);
 
   // Extension PID controller gains
-  constexpr double kp = 0.24;
+  constexpr double kp = 13.5;
   constexpr double ki = 0;
-  constexpr double kd = 0;
+  constexpr double kd = 0.15;
+
+  // Extension motion profile constraints
+  constexpr auto kMaxVelocity = 1_mps;
+  constexpr auto kMaxAccel = 1_mps_sq;
 
   // Extension setpoint thresholds
   constexpr auto kPositionThreshold = 3_in;
@@ -178,7 +186,7 @@ namespace TurretConstants {
 
   // Turret motion profile constraints
   constexpr auto kMaxVelocity = 180_deg_per_s;
-  constexpr auto kMaxAccel = 100_deg_per_s_sq;
+  constexpr auto kMaxAccel = 160_deg_per_s_sq;
 
   // Turret feedforward gains
   constexpr auto ks = 0.68611_V;
@@ -190,8 +198,8 @@ namespace TurretConstants {
   constexpr auto kRevThreshold = -180_deg;
 
   // Turret setpoint thresholds
-  constexpr auto kVelocityThreshold = 4_deg / 1_s;
-  constexpr auto kPositionThreshold = 2_deg;
+  constexpr auto kVelocityThreshold = 2_deg / 1_s;
+  constexpr auto kPositionThreshold = 1_deg;
 }
 
 namespace PositioningConstants {

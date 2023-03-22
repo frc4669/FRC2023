@@ -56,7 +56,7 @@ class Vision : public frc2::SubsystemBase {
 
   ObjDetectResults ObjDetectGetResults(); 
 
-  ObjDetectTarget ObjDetectGetBestTarget(ObjDetectResults results);
+  // ObjDetectTarget ObjDetectGetBestTarget(ObjDetectResults results);
   ////////////////////
   // END OBJ DETECT //
   ////////////////////

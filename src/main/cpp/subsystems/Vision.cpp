@@ -77,9 +77,9 @@ Vision::ObjDetectResults Vision::ObjDetectGetResults() {
     return results; 
 }
 
-Vision::ObjDetectTarget Vision::ObjDetectGetBestTarget(Vision::ObjDetectResults results) {
-    //TO DO
-}
+// Vision::ObjDetectTarget Vision::ObjDetectGetBestTarget(Vision::ObjDetectResults results) {
+//     //TO DO
+// }
 ////////////////////
 // END OBJ DETECT //
 ////////////////////

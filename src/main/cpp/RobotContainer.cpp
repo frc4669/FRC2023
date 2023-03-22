@@ -68,7 +68,7 @@ void RobotContainer::ConfigureBindings() {
 
   m_driverController.RightTrigger().OnTrue(m_drivetrain.BoostCommand(1.0));
   m_driverController.RightTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
-  m_driverController.LeftTrigger().OnTrue(m_drivetrain.BoostCommand(0.141));
+  m_driverController.LeftTrigger().OnTrue(m_drivetrain.BoostCommand(0.14));
   m_driverController.LeftTrigger().OnFalse(m_drivetrain.BoostCommand(0.3));
 
   m_operatorController.Back().OnTrue(frc2::cmd::Parallel(
@@ -81,9 +81,12 @@ void RobotContainer::ConfigureBindings() {
   m_operatorController.Start().OnTrue(frc2::cmd::Sequence(
     m_claw.ToggleActivationStateCommand(ClawConstants::kClosePosition),
     m_elevator.HomeCommand(),
-    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand()),
-    m_turret.HomeCommand()
+    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand()) // ,
+    // m_turret.HomeCommand()
   ));
+
+  m_operatorController.A().OnTrue(m_extension.SetExtensionCommand(8_in));
+  m_operatorController.B().OnTrue(m_extension.SetExtensionCommand(16_in));
 
   m_operatorController.RightBumper().OnTrue(Positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_driverController.RightBumper().WhileTrue(m_drivetrain.AutomaticBalanceCommand());

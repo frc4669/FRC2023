@@ -24,8 +24,6 @@ Turret::Turret() {
   m_mainMotor.OverrideLimitSwitchesEnable(false);
   m_mainMotor.ConfigForwardSoftLimitEnable(false);
   m_mainMotor.ConfigReverseSoftLimitEnable(false);
-
-  frc::SmartDashboard::PutData(&m_controller);
 }
 
 void Turret::Periodic() {
@@ -52,7 +50,7 @@ void Turret::SetSpeed(double output) {
 }
 
 frc2::CommandPtr Turret::HomeCommand() {
-  return Run([this] { SetSpeed(-0.15); })
+  return Run([this] { SetSpeed(-0.25); })
     .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] { SetSpeed(0); m_mainMotor.GetSensorCollection().SetQuadraturePosition(-180 / TurretConstants::kDegreesPerTick); })
     .AndThen(SetAngleCommand(0_deg))

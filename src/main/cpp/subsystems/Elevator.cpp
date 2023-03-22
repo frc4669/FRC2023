@@ -8,11 +8,6 @@ Elevator::Elevator() {
   m_mainMotor.ConfigMotionAcceleration(5000);
   m_mainMotor.ConfigMotionCruiseVelocity(10000);
 
-  // m_mainMotor.Config_kP(0, ElevatorConstants::kp);
-  // m_mainMotor.Config_kI(0, ElevatorConstants::ki);
-  // m_mainMotor.Config_kD(0, ElevatorConstants::kd);
-  // m_mainMotor.Config_kF(0, 0.0001);
-
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
   m_mainMotor.ConfigPeakOutputForward(1);
@@ -26,10 +21,10 @@ Elevator::Elevator() {
 }
 
 void Elevator::Periodic() {
-  frc::SmartDashboard::PutNumber("Elevator Height (in)", GetHeight().value());
+  frc::SmartDashboard::PutNumber("Elevator Height (m)", GetHeight().value());
 }
 
-units::inch_t Elevator::GetHeight() {
+units::meter_t Elevator::GetHeight() {
   return units::inch_t(m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition() * ElevatorConstants::kInchesPerTick);
 }
 
@@ -38,7 +33,7 @@ units::meters_per_second_t Elevator::GetVelocity() {
 }
 
 frc2::CommandPtr Elevator::HomeCommand() {
-  return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.2); })
+  return Run([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.3); })
     .Until([this] { return m_mainMotor.IsRevLimitSwitchClosed(); })
     .AndThen([this] {
       m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(ElevatorConstants::kLimitSwitchSeparation.value() / ElevatorConstants::kInchesPerTick);
@@ -50,40 +45,22 @@ frc2::CommandPtr Elevator::HomeCommand() {
     });
 }
 
-// frc2::CommandPtr Elevator::SetHeightCommand(units::inch_t height) {
-//   return frc2::cmd::Either(
-//     Run([] {})
-//       .BeforeStarting([this, height] { SetHeight(height); })
-//       .Until([this, height] {
-//         return units::math::abs(GetHeight() - height) < ElevatorConstants::kPositionThreshold
-//           && units::math::abs(GetVelocity()) < ElevatorConstants::kVelocityThreshold;
-//       }),
-//     RunOnce([] {}), [this] { return m_isHomed; }
-//   );
-// }
-
-frc2::CommandPtr Elevator::SetHeightCommand(units::inch_t height) {
+frc2::CommandPtr Elevator::SetHeightCommand(units::meter_t height) {
   return frc2::cmd::Either(
     Run([this, height] {
-      double currentHeight = GetHeight().value();
+      units::meter_t currentHeight = GetHeight();
       double output = -m_mainController.Calculate(currentHeight);
       m_mainMotor.Set(TalonFXControlMode::PercentOutput, output);
     })
     .BeforeStarting([this, height] {
-      m_mainController.Reset();
-      m_mainController.SetSetpoint(height.value());
+      m_mainController.Reset(GetHeight(), GetVelocity());
+      m_mainController.SetGoal(height);
     })
     .Until([this, height] {
       return
         units::math::abs(GetVelocity()) < ElevatorConstants::kVelocityThreshold
         && units::math::abs(GetHeight() - height) < ElevatorConstants::kPositionThreshold;
     }).AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }),
-    /*Run([] {}).BeforeStarting([this, height] {
-      units::inch_t currentHeight = GetHeight();
-      if (currentHeight < height) m_mainMotor.Set(TalonFXControlMode::PercentOutput, -0.3);
-      else m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0.3);
-    }).Until([this, height] { return units::math::abs(height - GetHeight()) < 5_in; })
-      .AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }),*/
     RunOnce([] {}), [this] { return m_isHomed; }
   );
 }

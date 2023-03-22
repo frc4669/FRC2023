@@ -6,7 +6,7 @@
 
 #include <ctre/Phoenix.h>
 
-#include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
 #include <frc/controller/ElevatorFeedforward.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
@@ -20,12 +20,11 @@ class Elevator : public frc2::SubsystemBase {
   Elevator();
   void Periodic() override;
 
-  units::inch_t GetHeight();
+  units::meter_t GetHeight();
   units::meters_per_second_t GetVelocity();
-  // void SetHeight(units::inch_t height);
 
   frc2::CommandPtr HomeCommand();
-  frc2::CommandPtr SetHeightCommand(units::inch_t height);
+  frc2::CommandPtr SetHeightCommand(units::meter_t height);
   frc2::CommandPtr SetToSafePivotHeightCommand();
   frc2::CommandPtr SetHomedCommand();
   frc2::CommandPtr DefaultControlCommand(std::function<double()>);
@@ -33,7 +32,8 @@ class Elevator : public frc2::SubsystemBase {
  private:
   WPI_TalonFX m_mainMotor { CAN::kElevatorMain };
 
-  frc::PIDController m_mainController { ElevatorConstants::kp, ElevatorConstants::ki, ElevatorConstants::kd };
+  frc::TrapezoidProfile<units::meters>::Constraints m_constraints { ElevatorConstants::kMaxVelocity, ElevatorConstants::kMaxAccel };
+  frc::ProfiledPIDController<units::meters> m_mainController { ElevatorConstants::kp, ElevatorConstants::ki, ElevatorConstants::kd, m_constraints };
   // frc::ElevatorFeedforward<units::inches> m_feedforward { ElevatorConstants::ks, ElevatorConstants::kv, ElevatorConstants::ka, ElevatorConstants::kg };
 
   bool m_isHomed = false; 
