@@ -10,7 +10,8 @@
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/Commands.h>
-#include <frc/controller/PIDController.h>
+#include <frc/controller/ProfiledPIDController.h>
+#include <frc/controller/ArmFeedforward.h>
 
 #include "Constants.h"
 
@@ -20,7 +21,7 @@ class Pivot : public frc2::SubsystemBase {
   void Periodic() override;
 
   units::degree_t GetAngle();
-  double GetVelocity();
+  units::degrees_per_second_t GetVelocity();
 
   frc2::CommandPtr HomeCommand();
   frc2::CommandPtr SetAngleCommand(units::degree_t angle);
@@ -29,7 +30,11 @@ class Pivot : public frc2::SubsystemBase {
  private:
   WPI_TalonFX m_mainMotor { CAN::kPivotMain };
 
-  frc2::PIDController m_controller { PivotConstants::kp, PivotConstants::ki, PivotConstants::kd };
+  frc::TrapezoidProfile<units::degrees>::Constraints m_constraints { PivotConstants::kMaxVelocity, PivotConstants::kMaxAccel };
+  frc::ProfiledPIDController<units::degrees> m_controller { PivotConstants::kp, PivotConstants::ki, PivotConstants::kd, m_constraints };
+  frc::ArmFeedforward m_feedforward { PivotConstants::ks, PivotConstants::kg, PivotConstants::kv, PivotConstants::ka };
+
+  // WPILib: ADD STATE TO INLINE COMMANDS
 
   bool m_isHomed = false;
 };

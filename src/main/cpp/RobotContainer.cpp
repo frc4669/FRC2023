@@ -85,8 +85,8 @@ void RobotContainer::ConfigureBindings() {
     // m_turret.HomeCommand()
   ));
 
-  m_operatorController.A().OnTrue(m_extension.SetExtensionCommand(8_in));
-  m_operatorController.B().OnTrue(m_extension.SetExtensionCommand(16_in));
+  m_operatorController.A().OnTrue(m_pivot.SetAngleCommand(30_deg).WithName("PositioningCommandInProgress"));
+  m_operatorController.B().OnTrue(m_pivot.SetAngleCommand(145_deg).WithName("PositioningCommandInProgress"));
 
   m_operatorController.RightBumper().OnTrue(Positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_driverController.RightBumper().WhileTrue(m_drivetrain.AutomaticBalanceCommand());

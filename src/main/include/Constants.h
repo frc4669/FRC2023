@@ -165,13 +165,24 @@ namespace PivotConstants {
   constexpr double kDegreesPerTick = 360 / (kGearRatio * 2048); 
 
   // Wrist pivot PID controller gains
-  constexpr double kp = 0.014;
+  constexpr double kp = 0.147;
   constexpr double ki = 0;
-  constexpr double kd = 0;
+  constexpr double kd = 0.015055;
+
+  // Wrist pivot feedforward gains
+  constexpr auto ks = -0.019768_V;
+  constexpr auto kv = 0.5_V * 1_s / 1_deg; // 0.061282
+  constexpr auto ka = 0.00073196_V * 1_s * 1_s / 1_deg;
+  constexpr auto kg = 0.031072_V;
+  constexpr auto kHorizontalOffset = -166.74_deg;
+
+  // Wrist pivot motion profile constraints
+  constexpr auto kMaxVelocity = 600000_deg_per_s; // 250
+  constexpr auto kMaxAccel = 1000000_deg_per_s_sq; // 400
 
   // Wrist pivot setpoint thresholds
-  constexpr auto kPositionThreshold = 8_deg;
-  constexpr auto kVelocityThreshold = 4_deg / 1_s;
+  constexpr auto kPositionThreshold = 4_deg;
+  constexpr auto kVelocityThreshold = 3_deg / 1_s;
 }
 
 namespace TurretConstants {
