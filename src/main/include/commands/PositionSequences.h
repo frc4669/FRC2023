@@ -33,6 +33,9 @@ class Positioning {
   static frc2::CommandPtr ScoreHighLeftCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret);
   static frc2::CommandPtr ScoreHighRightCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw, Turret* turret);
 
+  // Charge station configuration command
+  static frc2::CommandPtr ChargePlatformPositionCommand(Elevator* elevator, Extension* extension, Pivot* pivot);
+
   // Drop command
   static frc2::CommandPtr DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
 };

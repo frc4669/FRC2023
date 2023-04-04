@@ -118,6 +118,7 @@ namespace ElevatorConstants {
   constexpr double kTeeth = 16;
   constexpr double kInchesPerTick = (kTeeth * 0.25) / (kGearRatio * 2048);
   constexpr auto kLimitSwitchSeparation = 30_in;
+  constexpr auto kHomePosition = 19.68_in;
 
   // Elevator PID controller gains
   constexpr double kp = 21.8;
@@ -165,9 +166,9 @@ namespace PivotConstants {
   constexpr double kDegreesPerTick = 360 / (kGearRatio * 2048); 
 
   // Wrist pivot PID controller gains
-  constexpr double kp = 0.147;
+  constexpr double kp = 0.24;
   constexpr double ki = 0;
-  constexpr double kd = 0.015055;
+  constexpr double kd = 0;
 
   // Wrist pivot feedforward gains
   constexpr auto ks = -0.019768_V;
@@ -176,9 +177,9 @@ namespace PivotConstants {
   constexpr auto kg = 0.031072_V;
   constexpr auto kHorizontalOffset = -166.74_deg;
 
-  // Wrist pivot motion profile constraints
-  constexpr auto kMaxVelocity = 600000_deg_per_s; // 250
-  constexpr auto kMaxAccel = 1000000_deg_per_s_sq; // 400
+  // LIFE RUINING CONSTRAINTS
+  constexpr auto kMaxVelocity = 300000000_deg_per_s;
+  constexpr auto kMaxAccel = 30000000_deg_per_s_sq;
 
   // Wrist pivot setpoint thresholds
   constexpr auto kPositionThreshold = 4_deg;
@@ -249,4 +250,8 @@ namespace PositioningConstants {
   constexpr auto kHighSideExtensionLength = 19_in;
   constexpr auto kHighSidePivotAngle = 155_deg;
   constexpr auto kHighSideTurretAngle = 13_deg;
+
+  constexpr auto kChargePivotAngle = 155_deg;
+  constexpr auto kChargeElevatorHeight = 0_in;
+  constexpr auto kChargeExtensionLength = 0_in;
 }

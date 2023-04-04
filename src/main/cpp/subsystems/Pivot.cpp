@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "subsystems/Pivot.h"
+#include <iostream>
 
 Pivot::Pivot() { 
   m_mainMotor.ConfigMotionCruiseVelocity(7000);
@@ -23,7 +24,7 @@ Pivot::Pivot() {
 }
 
 void Pivot::Periodic() {
-  frc::SmartDashboard::PutNumber("Pivot Angle (deg)", m_mainMotor.GetSensorCollection().GetIntegratedSensorPosition());
+  frc::SmartDashboard::PutNumber("Pivot Angle (deg)", (GetAngle()).value());
 }
 
 units::degree_t Pivot::GetAngle() {
@@ -60,13 +61,18 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
       frc::TrapezoidProfile<units::degrees>::State state = m_controller.GetSetpoint();
       
       units::volt_t output = units::volt_t(m_controller.Calculate(currentAngle));
+      units::radian_t radAngle = units::radian_t(state.position + PivotConstants::kHorizontalOffset);
       units::volt_t ff = m_feedforward.Calculate(
-        state.position + PivotConstants::kHorizontalOffset,
+        radAngle,
         state.velocity//,
         // (state.velocity - GetVelocity()) / 20_ms
       );
-      m_mainMotor.SetVoltage(ff); // + output
+      // std::cout << "test\n";
+      // std::cout << std::to_string(ff.value()) << "\n";
+      // std::cout << std::to_string(radAngle.value()) << "\n";
+      m_mainMotor.SetVoltage(ff + output); // + output
 
+      frc::SmartDashboard::PutNumber("Angle (rad)", units::radian_t(state.position + PivotConstants::kHorizontalOffset).value());
       frc::SmartDashboard::PutNumber("Profile Position Delta", (state.position - currentAngle).value());
       frc::SmartDashboard::PutNumber("Profile Velocity Delta", (state.velocity - GetVelocity()).value());
       frc::SmartDashboard::PutNumber("Accel Setpoint", ((state.velocity - GetVelocity()) / 20_ms).value());

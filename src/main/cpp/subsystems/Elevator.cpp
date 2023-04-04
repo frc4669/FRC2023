@@ -18,6 +18,8 @@ Elevator::Elevator() {
   m_mainMotor.SetInverted(true);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit = up (inverted)
+
+  m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(ElevatorConstants::kHomePosition.value() / ElevatorConstants::kInchesPerTick);
 }
 
 void Elevator::Periodic() {

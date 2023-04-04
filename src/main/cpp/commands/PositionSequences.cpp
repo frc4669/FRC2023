@@ -97,6 +97,14 @@ frc2::CommandPtr Positioning::ScoreHighRightCommand(Elevator* elevator, Extensio
   ).WithName("PositioningCommandInProgress");
 }
 
+frc2::CommandPtr Positioning::ChargePlatformPositionCommand(Elevator* elevator, Extension* extension, Pivot* pivot) {
+  return frc2::cmd::Sequence(
+    pivot->SetAngleCommand(PositioningConstants::kChargePivotAngle),
+    extension->SetExtensionCommand(PositioningConstants::kChargeExtensionLength),
+    elevator->SetHeightCommand(PositioningConstants::kChargeElevatorHeight)
+  ).WithName("PositioningCommandInProgress");
+}
+
 frc2::CommandPtr Positioning::DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
   return frc2::cmd::Sequence(
     claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition),

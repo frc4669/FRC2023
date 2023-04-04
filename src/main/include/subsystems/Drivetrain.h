@@ -36,6 +36,7 @@ class Drivetrain : public frc2::SubsystemBase {
   frc2::CommandPtr BoostCommand(double boost);
   frc2::CommandPtr AutomaticBalanceCommand();
   frc2::CommandPtr MoveCommand(double speed, units::second_t duration);
+  frc2::CommandPtr ToggleTurnInPlaceCommand();
 
   double AutomaticBalance();
 
@@ -64,6 +65,7 @@ class Drivetrain : public frc2::SubsystemBase {
   units::degree_t m_yawOffset = 0_deg;
 
   double m_boost = 0.3;
+  bool m_turnInPlace = false;
 
   frc2::PIDController m_balanceController { DriveConstants::kBalanceP, 0, 0 };
 };

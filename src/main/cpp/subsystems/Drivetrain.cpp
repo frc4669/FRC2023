@@ -65,7 +65,7 @@ void Drivetrain::ResetOdometry(frc::Pose2d pose, frc::Rotation2d rotation) {
 }
 
 void Drivetrain::CurvatureDrive(double speed, double rotation) {
-  m_drive.CurvatureDrive(speed, rotation, false); 
+  m_drive.CurvatureDrive(speed, rotation, m_turnInPlace); 
 }
 
 void Drivetrain::TankDriveVolts(units::volt_t left, units::volt_t right) {
@@ -101,6 +101,10 @@ frc2::CommandPtr Drivetrain::AutomaticBalanceCommand() {
 
 frc2::CommandPtr Drivetrain::MoveCommand(double speed, units::second_t duration) {
   return Run([this, speed] { m_drive.ArcadeDrive(speed, 0, false); }).WithTimeout(duration);
+}
+
+frc2::CommandPtr Drivetrain::ToggleTurnInPlaceCommand() {
+  return RunOnce([this] { m_turnInPlace = !m_turnInPlace; });
 }
 
 double Drivetrain::AutomaticBalance() {
