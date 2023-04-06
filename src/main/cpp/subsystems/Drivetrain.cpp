@@ -100,7 +100,8 @@ frc2::CommandPtr Drivetrain::AutomaticBalanceCommand() {
 }
 
 frc2::CommandPtr Drivetrain::MoveCommand(double speed, units::second_t duration) {
-  return Run([this, speed] { m_drive.ArcadeDrive(speed, 0, false); }).WithTimeout(duration);
+  return (Run([this, speed] { m_drive.ArcadeDrive(speed, 0, false); })
+  .WithTimeout(duration)).AndThen([this] { m_drive.ArcadeDrive(0, 0, false); });
 }
 
 frc2::CommandPtr Drivetrain::ToggleTurnInPlaceCommand() {

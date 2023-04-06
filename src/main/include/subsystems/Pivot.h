@@ -27,6 +27,8 @@ class Pivot : public frc2::SubsystemBase {
   frc2::CommandPtr SetAngleCommand(units::degree_t angle);
   frc2::CommandPtr SetHomedCommand();
 
+  void SetHomed();
+
  private:
   WPI_TalonFX m_mainMotor { CAN::kPivotMain };
 

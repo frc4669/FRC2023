@@ -87,7 +87,7 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
       return
         units::math::abs(GetVelocity()) < PivotConstants::kVelocityThreshold
         && units::math::abs(GetAngle() - angle) < TurretConstants::kPositionThreshold;
-    }).AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }),
+    }).AndThen([this] { m_mainMotor.Set(TalonFXControlMode::PercentOutput, 0); }).WithTimeout(2_s),
     RunOnce([] {}), [this] { return m_isHomed; }
   );
 }
@@ -96,3 +96,6 @@ frc2::CommandPtr Pivot::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
 }
 
+void Pivot::SetHomed() {
+  m_isHomed = true;
+}

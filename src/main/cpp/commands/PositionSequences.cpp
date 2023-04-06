@@ -39,8 +39,8 @@ frc2::CommandPtr Positioning::StowCommand(Elevator* elevator, Extension* extensi
     pivot->SetAngleCommand(PositioningConstants::kClearPivotAngle),
     extension->SetExtensionCommand(PositioningConstants::kStowExtensionLength),
     elevator->SetToSafePivotHeightCommand(),
-    pivot->SetAngleCommand(PositioningConstants::kStowPivotAngle),
-    elevator->SetHeightCommand(PositioningConstants::kStowElevatorHeight)
+    elevator->SetHeightCommand(PositioningConstants::kStowElevatorHeight),
+    pivot->SetAngleCommand(PositioningConstants::kStowPivotAngle)
   ).WithName("PositioningCommandInProgress");
 }
 

@@ -23,7 +23,7 @@ Elevator::Elevator() {
 }
 
 void Elevator::Periodic() {
-  frc::SmartDashboard::PutNumber("Elevator Height (m)", GetHeight().value());
+  frc::SmartDashboard::PutNumber("Elevator Height (in)", units::inch_t(GetHeight()).value());
 }
 
 units::meter_t Elevator::GetHeight() {
@@ -57,6 +57,9 @@ frc2::CommandPtr Elevator::SetHeightCommand(units::meter_t height) {
     .BeforeStarting([this, height] {
       m_mainController.Reset(GetHeight(), GetVelocity());
       m_mainController.SetGoal(height);
+      frc::SmartDashboard::PutNumber("Setpoint (in)", units::inch_t(height).value());
+      frc::SmartDashboard::PutNumber("Height (in)", units::inch_t(GetHeight()).value());
+      frc::SmartDashboard::PutNumber("Drop distance (in)", units::inch_t(PositioningConstants::kDropDistance).value());
     })
     .Until([this, height] {
       return
@@ -83,4 +86,14 @@ frc2::CommandPtr Elevator::DefaultControlCommand(std::function<double()> speed) 
   return Run([this, speed = std::move(speed)] {
     m_mainMotor.Set(TalonFXControlMode::PercentOutput, speed());
   });
+}
+
+frc2::CommandPtr Elevator::MoveCommand(double output) {
+  return Run([this, output] {
+    m_mainMotor.Set(TalonFXControlMode::PercentOutput, output);
+  });
+}
+
+void Elevator::SetHomed() {
+  m_isHomed = true;
 }

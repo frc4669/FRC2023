@@ -18,7 +18,7 @@ frc2::CommandPtr autos::Blue_Left_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.1, 1_s),
       Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
@@ -40,7 +40,7 @@ frc2::CommandPtr autos::Blue_Center_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.3, 1_s),
       Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
@@ -62,7 +62,7 @@ frc2::CommandPtr autos::Blue_Right_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.3, 1_s),
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
@@ -125,7 +125,7 @@ frc2::CommandPtr autos::Red_Left_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.3, 1_s),
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
@@ -147,7 +147,7 @@ frc2::CommandPtr autos::Red_Center_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.3, 1_s),
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
@@ -169,7 +169,7 @@ frc2::CommandPtr autos::Red_Right_L3Cube_Mobility(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
-      drivetrain->MoveCommand(-0.3, 1_s),
+      // drivetrain->MoveCommand(-0.3, 1_s),
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(

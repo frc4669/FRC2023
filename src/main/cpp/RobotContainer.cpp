@@ -51,6 +51,13 @@ void RobotContainer::ConfigureAutonomous() {
   
 }
 
+void RobotContainer::SetHomed() {
+  m_elevator.SetHomed();
+  m_extension.SetHomed();
+  m_pivot.SetHomed();
+  m_turret.SetHomed();
+}
+
 void RobotContainer::ConfigureBindings() {
   m_drivetrain.SetDefaultCommand(m_drivetrain.DefaultDriveCommand(
     [this] { return -m_driverController.GetLeftY(); },
@@ -81,14 +88,12 @@ void RobotContainer::ConfigureBindings() {
   m_operatorController.Start().OnTrue(frc2::cmd::Sequence(
     m_claw.ToggleActivationStateCommand(ClawConstants::kClosePosition),
     m_elevator.HomeCommand(),
-    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand()) // ,
-    // m_turret.HomeCommand()
+    frc2::cmd::Parallel(m_pivot.HomeCommand(), m_extension.HomeCommand()),
+    m_turret.HomeCommand()
   ));
 
-  m_operatorController.A().OnTrue(m_pivot.SetAngleCommand(30_deg).WithName("PositioningCommandInProgress"));
-  m_operatorController.B().OnTrue(m_pivot.SetAngleCommand(145_deg).WithName("PositioningCommandInProgress"));
-
-  m_operatorController.RightBumper().OnTrue(Positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+  m_operatorController.X().WhileTrue(m_elevator.MoveCommand(-0.3));
+  m_operatorController.B().WhileTrue(m_elevator.MoveCommand(0.3));
 
   m_driverController.Y().OnTrue(frc2::cmd::Sequence(
     m_drivetrain.ToggleTurnInPlaceCommand(),
@@ -96,16 +101,18 @@ void RobotContainer::ConfigureBindings() {
   ));
   m_driverController.RightBumper().WhileTrue(m_drivetrain.AutomaticBalanceCommand());
 
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(0_deg));
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(90_deg));
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretW).OnTrue(m_turret.SetAngleCommand(-90_deg));
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretS).OnTrue(m_turret.SetAngleCommand(180_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(-180_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretE).OnTrue(m_turret.SetAngleCommand(-90_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretW).OnTrue(m_turret.SetAngleCommand(90_deg));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretS).OnTrue(m_turret.SetAngleCommand(0_deg));
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupCone).OnTrue(Positioning::ConePickupSelectCommand(&m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupCube).OnTrue(Positioning::CubePickupSelectCommand(&m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupShelf).OnTrue(Positioning::ShelfPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupGround).OnTrue(Positioning::GroundPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kStow).OnTrue(Positioning::StowCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kDrop).OnTrue(Positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
 
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreLowCenter).OnTrue(Positioning::ScoreLowCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidCenter).OnTrue(Positioning::ScoreMidCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));

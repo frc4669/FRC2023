@@ -12,18 +12,16 @@ Turret::Turret() {
   m_mainMotor.SetSafetyEnabled(false);
   m_mainMotor.SetInverted(true);
 
-  // m_mainMotor.Config_kP(0, 0.01);
-  // m_mainMotor.Config_kI(0, 0);
-  // m_mainMotor.Config_kD(0, 0);
-
   m_mainMotor.ConfigNominalOutputForward(0);
   m_mainMotor.ConfigNominalOutputReverse(0);
   m_mainMotor.ConfigPeakOutputForward(1);
   m_mainMotor.ConfigPeakOutputReverse(-1);
 
-  m_mainMotor.OverrideLimitSwitchesEnable(false);
+  m_mainMotor.OverrideLimitSwitchesEnable(true);
   m_mainMotor.ConfigForwardSoftLimitEnable(false);
   m_mainMotor.ConfigReverseSoftLimitEnable(false);
+
+  m_mainMotor.GetSensorCollection().SetQuadraturePosition(0);
 }
 
 void Turret::Periodic() {
@@ -77,4 +75,8 @@ void Turret::Zero() {
 
 frc2::CommandPtr Turret::SetHomedCommand() {
   return RunOnce([this] { m_isHomed = true; });
+}
+
+void Turret::SetHomed() {
+  m_isHomed = true;
 }

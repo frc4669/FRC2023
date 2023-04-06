@@ -35,18 +35,18 @@ namespace OperatorConstants {
     constexpr int kPickupCube = 8;
     constexpr int kPickupGround = 9;
 
+    constexpr int kDrop = 10;
+
     constexpr int kScoreLowCenter = 4;
     constexpr int kScoreMidCenter = 3;
     constexpr int kScoreMidLeft = 2;
     constexpr int kScoreMidRight = 6;
     constexpr int kScoreHighLeft = 1;
     constexpr int kScoreHighRight = 5;
-
-    // constexpr int kDrop = 7;
   }
 
   // Joystick sensitivity
-  constexpr double kTurningSpeedMutiplier = 0.7;
+  constexpr double kTurningSpeedMutiplier = 1.0;
 }
 
 namespace CAN {
@@ -211,17 +211,19 @@ namespace TurretConstants {
 
   // Turret setpoint thresholds
   constexpr auto kVelocityThreshold = 2_deg / 1_s;
-  constexpr auto kPositionThreshold = 1_deg;
+  constexpr auto kPositionThreshold = 3_deg;
 }
 
 namespace PositioningConstants {
+  constexpr auto kDropDistance = 0.04_m;
+
   constexpr auto kSafePivotHeight = 18.5_in;
   constexpr auto kClearPivotAngle = 145_deg;
   constexpr auto kStowDelay = 1_s;
 
-  constexpr auto kShelfElevatorHeight = 29_in;
+  constexpr auto kShelfElevatorHeight = 29.8_in;
   constexpr auto kShelfExtensionLength = 0_in;
-  constexpr auto kShelfPivotAngle = 130_deg;
+  constexpr auto kShelfPivotAngle = 115_deg;
 
   constexpr auto kGroundElevatorHeight = 6_in;
   constexpr auto kGroundExtensionLength = 12_in;
@@ -236,22 +238,22 @@ namespace PositioningConstants {
   constexpr auto kLowPivotAngle = 70_deg;
   constexpr auto kLowTurretAngle = 0_deg;
 
-  constexpr auto kMidElevatorHeight = 28_in;
+  constexpr auto kMidElevatorHeight = 26_in;
 
   constexpr auto kMidCenterExtensionLength = 12_in;
   constexpr auto kMidCenterPivotAngle = 155_deg;
   constexpr auto kMidCenterTurretAngle = 0_deg;
 
   constexpr auto kMidSideExtensionLength = 0_in;
-  constexpr auto kMidSidePivotAngle = 130_deg;
+  constexpr auto kMidSidePivotAngle = 140_deg;
   constexpr auto kMidSideTurretAngle = 21_deg;
 
-  constexpr auto kHighElevatorHeight = 29_in;
-  constexpr auto kHighSideExtensionLength = 19_in;
+  constexpr auto kHighElevatorHeight = 28_in;
+  constexpr auto kHighSideExtensionLength = 16_in;
   constexpr auto kHighSidePivotAngle = 155_deg;
   constexpr auto kHighSideTurretAngle = 13_deg;
 
-  constexpr auto kChargePivotAngle = 155_deg;
-  constexpr auto kChargeElevatorHeight = 0_in;
+  constexpr auto kChargePivotAngle = 150_deg;
+  constexpr auto kChargeElevatorHeight = 3_in;
   constexpr auto kChargeExtensionLength = 0_in;
 }

@@ -34,6 +34,8 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
 
+  void SetHomed();
+
  private:
   frc2::CommandXboxController m_driverController { OperatorConstants::kDriverController };
   frc2::CommandXboxController m_operatorController { OperatorConstants::kOperatorController };
