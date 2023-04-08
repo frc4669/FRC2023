@@ -95,10 +95,7 @@ void RobotContainer::ConfigureBindings() {
   m_operatorController.X().WhileTrue(m_elevator.MoveCommand(-0.3));
   m_operatorController.B().WhileTrue(m_elevator.MoveCommand(0.3));
 
-  m_driverController.Y().OnTrue(frc2::cmd::Sequence(
-    m_drivetrain.ToggleTurnInPlaceCommand(),
-    Positioning::ChargePlatformPositionCommand(&m_elevator, &m_extension, &m_pivot)
-  ));
+  m_driverController.Y().OnTrue(Positioning::ChargePlatformPositionCommand(&m_elevator, &m_extension, &m_pivot));
   m_driverController.RightBumper().WhileTrue(m_drivetrain.AutomaticBalanceCommand());
 
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kTurretN).OnTrue(m_turret.SetAngleCommand(-180_deg));
@@ -112,7 +109,7 @@ void RobotContainer::ConfigureBindings() {
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kPickupGround).OnTrue(Positioning::GroundPickupCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kStow).OnTrue(Positioning::StowCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
 
-  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kDrop).OnTrue(Positioning::DropCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
+  m_buttonBoardA.Button(OperatorConstants::ButtonBoard::kDrop).OnTrue(m_claw.ToggleActivationStateCommand());
 
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreLowCenter).OnTrue(Positioning::ScoreLowCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));
   m_buttonBoardB.Button(OperatorConstants::ButtonBoard::kScoreMidCenter).OnTrue(Positioning::ScoreMidCenterCommand(&m_elevator, &m_extension, &m_pivot, &m_claw));

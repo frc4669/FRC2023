@@ -18,6 +18,8 @@ Extension::Extension() {
   m_mainMotor.SetInverted(false);
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Reverse limit switch = full extension
+
+  m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
 };
 
 void Extension::Periodic() {

@@ -20,7 +20,7 @@ Pivot::Pivot() {
 
   m_mainMotor.OverrideLimitSwitchesEnable(true); // Forward = pivoted out
 
-  frc::SmartDashboard::PutData(&m_controller);
+  m_mainMotor.GetSensorCollection().SetIntegratedSensorPosition(0);
 }
 
 void Pivot::Periodic() {
@@ -70,14 +70,7 @@ frc2::CommandPtr Pivot::SetAngleCommand(units::degree_t angle) {
       // std::cout << "test\n";
       // std::cout << std::to_string(ff.value()) << "\n";
       // std::cout << std::to_string(radAngle.value()) << "\n";
-      m_mainMotor.SetVoltage(ff + output); // + output
-
-      frc::SmartDashboard::PutNumber("Angle (rad)", units::radian_t(state.position + PivotConstants::kHorizontalOffset).value());
-      frc::SmartDashboard::PutNumber("Profile Position Delta", (state.position - currentAngle).value());
-      frc::SmartDashboard::PutNumber("Profile Velocity Delta", (state.velocity - GetVelocity()).value());
-      frc::SmartDashboard::PutNumber("Accel Setpoint", ((state.velocity - GetVelocity()) / 20_ms).value());
-      frc::SmartDashboard::PutNumber("PID V", output.value());
-      frc::SmartDashboard::PutNumber("FF V", ff.value());
+      m_mainMotor.SetVoltage(ff + output);
     })
     .BeforeStarting([this, angle] {
       m_controller.Reset(GetAngle(), GetVelocity());

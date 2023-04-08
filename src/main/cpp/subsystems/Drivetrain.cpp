@@ -104,10 +104,6 @@ frc2::CommandPtr Drivetrain::MoveCommand(double speed, units::second_t duration)
   .WithTimeout(duration)).AndThen([this] { m_drive.ArcadeDrive(0, 0, false); });
 }
 
-frc2::CommandPtr Drivetrain::ToggleTurnInPlaceCommand() {
-  return RunOnce([this] { m_turnInPlace = !m_turnInPlace; });
-}
-
 double Drivetrain::AutomaticBalance() {
   units::degree_t pitch = GetPitch();
   double direction = pitch <= 0_deg ? 1 : -1;

@@ -57,9 +57,6 @@ frc2::CommandPtr Elevator::SetHeightCommand(units::meter_t height) {
     .BeforeStarting([this, height] {
       m_mainController.Reset(GetHeight(), GetVelocity());
       m_mainController.SetGoal(height);
-      frc::SmartDashboard::PutNumber("Setpoint (in)", units::inch_t(height).value());
-      frc::SmartDashboard::PutNumber("Height (in)", units::inch_t(GetHeight()).value());
-      frc::SmartDashboard::PutNumber("Drop distance (in)", units::inch_t(PositioningConstants::kDropDistance).value());
     })
     .Until([this, height] {
       return

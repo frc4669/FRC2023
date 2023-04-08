@@ -37,5 +37,5 @@ class Positioning {
   static frc2::CommandPtr ChargePlatformPositionCommand(Elevator* elevator, Extension* extension, Pivot* pivot);
 
   // Drop command
-  static frc2::CommandPtr DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
+  static frc2::CommandPtr DropAndStowCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw);
 };

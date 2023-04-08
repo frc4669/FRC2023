@@ -22,7 +22,7 @@ frc2::CommandPtr autos::Blue_Left_L3Cube_Mobility(
       Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Blue_Left_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -44,7 +44,7 @@ frc2::CommandPtr autos::Blue_Center_L3Cube_Mobility(
       Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Blue_Center_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -66,7 +66,7 @@ frc2::CommandPtr autos::Blue_Right_L3Cube_Mobility(
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Blue_Right_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -82,7 +82,7 @@ frc2::CommandPtr autos::L2Cube(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreMidCenterCommand(elevator, extension, pivot, claw),
-    Positioning::DropCommand(elevator, extension, pivot, claw)
+    Positioning::DropAndStowCommand(elevator, extension, pivot, claw)
   );
 }
 
@@ -96,7 +96,7 @@ frc2::CommandPtr autos::L3CubeRight(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret),
-    Positioning::DropCommand(elevator, extension, pivot, claw)
+    Positioning::DropAndStowCommand(elevator, extension, pivot, claw)
   );
 }
 frc2::CommandPtr autos::L3CubeLeft(
@@ -109,7 +109,7 @@ frc2::CommandPtr autos::L3CubeLeft(
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret),
-    Positioning::DropCommand(elevator, extension, pivot, claw)
+    Positioning::DropAndStowCommand(elevator, extension, pivot, claw)
   );
 }
 
@@ -126,10 +126,10 @@ frc2::CommandPtr autos::Red_Left_L3Cube_Mobility(
     Positioning::CubePickupSelectCommand(claw),
     frc2::cmd::Parallel(
       // drivetrain->MoveCommand(-0.3, 1_s),
-      Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
+      Positioning::ScoreHighRightCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Red_Left_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -151,7 +151,7 @@ frc2::CommandPtr autos::Red_Center_L3Cube_Mobility(
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Red_Center_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -173,7 +173,7 @@ frc2::CommandPtr autos::Red_Right_L3Cube_Mobility(
       Positioning::ScoreHighLeftCommand(elevator, extension, pivot, claw, turret)
     ),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Red_Right_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );
@@ -192,7 +192,7 @@ frc2::CommandPtr autos::Red_Right_L2Cube_Mobility(
     Positioning::CubePickupSelectCommand(claw),
     Positioning::ScoreMidCenterCommand(elevator, extension, pivot, claw),
     frc2::cmd::Parallel(
-      Positioning::DropCommand(elevator, extension, pivot, claw),
+      Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Red_Right_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
     )
   );

@@ -105,7 +105,7 @@ frc2::CommandPtr Positioning::ChargePlatformPositionCommand(Elevator* elevator, 
   ).WithName("PositioningCommandInProgress");
 }
 
-frc2::CommandPtr Positioning::DropCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
+frc2::CommandPtr Positioning::DropAndStowCommand(Elevator* elevator, Extension* extension, Pivot* pivot, Claw* claw) {
   return frc2::cmd::Sequence(
     claw->ToggleActivationStateCommand(ClawConstants::kOpenPosition),
     frc2::cmd::Wait(PositioningConstants::kStowDelay),

@@ -136,7 +136,7 @@ namespace ElevatorConstants {
   constexpr auto kMaxAccel = 1_mps_sq;
 
   // Elevator setpoint thresholds
-  constexpr auto kPositionThreshold = 4_in;
+  constexpr auto kPositionThreshold = 2_in;
   constexpr auto kVelocityThreshold = 1.5_in / 1_s;
 }
 
@@ -221,35 +221,35 @@ namespace PositioningConstants {
   constexpr auto kClearPivotAngle = 145_deg;
   constexpr auto kStowDelay = 1_s;
 
-  constexpr auto kShelfElevatorHeight = 29.8_in;
+  constexpr auto kShelfElevatorHeight = 28.7_in;
   constexpr auto kShelfExtensionLength = 0_in;
-  constexpr auto kShelfPivotAngle = 115_deg;
+  constexpr auto kShelfPivotAngle = 125_deg; //130,110
 
-  constexpr auto kGroundElevatorHeight = 6_in;
+  constexpr auto kGroundElevatorHeight = 3_in;
   constexpr auto kGroundExtensionLength = 12_in;
   constexpr auto kGroundPivotAngle = 70_deg;
 
-  constexpr auto kStowElevatorHeight = 19_in;
+  constexpr auto kStowElevatorHeight = 24_in;
   constexpr auto kStowExtensionLength = 0_in;
   constexpr auto kStowPivotAngle = 40_deg;
 
-  constexpr auto kLowElevatorHeight = 21_in;
-  constexpr auto kLowExtensionLength = 6_in;
+  constexpr auto kLowElevatorHeight = 18_in;
+  constexpr auto kLowExtensionLength = 9_in;
   constexpr auto kLowPivotAngle = 70_deg;
   constexpr auto kLowTurretAngle = 0_deg;
 
-  constexpr auto kMidElevatorHeight = 26_in;
+  constexpr auto kMidElevatorHeight = 28.5_in;
 
-  constexpr auto kMidCenterExtensionLength = 12_in;
+  constexpr auto kMidCenterExtensionLength = 15_in;
   constexpr auto kMidCenterPivotAngle = 155_deg;
   constexpr auto kMidCenterTurretAngle = 0_deg;
 
-  constexpr auto kMidSideExtensionLength = 0_in;
+  constexpr auto kMidSideExtensionLength = 3_in;
   constexpr auto kMidSidePivotAngle = 140_deg;
   constexpr auto kMidSideTurretAngle = 21_deg;
 
-  constexpr auto kHighElevatorHeight = 28_in;
-  constexpr auto kHighSideExtensionLength = 16_in;
+  constexpr auto kHighElevatorHeight = 28.5_in;
+  constexpr auto kHighSideExtensionLength = 19_in;
   constexpr auto kHighSidePivotAngle = 155_deg;
   constexpr auto kHighSideTurretAngle = 13_deg;
 
