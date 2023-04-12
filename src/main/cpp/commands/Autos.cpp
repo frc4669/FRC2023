@@ -190,7 +190,7 @@ frc2::CommandPtr autos::Red_Right_L2Cube_Mobility(
 ) {
   return frc2::cmd::Sequence(
     Positioning::CubePickupSelectCommand(claw),
-    Positioning::ScoreMidCenterCommand(elevator, extension, pivot, claw),
+    Positioning::ScoreMidLeftCommand(elevator, extension, pivot, claw, turret),
     frc2::cmd::Parallel(
       Positioning::DropAndStowCommand(elevator, extension, pivot, claw),
       frc2::cmd::Wait(2_s).AndThen(FollowTrajectoryCommandNew(drivetrain, field, "Red_Right_Mobility", false, 2_mps, 1.5_mps_sq).ToPtr())
